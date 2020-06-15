@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>IMS_Client_2_DB</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{2ec9d376-5630-445f-8585-2b02cae6632e}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql120DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>IMS_Client_2_DB</RootNamespace>
+    <AssemblyName>IMS_Client_2_DB</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="BackupConfig.sql" />
+    <Build Include="CompanyMaster.sql" />
+    <Build Include="Login_History.sql" />
+    <Build Include="RegistrationDetails.sql" />
+    <Build Include="UserManagement.sql" />
+    <Build Include="CategoryMaster.sql" />
+    <Build Include="CountryMaster.sql" />
+    <Build Include="SupplierMaster.sql" />
+    <Build Include="StoreMaster.sql" />
+    <Build Include="BrandMaster.sql" />
+    <Build Include="ProductMaster.sql" />
+    <Build Include="ProductStockMaster.sql" />
+    <Build Include="PurchaseInvoice.sql" />
+    <Build Include="SalesDetails.sql" />
+    <Build Include="SalesInvoiceDetails.sql" />
+    <Build Include="EmployeeDetails.sql" />
+    <Build Include="Settings.sql" />
+    <Build Include="SequenceInvoice.sql" />
+    <Build Include="PurchaseInvoiceDetails.sql" />
+    <Build Include="CurrencyRateSetting.sql" />
+    <Build Include="CustomerMaster.sql" />
+    <Build Include="Get_CurrencyRate.sql" />
+    <Build Include="ColorMaster.sql" />
+    <Build Include="SizeTypeMaster.sql" />
+    <Build Include="SizeMaster.sql" />
+    <Build Include="Get_Delivering_PurchaseInvoice_BillDetails.sql" />
+    <Build Include="DeliveryPurchaseBill1.sql" />
+    <Build Include="DeliveryPurchaseBill2.sql" />
+    <Build Include="DeliveryPurchaseBill3.sql" />
+    <Build Include="Get_PurchaseInvoice_Color_Size.sql" />
+    <Build Include="ERROR_Log.sql" />
+    <Build Include="PostingDeliveryEntry.sql" />
+    <Build Include="Delete_PurchaseInvoice_Color_Size.sql" />
+    <Build Include="Get_Posting_Delivery_QTY.sql" />
+    <Build Include="Insert_Posting_Delivery.sql" />
+    <Build Include="ProductStockColorSizeMaster.sql" />
+    <Build Include="Get_PurchaseInvoice_BulkPrint_Color_Size.sql" />
+    <Build Include="Barcode_Sequance.sql" />
+    <Build Include="Get_PurchaseInvoice_Popup.sql" />
+    <Build Include="Insert_PurchaseInvoice_BulkPrint_Color_Size.sql" />
+    <Build Include="GetProductDetailsByBarCode.sql" />
+    <Build Include="Get_DiffPurchase_Received.sql" />
+    <Build Include="Get_Product_Master.sql" />
+    <Build Include="Get_Brand_Master.sql" />
+    <Build Include="Get_Material_Details.sql" />
+    <Build Include="Get_ProductDetails_Popup.sql" />
+    <Build Include="Get_DiffPurchase_Received_Details.sql" />
+    <Build Include="GetProductDetailsByProductName.sql" />
+    <Build Include="GetProductDetails_By_Color_Size.sql" />
+    <Build Include="View_SalesBillDetails.sql" />
+    <Build Include="tblBarCodeSettings.sql" />
+    <Build Include="View_SalesDetails.sql" />
+    <Build Include="tblFormRightDetails.sql" />
+    <Build Include="tblUserRights.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="IMS_Client_2_DB.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="IMS_Client_2_DB.refactorlog" />
+  </ItemGroup>
+</Project>

@@ -113,6 +113,7 @@
     <Build Include="View_SalesDetails.sql" />
     <Build Include="tblFormRightDetails.sql" />
     <Build Include="tblUserRights.sql" />
+    <Build Include="Get_PurchaseInvoice_BillDetails.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IMS_Client_2_DB.publish.xml" />

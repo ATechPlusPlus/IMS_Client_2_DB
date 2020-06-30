@@ -114,6 +114,7 @@
     <Build Include="tblFormRightDetails.sql" />
     <Build Include="tblUserRights.sql" />
     <Build Include="Get_PurchaseInvoice_BillDetails.sql" />
+    <Build Include="fun_ToArabicNum.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IMS_Client_2_DB.publish.xml" />

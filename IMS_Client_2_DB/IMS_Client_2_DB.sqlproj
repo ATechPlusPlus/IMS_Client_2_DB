@@ -57,69 +57,76 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="Tables" />
+    <Folder Include="Views" />
+    <Folder Include="Stores Procedures" />
+    <Folder Include="Functions" />
+    <Folder Include="Sequances" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="BackupConfig.sql" />
-    <Build Include="CompanyMaster.sql" />
-    <Build Include="Login_History.sql" />
-    <Build Include="RegistrationDetails.sql" />
-    <Build Include="UserManagement.sql" />
-    <Build Include="CategoryMaster.sql" />
-    <Build Include="CountryMaster.sql" />
-    <Build Include="SupplierMaster.sql" />
-    <Build Include="StoreMaster.sql" />
-    <Build Include="BrandMaster.sql" />
-    <Build Include="ProductMaster.sql" />
-    <Build Include="ProductStockMaster.sql" />
-    <Build Include="PurchaseInvoice.sql" />
-    <Build Include="SalesDetails.sql" />
-    <Build Include="SalesInvoiceDetails.sql" />
-    <Build Include="EmployeeDetails.sql" />
-    <Build Include="Settings.sql" />
-    <Build Include="SequenceInvoice.sql" />
-    <Build Include="PurchaseInvoiceDetails.sql" />
-    <Build Include="CurrencyRateSetting.sql" />
-    <Build Include="CustomerMaster.sql" />
-    <Build Include="Get_CurrencyRate.sql" />
-    <Build Include="ColorMaster.sql" />
-    <Build Include="SizeTypeMaster.sql" />
-    <Build Include="SizeMaster.sql" />
-    <Build Include="Get_Delivering_PurchaseInvoice_BillDetails.sql" />
-    <Build Include="DeliveryPurchaseBill1.sql" />
-    <Build Include="DeliveryPurchaseBill2.sql" />
-    <Build Include="DeliveryPurchaseBill3.sql" />
-    <Build Include="Get_PurchaseInvoice_Color_Size.sql" />
-    <Build Include="ERROR_Log.sql" />
-    <Build Include="PostingDeliveryEntry.sql" />
-    <Build Include="Delete_PurchaseInvoice_Color_Size.sql" />
-    <Build Include="Get_Posting_Delivery_QTY.sql" />
-    <Build Include="Insert_Posting_Delivery.sql" />
-    <Build Include="ProductStockColorSizeMaster.sql" />
-    <Build Include="Get_PurchaseInvoice_BulkPrint_Color_Size.sql" />
-    <Build Include="Barcode_Sequance.sql" />
-    <Build Include="Get_PurchaseInvoice_Popup.sql" />
-    <Build Include="Insert_PurchaseInvoice_BulkPrint_Color_Size.sql" />
-    <Build Include="GetProductDetailsByBarCode.sql" />
-    <Build Include="Get_DiffPurchase_Received.sql" />
-    <Build Include="Get_Product_Master.sql" />
-    <Build Include="Get_Brand_Master.sql" />
-    <Build Include="Get_Material_Details.sql" />
-    <Build Include="Get_ProductDetails_Popup.sql" />
-    <Build Include="Get_DiffPurchase_Received_Details.sql" />
-    <Build Include="GetProductDetailsByProductName.sql" />
-    <Build Include="GetProductDetails_By_Color_Size.sql" />
-    <Build Include="View_SalesBillDetails.sql" />
-    <Build Include="tblBarCodeSettings.sql" />
-    <Build Include="View_SalesDetails.sql" />
-    <Build Include="tblFormRightDetails.sql" />
-    <Build Include="tblUserRights.sql" />
-    <Build Include="Get_PurchaseInvoice_BillDetails.sql" />
-    <Build Include="fun_ToArabicNum.sql" />
+    <Build Include="Tables\BackupConfig.sql" />
+    <Build Include="Stores Procedures\Delete_PurchaseInvoice_Color_Size.sql" />
+    <Build Include="Stores Procedures\Get_CurrencyRate.sql" />
+    <Build Include="Stores Procedures\Get_Brand_Master.sql" />
+    <Build Include="Stores Procedures\Get_Delivering_PurchaseInvoice_BillDetails.sql" />
+    <Build Include="Stores Procedures\Get_DiffPurchase_Received.sql" />
+    <Build Include="Stores Procedures\Get_DiffPurchase_Received_Details.sql" />
+    <Build Include="Stores Procedures\Get_Material_Details.sql" />
+    <Build Include="Stores Procedures\Get_Posting_Delivery_QTY.sql" />
+    <Build Include="Stores Procedures\Get_Product_Master.sql" />
+    <Build Include="Stores Procedures\Get_ProductDetails_Popup.sql" />
+    <Build Include="Stores Procedures\Get_PurchaseInvoice_BillDetails.sql" />
+    <Build Include="Stores Procedures\Get_PurchaseInvoice_BulkPrint_Color_Size.sql" />
+    <Build Include="Stores Procedures\Get_PurchaseInvoice_Color_Size.sql" />
+    <Build Include="Stores Procedures\Get_PurchaseInvoice_Popup.sql" />
+    <Build Include="Stores Procedures\GetProductDetails_By_Color_Size.sql" />
+    <Build Include="Stores Procedures\GetProductDetailsByBarCode.sql" />
+    <Build Include="Stores Procedures\GetProductDetailsByProductName.sql" />
+    <Build Include="Stores Procedures\Insert_Posting_Delivery.sql" />
+    <Build Include="Stores Procedures\Insert_PurchaseInvoice_BulkPrint_Color_Size.sql" />
+    <Build Include="Functions\fun_ToArabicNum.sql" />
+    <Build Include="Views\View_SalesDetails.sql" />
+    <Build Include="Views\View_SalesBillDetails.sql" />
+    <Build Include="Sequances\SequenceInvoice.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IMS_Client_2_DB.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="IMS_Client_2_DB.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Tables\BrandMaster.sql" />
+    <Build Include="Tables\CategoryMaster.sql" />
+    <Build Include="Tables\ColorMaster.sql" />
+    <Build Include="Tables\CompanyMaster.sql" />
+    <Build Include="Tables\CountryMaster.sql" />
+    <Build Include="Tables\CurrencyRateSetting.sql" />
+    <Build Include="Tables\CustomerMaster.sql" />
+    <Build Include="Tables\DeliveryPurchaseBill1.sql" />
+    <Build Include="Tables\DeliveryPurchaseBill2.sql" />
+    <Build Include="Tables\DeliveryPurchaseBill3.sql" />
+    <Build Include="Tables\EmployeeDetails.sql" />
+    <Build Include="Tables\ERROR_Log.sql" />
+    <Build Include="Tables\UserManagement.sql" />
+    <Build Include="Tables\tblUserRights.sql" />
+    <Build Include="Tables\tblFormRightDetails.sql" />
+    <Build Include="Tables\tblBarCodeSettings.sql" />
+    <Build Include="Tables\SupplierMaster.sql" />
+    <Build Include="Tables\StoreMaster.sql" />
+    <Build Include="Tables\SizeTypeMaster.sql" />
+    <Build Include="Tables\SizeMaster.sql" />
+    <Build Include="Tables\Settings.sql" />
+    <Build Include="Tables\SalesInvoiceDetails.sql" />
+    <Build Include="Tables\SalesDetails.sql" />
+    <Build Include="Tables\RegistrationDetails.sql" />
+    <Build Include="Tables\PurchaseInvoiceDetails.sql" />
+    <Build Include="Tables\PurchaseInvoice.sql" />
+    <Build Include="Tables\ProductStockMaster.sql" />
+    <Build Include="Tables\ProductStockColorSizeMaster.sql" />
+    <Build Include="Tables\ProductMaster.sql" />
+    <Build Include="Tables\Login_History.sql" />
+    <Build Include="Tables\PostingDeliveryEntry.sql" />
+    <Build Include="Sequances\Barcode_Sequance.sql" />
   </ItemGroup>
 </Project>

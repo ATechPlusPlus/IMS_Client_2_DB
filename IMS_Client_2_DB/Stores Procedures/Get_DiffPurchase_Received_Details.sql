@@ -1,6 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <12th MARCH 2020>
+-- Update date: <3rd JULY 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC Get_DiffPurchase_Received_Details 1
@@ -15,8 +16,8 @@ BEGIN
 	
 	SET @PARAMERES=@PurchaseInvoiceID
 
-	SELECT p2.ProductID,p1.SupplierBillNo,p1.BillDate,p1.SupplierID, sm.CountryID, pm.ProductName,cm.CategoryName AS [Department]
-	, p2.ModelNo,p2.Sales_Price [Sales Price],CAST((p1.LocalBillValue/p1.BillValue) AS DECIMAL(18,3)) AS [New Rate]
+	SELECT p2.ProductID,p1.SupplierBillNo,p1.BillDate,p1.SupplierID, sm.CountryID, pm.ProductName,cm.CategoryName
+	, p2.ModelNo [Style No],p2.Sales_Price [Sales Price],CAST((p1.LocalBillValue/p1.BillValue) AS DECIMAL(18,3)) AS [New Rate]
 	,p2.Rate AS [Cost Price] ,p2.QTY AS [Bill QTY]
 	,CAST((p1.LocalBillValue/p1.TotalQTY) AS DECIMAL(18,3)) AS [Local Cost]
 	,SUM(pd3.Total) AS [Receive QTY],(SUM(pd3.Total)-p2.QTY) AS [Diff QTY]

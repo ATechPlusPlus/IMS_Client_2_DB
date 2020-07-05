@@ -6,16 +6,19 @@
 --EXEC Get_Product_Master '0'
 --EXEC Get_Product_Master 'b'
 CREATE PROCEDURE [dbo].[Get_Product_Master]
-@ProductName NVARCHAR(100)='0'
+@ProductName NVARCHAR(100)='0',
+@CategoryId NVARCHAR(100)='0'
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	BEGIN TRY
 	DECLARE @PARAMERES VARCHAR(MAX)=''
+	DECLARE @PARAMERES2 VARCHAR(MAX)=''
 	SET @PARAMERES=@ProductName
+	SET @PARAMERES2=@CategoryId
 
 	SET NOCOUNT ON;
-	IF @ProductName = '0'
+	IF @ProductName = '0' and @CategoryId = '0'
 	BEGIN
 
 	SELECT pm.ProductID,pm.ProductName AS [ItemName],pm.CategoryID,cm.CategoryName AS [Department],Photo
@@ -32,7 +35,7 @@ BEGIN
 	,(CASE WHEN pm.ActiveStatus =1 THEN 'Active' WHEN pm.ActiveStatus =0 THEN 'InActive' END)ActiveStatus
 	FROM ProductMaster pm
 	INNER JOIN CategoryMaster cm ON pm.CategoryID = cm.CategoryID
-	WHERE pm.ProductName LIKE ''+@ProductName+'%'
+	WHERE pm.ProductName LIKE ''+@ProductName+'%' or pm.CategoryID = @CategoryId
 
 	END
 	

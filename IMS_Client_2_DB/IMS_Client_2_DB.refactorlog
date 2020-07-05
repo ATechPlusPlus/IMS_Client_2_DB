@@ -140,4 +140,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="FormID" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="57bdf9f5-bcf4-42a1-8914-9a978d383cf4" ChangeDateTime="07/04/2020 11:04:16">
+    <Property Name="ElementName" Value="[dbo].[DefaultStoreSetting].[ImageSetting]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[DefaultStoreSetting]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ImagePath" />
+  </Operation>
 </Operations>

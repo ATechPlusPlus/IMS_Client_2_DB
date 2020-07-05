@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <12th MARCH 2020>
--- Update date:	<1st JULY 2020>
+-- Update date:	<5th JULY 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC Get_Material_Details NULL,NULL,NULL,NULL
@@ -32,9 +32,9 @@ BEGIN
 	LEFT OUTER JOIN SizeMaster s1 ON ps.SizeID = s1.SizeID
 	LEFT OUTER JOIN SizeTypeMaster st ON s1.SizeTypeID = st.SizeTypeID
 	WHERE pm.ProductID = ISNULL(@ProductID,pm.ProductID) 
-	AND ps.StoreID = ISNULL(@StoreID,ps.StoreID)
+	AND ISNULL(ps.StoreID,0) = ISNULL(@StoreID,ISNULL(ps.StoreID,0))
 	AND ISNULL(ps.BarcodeNo,0) = ISNULL(@BarcodeNo,ISNULL(ps.BarcodeNo,0))
-	AND ps.ColorID = ISNULL(@ColorID,ps.ColorID)
+	AND ISNULL(ps.ColorID,0) = ISNULL(@ColorID,ISNULL(ps.ColorID,0))
 	ORDER BY pm.ProductID,ps.StoreID,s1.SizeTypeID,ps.ColorID
 	END
 

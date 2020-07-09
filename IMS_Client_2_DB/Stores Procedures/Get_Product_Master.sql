@@ -13,9 +13,8 @@ BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	BEGIN TRY
 	DECLARE @PARAMERES VARCHAR(MAX)=''
-	DECLARE @PARAMERES2 VARCHAR(MAX)=''
-	SET @PARAMERES=@ProductName
-	SET @PARAMERES2=@CategoryId
+	SET @PARAMERES = concat(@ProductName,@CategoryId) 
+	--SET @PARAMERES=@ProductName
 
 	SET NOCOUNT ON;
 	IF @ProductName = '0' and @CategoryId = '0'

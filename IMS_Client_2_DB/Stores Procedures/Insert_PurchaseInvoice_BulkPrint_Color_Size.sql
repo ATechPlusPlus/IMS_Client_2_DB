@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <08th MARCH 2020>
--- Description:	<Description,,>
+-- Description:	<When User is posting purchase invoice then Inserted into Productstock color size master table>
 -- =============================================
 -- EXEC [dbo].[Insert_PurchaseInvoice_BulkPrint_Color_Size] 1,1,100,1,'purinv01',0
 CREATE PROCEDURE [dbo].[Insert_PurchaseInvoice_BulkPrint_Color_Size]

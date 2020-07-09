@@ -89,6 +89,7 @@
     <Build Include="Views\View_SalesBillDetails.sql" />
     <Build Include="Sequances\SequenceInvoice.sql" />
     <Build Include="Stores Procedures\sp_DetailPurchaseInvoiceReport.sql" />
+    <Build Include="Stores Procedures\SPR_Delete_PurchaseInvoice.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IMS_Client_2_DB.publish.xml" />

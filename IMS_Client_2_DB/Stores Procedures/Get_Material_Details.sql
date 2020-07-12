@@ -23,7 +23,7 @@ BEGIN
 	BEGIN
 
 	SELECT pm.ProductID,pm.ProductName,ps.BarcodeNo,pm.CategoryID,cm.CategoryName [Category]
-	,ps.StoreID,sm.StoreName,s1.SizeTypeID,c1.ColorName,ps.SizeID,s1.Size,ISNULL(ps.QTY, 0)QTY
+	,ps.StoreID,sm.StoreName,s1.SizeTypeID,c1.ColorName,ps.SizeID,s1.Size,ISNULL(ps.QTY, 0)QTY,c1.ColorID
 	FROM ProductMaster pm
 	LEFT OUTER JOIN ProductStockColorSizeMaster ps ON pm.ProductID = ps.ProductID
 	LEFT OUTER JOIN CategoryMaster cm ON pm.CategoryID = cm.CategoryID
@@ -41,7 +41,7 @@ BEGIN
 	ELSE
 	BEGIN
 	SELECT TOP 100 pm.ProductID,pm.ProductName,ps.BarcodeNo,pm.CategoryID,cm.CategoryName [Category]
-	,ps.StoreID,sm.StoreName,s1.SizeTypeID,c1.ColorName,ps.SizeID,s1.Size,ISNULL(ps.QTY, 0)QTY
+	,ps.StoreID,sm.StoreName,s1.SizeTypeID,c1.ColorName,ps.SizeID,s1.Size,ISNULL(ps.QTY, 0)QTY,c1.ColorID
 	FROM ProductMaster pm
 	LEFT OUTER JOIN [dbo].[ProductStockColorSizeMaster] ps ON pm.ProductID = ps.ProductID
 	LEFT OUTER JOIN CategoryMaster cm ON pm.CategoryID = cm.CategoryID

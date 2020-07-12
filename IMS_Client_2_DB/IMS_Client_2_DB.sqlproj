@@ -89,6 +89,12 @@
     <Build Include="Views\View_SalesBillDetails.sql" />
     <Build Include="Sequances\SequenceInvoice.sql" />
     <Build Include="Stores Procedures\sp_DetailPurchaseInvoiceReport.sql" />
+    <Build Include="Tables\tblReplaceReturn.sql" />
+    <Build Include="Stores Procedures\sp_GetReplaceReturnDetails.sql" />
+    <Build Include="Tables\tblMasterCashClosing.sql" />
+    <Build Include="Tables\tblCashClosing.sql" />
+    <Build Include="Tables\tblCreditClosing.sql" />
+    <Build Include="Tables\tblCashReturn.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IMS_Client_2_DB.publish.xml" />

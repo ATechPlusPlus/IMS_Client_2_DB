@@ -96,6 +96,9 @@
     <Build Include="Tables\tblCreditClosing.sql" />
     <Build Include="Tables\tblCashReturn.sql" />
     <Build Include="Stores Procedures\SPR_Delete_PurchaseInvoice.sql" />
+    <Build Include="Stores Procedures\SPR_Get_CashBand_Master.sql" />
+    <Build Include="Stores Procedures\SPR_Get_StyleNo_Popup.sql" />
+    <Build Include="Tables\tblCloseCashBandMaster.sql" />
     <Build Include="Sequances\Seq_CashNumber.sql" />
   </ItemGroup>
   <ItemGroup>

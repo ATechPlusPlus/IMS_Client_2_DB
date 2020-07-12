@@ -6,9 +6,9 @@
 	[StoreCategory] [int] NULL,
 	[BarCodeSetting] [nvarchar](max) NULL,
 	[InvoiceFooterNote] [nvarchar](max) NULL,
-    [CreatedBy] INT NOT NULL CONSTRAINT [DF_DefaultStoreSetting_CreatedBy]  DEFAULT ((0)),
-    [CreatedOn] DATETIME NOT NULL CONSTRAINT [DF_DefaultStoreSetting_CreatedOn]  DEFAULT (getdate()), 
-    [UserArabicNumbers] BIT NULL, 
+	[UserArabicNumbers] BIT NULL DEFAULT 0, 
     [ImagePath] NVARCHAR(50) NULL, 
-    [Extension] NVARCHAR(50) NULL 
+    [Extension] NVARCHAR(50) NULL,
+    [CreatedBy] INT NOT NULL CONSTRAINT [DF_DefaultStoreSetting_CreatedBy]  DEFAULT ((0)),
+    [CreatedOn] DATETIME NOT NULL CONSTRAINT [DF_DefaultStoreSetting_CreatedOn]  DEFAULT (getdate())
 )

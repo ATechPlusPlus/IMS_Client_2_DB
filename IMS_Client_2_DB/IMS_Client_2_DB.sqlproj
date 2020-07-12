@@ -128,7 +128,6 @@
     <Build Include="Tables\StoreMaster.sql" />
     <Build Include="Tables\SizeTypeMaster.sql" />
     <Build Include="Tables\SizeMaster.sql" />
-    <Build Include="Tables\Settings.sql" />
     <Build Include="Tables\SalesInvoiceDetails.sql" />
     <Build Include="Tables\SalesDetails.sql" />
     <Build Include="Tables\RegistrationDetails.sql" />

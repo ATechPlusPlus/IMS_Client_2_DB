@@ -11,6 +11,6 @@
     [Extension] NVARCHAR(50) NULL,
     [CreatedBy] INT NOT NULL CONSTRAINT [DF_DefaultStoreSetting_CreatedBy]  DEFAULT ((0)),
     [CreatedOn] DATETIME NOT NULL CONSTRAINT [DF_DefaultStoreSetting_CreatedOn]  DEFAULT (getdate()), 
-    [ModifiedBy] INT NULL, 
-    [ModifiedOn] DATETIME NULL
+	[UpdatedBy] [int] NULL,
+	[UpdatedOn] [datetime] NULL
 )

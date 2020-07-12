@@ -1,19 +1,21 @@
 ﻿CREATE TABLE [dbo].[tblReplaceReturn](
 	[ReturnReplaceID] [int] IDENTITY(1,1) NOT NULL,
-	[ProductID] [int] NULL,
-	[BarCode] [nvarchar](50) NULL,
-	[ColorID] [int] NULL,
-	[SizeID] [int] NULL,
-	[QTY] [int] NULL,
-	[Rate] [decimal](18, 0) NULL,
-	[AddedOn] [datetime] NULL,
-	[AddedBy] [int] NULL,
-	[LastModifiedOn] [datetime] NULL,
-	[LastModifiedBy] [int] NULL,
- [OldInvoiceID] INT NULL, 
+	[ProductID] [int] NOT NULL,
+	[BarCode] [nvarchar](50) NOT NULL,
+	[ColorID] [int] NOT NULL,
+	[SizeID] [int] NOT NULL,
+	[QTY] [int] NOT NULL,
+	[Rate] [decimal](18, 3) NOT NULL,
+	[OldInvoiceID] INT NULL, 
     [NewInvoiceID] INT NULL, 
+	[CreatedBy] [int] NOT NULL CONSTRAINT [DF_tblReplaceReturn_CreatedBy]  DEFAULT ((0)),
+	[CreatedOn] [datetime] NOT NULL CONSTRAINT [DF_tblReplaceReturn_CreatedOn]  DEFAULT (getdate()),
+	[UpdatedBy] [int] NULL,
+	[UpdatedOn] [datetime] NULL
     CONSTRAINT [PK_tblReplaceReturn] PRIMARY KEY CLUSTERED 
 (
 	[ReturnReplaceID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
+
+GO

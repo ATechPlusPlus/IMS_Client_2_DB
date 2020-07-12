@@ -1,12 +1,17 @@
-﻿CREATE TABLE [dbo].[tblCashClosing]
+﻿CREATE TABLE [dbo].[tblCashClosing](
+	[CashClosingID] [int] IDENTITY(1,1) NOT NULL,
+	[MasterCashClosingID] [int] NOT NULL,
+	[CashBandID] [int]  NOT NULL,
+	[Count] [int] NOT NULL,
+	[Value] [decimal](18, 3) NOT NULL,
+	[CreatedBy] [int] NOT NULL CONSTRAINT [DF_tblCashClosing_CreatedBy]  DEFAULT ((0)),
+	[CreatedOn] [datetime] NOT NULL CONSTRAINT [DF_tblCashClosing_CreatedOn]  DEFAULT (getdate()),
+	[UpdatedBy] [int] NULL,
+	[UpdatedOn] [datetime] NULL
+PRIMARY KEY CLUSTERED 
 (
-	[CashClosingID] INT NOT NULL PRIMARY KEY IDENTITY, 
-    [MasterCashClosingID] INT NULL, 
-    [CashBand] NVARCHAR(50) NULL, 
-    [Count] INT NULL, 
-    [Value] DECIMAL(18, 3) NULL, 
-    [CreatedOn] DATETIME NULL, 
-    [CreatedBy] INT NULL, 
-    [ModifiedOn] DATETIME NULL, 
-    [ModifiedBy] INT NULL
-)
+	[CashClosingID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO

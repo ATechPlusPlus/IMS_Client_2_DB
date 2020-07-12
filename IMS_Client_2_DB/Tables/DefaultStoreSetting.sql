@@ -10,5 +10,7 @@
     [ImagePath] NVARCHAR(50) NULL, 
     [Extension] NVARCHAR(50) NULL,
     [CreatedBy] INT NOT NULL CONSTRAINT [DF_DefaultStoreSetting_CreatedBy]  DEFAULT ((0)),
-    [CreatedOn] DATETIME NOT NULL CONSTRAINT [DF_DefaultStoreSetting_CreatedOn]  DEFAULT (getdate())
+    [CreatedOn] DATETIME NOT NULL CONSTRAINT [DF_DefaultStoreSetting_CreatedOn]  DEFAULT (getdate()), 
+    [ModifiedBy] INT NULL, 
+    [ModifiedOn] DATETIME NULL
 )

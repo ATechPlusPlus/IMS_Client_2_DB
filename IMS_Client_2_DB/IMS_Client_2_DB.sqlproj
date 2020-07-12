@@ -95,6 +95,7 @@
     <Build Include="Tables\tblCashClosing.sql" />
     <Build Include="Tables\tblCreditClosing.sql" />
     <Build Include="Tables\tblCashReturn.sql" />
+    <Build Include="Stores Procedures\SPR_Delete_PurchaseInvoice.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IMS_Client_2_DB.publish.xml" />

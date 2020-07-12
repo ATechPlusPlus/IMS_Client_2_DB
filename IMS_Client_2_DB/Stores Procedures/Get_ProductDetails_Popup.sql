@@ -1,10 +1,11 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <12th MARCH 2020>
+-- Update date: <07th JULY 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC Get_ProductDetails_Popup 'bag'
-CREATE PROCEDURE Get_ProductDetails_Popup
+CREATE PROCEDURE [dbo].[Get_ProductDetails_Popup]
 @ProductName NVARCHAR(100)=''
 AS
 BEGIN
@@ -16,7 +17,7 @@ BEGIN
 	DECLARE @PARAMERES VARCHAR(MAX)=''
 	SET @PARAMERES=@ProductName
 
-	SELECT pm.ProductID,pm.ProductName,pm.CategoryID,cm.CategoryName AS [Department]
+	SELECT pm.ProductID,pm.ProductName,pm.CategoryID,cm.CategoryName
 	FROM ProductMaster pm
 	LEFT OUTER JOIN CategoryMaster cm ON pm.CategoryID = cm.CategoryID
 	WHERE ISNULL(pm.ActiveStatus,1) = 1

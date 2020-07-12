@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <12th MARCH 2020>
--- Update date:	<1st JULY 2020>
+-- Update date:	<7th JULY 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC Get_Material_Details NULL,NULL,NULL,NULL
@@ -25,17 +25,31 @@ BEGIN
 	SELECT pm.ProductID,pm.ProductName,ps.BarcodeNo,pm.CategoryID,cm.CategoryName [Category]
 	,ps.StoreID,sm.StoreName,s1.SizeTypeID,c1.ColorName,ps.SizeID,s1.Size,ISNULL(ps.QTY, 0)QTY,c1.ColorID
 	FROM ProductMaster pm
-	LEFT OUTER JOIN ProductStockColorSizeMaster ps ON pm.ProductID = ps.ProductID
-	LEFT OUTER JOIN CategoryMaster cm ON pm.CategoryID = cm.CategoryID
-	LEFT OUTER JOIN StoreMaster sm ON ps.StoreID = sm.StoreID
-	LEFT OUTER JOIN ColorMaster c1 ON ps.ColorID = c1.ColorID
-	LEFT OUTER JOIN SizeMaster s1 ON ps.SizeID = s1.SizeID
-	LEFT OUTER JOIN SizeTypeMaster st ON s1.SizeTypeID = st.SizeTypeID
+	INNER JOIN ProductStockColorSizeMaster ps ON pm.ProductID = ps.ProductID
+	INNER JOIN CategoryMaster cm ON pm.CategoryID = cm.CategoryID
+	INNER JOIN StoreMaster sm ON ps.StoreID = sm.StoreID
+	INNER JOIN ColorMaster c1 ON ps.ColorID = c1.ColorID
+	INNER JOIN SizeMaster s1 ON ps.SizeID = s1.SizeID
+	INNER JOIN SizeTypeMaster st ON s1.SizeTypeID = st.SizeTypeID
 	WHERE pm.ProductID = ISNULL(@ProductID,pm.ProductID) 
 	AND ps.StoreID = ISNULL(@StoreID,ps.StoreID)
 	AND ISNULL(ps.BarcodeNo,0) = ISNULL(@BarcodeNo,ISNULL(ps.BarcodeNo,0))
 	AND ps.ColorID = ISNULL(@ColorID,ps.ColorID)
 	ORDER BY pm.ProductID,ps.StoreID,s1.SizeTypeID,ps.ColorID
+	--SELECT pm.ProductID,pm.ProductName,ps.BarcodeNo,pm.CategoryID,cm.CategoryName [Category]
+	--,ps.StoreID,sm.StoreName,s1.SizeTypeID,c1.ColorName,ps.SizeID,s1.Size,ISNULL(ps.QTY, 0)QTY
+	--FROM ProductMaster pm
+	--LEFT OUTER JOIN ProductStockColorSizeMaster ps ON pm.ProductID = ps.ProductID
+	--LEFT OUTER JOIN CategoryMaster cm ON pm.CategoryID = cm.CategoryID
+	--LEFT OUTER JOIN StoreMaster sm ON ps.StoreID = sm.StoreID
+	--LEFT OUTER JOIN ColorMaster c1 ON ps.ColorID = c1.ColorID
+	--LEFT OUTER JOIN SizeMaster s1 ON ps.SizeID = s1.SizeID
+	--LEFT OUTER JOIN SizeTypeMaster st ON s1.SizeTypeID = st.SizeTypeID
+	--WHERE pm.ProductID = ISNULL(@ProductID,pm.ProductID) 
+	--AND ISNULL(ps.StoreID,0) = ISNULL(@StoreID,ISNULL(ps.StoreID,0))
+	--AND ISNULL(ps.BarcodeNo,0) = ISNULL(@BarcodeNo,ISNULL(ps.BarcodeNo,0))
+	--AND ISNULL(ps.ColorID,0) = ISNULL(@ColorID,ISNULL(ps.ColorID,0))
+	--ORDER BY pm.ProductID,ps.StoreID,s1.SizeTypeID,ps.ColorID
 	END
 
 	ELSE
@@ -43,12 +57,12 @@ BEGIN
 	SELECT TOP 100 pm.ProductID,pm.ProductName,ps.BarcodeNo,pm.CategoryID,cm.CategoryName [Category]
 	,ps.StoreID,sm.StoreName,s1.SizeTypeID,c1.ColorName,ps.SizeID,s1.Size,ISNULL(ps.QTY, 0)QTY,c1.ColorID
 	FROM ProductMaster pm
-	LEFT OUTER JOIN [dbo].[ProductStockColorSizeMaster] ps ON pm.ProductID = ps.ProductID
-	LEFT OUTER JOIN CategoryMaster cm ON pm.CategoryID = cm.CategoryID
-	LEFT OUTER JOIN StoreMaster sm ON ps.StoreID = sm.StoreID
-	LEFT OUTER JOIN ColorMaster c1 ON ps.ColorID = c1.ColorID
-	LEFT OUTER JOIN SizeMaster s1 ON ps.SizeID = s1.SizeID
-	LEFT OUTER JOIN SizeTypeMaster st ON s1.SizeTypeID = st.SizeTypeID
+	INNER JOIN [dbo].[ProductStockColorSizeMaster] ps ON pm.ProductID = ps.ProductID
+	INNER JOIN CategoryMaster cm ON pm.CategoryID = cm.CategoryID
+	INNER JOIN StoreMaster sm ON ps.StoreID = sm.StoreID
+	INNER JOIN ColorMaster c1 ON ps.ColorID = c1.ColorID
+	INNER JOIN SizeMaster s1 ON ps.SizeID = s1.SizeID
+	INNER JOIN SizeTypeMaster st ON s1.SizeTypeID = st.SizeTypeID
 	--WHERE pm.ProductID = @ProductID AND ps.StoreID = ISNULL(@StoreID,ps.StoreID)
 	ORDER BY pm.ProductID,ps.StoreID,s1.SizeTypeID,ps.ColorID
 	END

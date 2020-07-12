@@ -1,6 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <15th MARCH 2020>
+-- Update date: <07th July 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC Get_PurchaseInvoice_BillDetails 2
@@ -14,7 +15,8 @@ BEGIN
 	DECLARE @PARAMERES VARCHAR(MAX)=''
 	SET @PARAMERES=@PurchaseInvoiceID
 
-	SELECT p1.PurchaseInvoiceID,ISNULL(p2.ProductID,0)ProductID,pm.ProductName,p2.ModelNo,p2.BrandID,bm.BrandName,p2.QTY,p2.Rate
+	SELECT p1.PurchaseInvoiceID,ISNULL(p2.PurchaseInvoiceDetailsID,0)PurchaseInvoiceDetailsID
+	,ISNULL(p2.ProductID,0)ProductID,pm.ProductName,p2.ModelNo,p2.BrandID,bm.BrandName,p2.QTY,p2.Rate
 	,CAST(p2.QTY * p2.Rate AS	decimal(18,2)) [Total]
 	,CAST(p1.LocalBillValue/p1.TotalQTY AS decimal(18,2)) [LocalCost],p2.AddedRatio,p2.SuppossedPrice
 	,p2.Sales_Price [EndUser],p1.SupplierID,p1.BillDate,p1.BillValue

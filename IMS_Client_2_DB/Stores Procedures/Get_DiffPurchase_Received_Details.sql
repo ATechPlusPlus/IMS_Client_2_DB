@@ -1,11 +1,11 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <12th MARCH 2020>
--- Update date: <3rd JULY 2020>
+-- Update date: <7th JULY 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC Get_DiffPurchase_Received_Details 1
-CREATE PROCEDURE Get_DiffPurchase_Received_Details
+CREATE PROCEDURE [dbo].[Get_DiffPurchase_Received_Details]
 @PurchaseInvoiceID INT=0
 AS
 BEGIN
@@ -16,7 +16,7 @@ BEGIN
 	
 	SET @PARAMERES=@PurchaseInvoiceID
 
-	SELECT p2.ProductID,p1.SupplierBillNo,p1.BillDate,p1.SupplierID, sm.CountryID, pm.ProductName,cm.CategoryName
+	SELECT p2.ProductID,p1.SupplierBillNo,p1.BillDate,p1.SupplierID, sm.CountryID, pm.ProductName,pm.Photo,cm.CategoryName
 	, p2.ModelNo [Style No],p2.Sales_Price [Sales Price],CAST((p1.LocalBillValue/p1.BillValue) AS DECIMAL(18,3)) AS [New Rate]
 	,p2.Rate AS [Cost Price] ,p2.QTY AS [Bill QTY]
 	,CAST((p1.LocalBillValue/p1.TotalQTY) AS DECIMAL(18,3)) AS [Local Cost]
@@ -31,7 +31,7 @@ BEGIN
 	INNER JOIN DeliveryPurchaseBill3 pd3 ON pd2.DeliveryPurchaseID2=pd3.DeliveryPurchaseID2
 	INNER JOIN SupplierMaster sm ON p1.SupplierID=sm.SupplierID
 	WHERE p1.PurchaseInvoiceID=@PurchaseInvoiceID
-	GROUP BY p2.ProductID,pm.ProductName,p2.ModelNo, pd1.ModelNo
+	GROUP BY p2.ProductID,pm.ProductName,pm.Photo,p2.ModelNo, pd1.ModelNo
 	,p2.Sales_Price ,p2.Rate,p2.QTY,cm.CategoryName,p1.LocalBillValue,p1.TotalQTY
 	,p1.SupplierBillNo,p1.SupplierID,sm.CountryID,p1.BillValue,p1.BillDate
 

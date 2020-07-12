@@ -10,7 +10,9 @@
 	[AddedBy] [int] NULL,
 	[LastModifiedOn] [datetime] NULL,
 	[LastModifiedBy] [int] NULL,
- CONSTRAINT [PK_tblReplaceReturn] PRIMARY KEY CLUSTERED 
+ [OldInvoiceID] INT NULL, 
+    [NewInvoiceID] INT NULL, 
+    CONSTRAINT [PK_tblReplaceReturn] PRIMARY KEY CLUSTERED 
 (
 	[ReturnReplaceID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]

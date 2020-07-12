@@ -99,6 +99,8 @@
     <Build Include="Stores Procedures\SPR_Get_CashBand_Master.sql" />
     <Build Include="Stores Procedures\SPR_Get_StyleNo_Popup.sql" />
     <Build Include="Tables\tblCloseCashBandMaster.sql" />
+    <Build Include="Sequances\Seq_CashNumber.sql" />
+    <Build Include="Tables\DefaultStoreSetting.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IMS_Client_2_DB.publish.xml" />

@@ -210,4 +210,67 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="ModifiedBy" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="85cdbb6d-ab07-44ef-a0ad-2eb18ca904e5" ChangeDateTime="07/12/2020 12:19:31">
+    <Property Name="ElementName" Value="[dbo].[tblMasterCashClosing].[AddedOn]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[tblMasterCashClosing]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CreatedOn" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="50d60a66-7db8-4655-88ad-1eaed4c06c44" ChangeDateTime="07/12/2020 12:19:35">
+    <Property Name="ElementName" Value="[dbo].[tblMasterCashClosing].[AddedBy]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[tblMasterCashClosing]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CreatedBy" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="47fb94b4-9d70-4cac-9d7b-73117931415f" ChangeDateTime="07/12/2020 12:19:49">
+    <Property Name="ElementName" Value="[dbo].[tblCashClosing].[AddedOn]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[tblCashClosing]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CreatedOn" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="efa5489d-3697-447a-a3f3-19bded678587" ChangeDateTime="07/12/2020 12:19:52">
+    <Property Name="ElementName" Value="[dbo].[tblCashClosing].[AddedBy]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[tblCashClosing]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CreatedBy" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="b60600d9-45e8-4287-a21b-3fdfbeb3d0b9" ChangeDateTime="07/12/2020 12:20:12">
+    <Property Name="ElementName" Value="[dbo].[tblCreditClosing].[AddedOn]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[tblCreditClosing]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CreatedOn" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="afbeea30-33be-4000-9340-4621cf141999" ChangeDateTime="07/12/2020 12:20:15">
+    <Property Name="ElementName" Value="[dbo].[tblCreditClosing].[AddedBy]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[tblCreditClosing]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CreatedBy" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="1e9e55b6-f31d-41cf-b607-18f513428d63" ChangeDateTime="07/12/2020 12:20:28">
+    <Property Name="ElementName" Value="[dbo].[tblCashReturn].[AddedOn]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[tblCashReturn]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CreatedOn" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c811d571-6a41-4a9b-b0e1-ca51a9f1c75d" ChangeDateTime="07/12/2020 12:20:33">
+    <Property Name="ElementName" Value="[dbo].[tblCashReturn].[AddedBy]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[tblCashReturn]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CreatedBy" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c89543dc-ce33-43d6-b2d1-d83f9b1660f5" ChangeDateTime="07/12/2020 12:30:17">
+    <Property Name="ElementName" Value="[dbo].[DefaultStoreSetting].[ModifiedOn]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[DefaultStoreSetting]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ModifiedBy" />
+  </Operation>
 </Operations>

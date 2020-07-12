@@ -4,9 +4,9 @@
     [MasterCashClosingID] INT NULL, 
     [Type] NVARCHAR(50) NULL, 
     [Count] INT NULL, 
-    [Value] DECIMAL NULL, 
-    [AddedOn] INT NULL, 
-    [AddedBy] DATETIME NULL, 
+    [Value] DECIMAL(18, 3) NULL, 
+    [CreatedOn] INT NULL, 
+    [CreatedBy] DATETIME NULL, 
     [ModifiedOn] INT NULL, 
     [ModifiedBy] DATETIME NULL
 )

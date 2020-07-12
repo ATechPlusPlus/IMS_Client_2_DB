@@ -2,6 +2,7 @@
 	[MasterCashClosingID] [int] IDENTITY(1,1) NOT NULL,
 	[CashNo] [nvarchar](50) NOT NULL,
 	[CashBoxDateTime] [datetime] NULL,
+	   [StoreID] INT NULL,
 	[EmployeeID] [int] NOT NULL,
 	[TotalCashValue] [decimal](18, 3) NULL,
 	[RoundBalance] [decimal](18, 3) NULL,
@@ -13,7 +14,8 @@
  CONSTRAINT [PK__tblMasterCashClosing] PRIMARY KEY CLUSTERED 
 (
 	[MasterCashClosingID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY], 
+ 
 ) ON [PRIMARY]
 
 GO

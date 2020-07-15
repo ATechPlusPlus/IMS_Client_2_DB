@@ -1,10 +1,12 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <12th JULY 2020>
+-- Update date: <13th JULY 2020>
 -- Description:	<Description,,>
 -- =============================================
---EXEC SPR_Get_CashBand_Master
+--EXEC SPR_Get_CashBand_Master 1
 CREATE PROCEDURE [dbo].[SPR_Get_CashBand_Master]
+@Status INT=0
 
 AS
 BEGIN
@@ -15,11 +17,27 @@ BEGIN
 
 	SET NOCOUNT ON;
 	
-
+	IF @Status = 0
+	
+	BEGIN
 	SELECT cb.CashBandID,cb.CashBand,
 	(CASE WHEN cb.ActiveStatus =1 THEN 'Active' WHEN cb.ActiveStatus =0 THEN 'InActive' END)ActiveStatus
 	FROM tblCloseCashBandMaster cb
 	ORDER BY cb.CashBand
+	
+	END
+
+	ELSE
+	
+	BEGIN
+
+	SELECT cb.CashBandID,cb.CashBand
+	,CONCAT('X ',cb.CashBand) [CashBandValue],'' [Count],''[Value]
+	FROM tblCloseCashBandMaster cb
+	WHERE cb.ActiveStatus = 1
+	ORDER BY cb.CashBand
+
+	END
 	
 	END TRY
 

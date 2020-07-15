@@ -101,6 +101,10 @@
     <Build Include="Tables\tblCloseCashBandMaster.sql" />
     <Build Include="Sequances\Seq_CashNumber.sql" />
     <Build Include="Tables\DefaultStoreSetting.sql" />
+    <Build Include="Tables\tblStoreUserRights.sql" />
+    <Build Include="Sequances\Seq_StoreTransferBill.sql" />
+    <Build Include="Tables\tblStoreTransferBillDetails.sql" />
+    <Build Include="Tables\tblStoreTransferItemDetails.sql" />
     <Build Include="Stores Procedures\SPR_Get_CashClosing_Details.sql" />
     <Build Include="Stores Procedures\SPR_Insert_CloseCash.sql" />
   </ItemGroup>

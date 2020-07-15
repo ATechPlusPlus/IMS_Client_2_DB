@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[tblMasterCashClosing](
 	[MasterCashClosingID] [int] IDENTITY(1,1) NOT NULL,
 	[CashNo] [nvarchar](50) NOT NULL,
-	[CashBoxDateTime] [datetime] NULL,
+	[CashBoxDate] DATE NULL,
 	   [StoreID] INT NULL,
 	[EmployeeID] [int] NOT NULL,
 	[TotalCashValue] [decimal](18, 3) NULL,

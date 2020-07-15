@@ -1,26 +1,27 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
--- Create date: <12th JULY 2020>
--- Update date: <14th JULY 2020>
+-- Create date: <14th JULY 2020>
+-- Update date: <>
 -- Description:	<Description,,>
 -- =============================================
---EXEC SPR_Get_CashBand_Master
-CREATE PROCEDURE [dbo].[SPR_Get_CashBand_Master]
+--EXEC [dbo].[SPR_Insert_CloseCash] 0,0,0,0,0
+CREATE PROCEDURE [dbo].[SPR_Insert_CloseCash]
+@MasterCashClosingID INT=0
+,@CashBandID INT=0
+,@Count INT=0
+,@Value decimal(18,3)=0
+,@CreatedBy INT=0
 
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
 	BEGIN TRY
 	DECLARE @PARAMERES VARCHAR(MAX)=''
-	--SET @PARAMERES=@BrandName
+	SET @PARAMERES=CONCAT(@MasterCashClosingID,',',@CashBandID,',',@Count,',',@Count,',',@Value,',',@CreatedBy)
 
-	SET NOCOUNT ON;
-	
-	SELECT cb.CashBandID,cb.CashBand,
-	(CASE WHEN cb.ActiveStatus =1 THEN 'Active' WHEN cb.ActiveStatus =0 THEN 'InActive' END)ActiveStatus
-	FROM tblCloseCashBandMaster cb
-	ORDER BY cb.CashBand
-	
 	END TRY
 
 	BEGIN CATCH
@@ -44,4 +45,5 @@ BEGIN
 	,@PARAMERES
 	
 	END CATCH
+
 END

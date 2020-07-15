@@ -273,4 +273,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="ModifiedBy" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="40cb5a55-5b62-4b88-b2dd-e3ccc7f42ba0" ChangeDateTime="07/15/2020 08:21:01">
+    <Property Name="ElementName" Value="[dbo].[tblMasterCashClosing].[CashBoxDateTime]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[tblMasterCashClosing]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CashBoxDate" />
+  </Operation>
 </Operations>

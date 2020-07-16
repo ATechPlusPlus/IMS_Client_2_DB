@@ -1,10 +1,10 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <12th MARCH 2020>
--- Update date:	<11th JULY 2020>
+-- Update date:	<16th JULY 2020>
 -- Description:	<Description,,>
 -- =============================================
---EXEC Get_Material_Details 1,NULL,NULL,NULL,NULL
+--EXEC Get_Material_Details NULL,NULL,NULL,NULL,NULL
 CREATE PROCEDURE [dbo].[Get_Material_Details]
 @ProductID INT=0
 ,@StoreID INT=0
@@ -23,10 +23,11 @@ BEGIN
 	IF @ProductID > 0 OR @StoreID > 0 OR @BarcodeNo > 0 OR @ColorID > 0 OR @ModelNo!='0'
 	BEGIN
 
-	SELECT pm.ProductID,pm.ProductName [Item],pid1.ModelNo,pm.Rate [Sales Price],pm.Photo,ps.BarcodeNo,pm.CategoryID,cm.CategoryName [Category]
+	SELECT pm.ProductID,pm.ProductName [Item],pm.Rate [Sales Price],pm.Photo,ps.BarcodeNo
+	,pm.CategoryID,cm.CategoryName [Category]
 	,ps.StoreID,sm.StoreName [Store],s1.SizeTypeID,c1.ColorName [Color],ps.SizeID,s1.Size,ps.QTY
 	FROM ProductMaster pm
-	INNER JOIN DeliveryPurchaseBill1 pid1 ON pm.ProductID=pid1.ProductID
+	--INNER JOIN DeliveryPurchaseBill1 pid1 ON pm.ProductID=pid1.ProductID
 	INNER JOIN ProductStockColorSizeMaster ps ON pm.ProductID = ps.ProductID
 	INNER JOIN CategoryMaster cm ON pm.CategoryID = cm.CategoryID
 	INNER JOIN StoreMaster sm ON ps.StoreID = sm.StoreID
@@ -38,7 +39,7 @@ BEGIN
 	AND ps.StoreID = ISNULL(@StoreID,ps.StoreID)
 	AND ISNULL(ps.BarcodeNo,0) = ISNULL(@BarcodeNo,ISNULL(ps.BarcodeNo,0))
 	AND ps.ColorID = ISNULL(@ColorID,ps.ColorID)
-	AND ISNULL(pid1.ModelNo,0) = ISNULL(@ModelNo,pid1.ModelNo)
+	--AND ISNULL(pid1.ModelNo,0) = ISNULL(@ModelNo,pid1.ModelNo)
 	ORDER BY pm.ProductID,ps.StoreID,s1.SizeTypeID,ps.ColorID
 
 	--SELECT pm.ProductID,pm.ProductName,ps.BarcodeNo,pm.CategoryID,cm.CategoryName [Category]

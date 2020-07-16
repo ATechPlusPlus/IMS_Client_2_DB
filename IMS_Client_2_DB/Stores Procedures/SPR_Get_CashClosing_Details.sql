@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <13th JULY 2020>
--- Update date: <14th JULY 2020>
+-- Update date: <16th JULY 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC SPR_Get_CashClosing_Details 5
@@ -16,7 +16,7 @@ BEGIN
 	DECLARE @CashStatus INT=0
 	DECLARE @CashBoxDate DATE=null
 
-	SET @PARAMERES=CONCAT(@MasterCashClosingID,',',@CashBoxDate)
+	SET @PARAMERES=@MasterCashClosingID
 
 	SET NOCOUNT ON;
 	
@@ -57,7 +57,7 @@ BEGIN
 		INNER JOIN tblCashClosing cc ON cb.CashBandID=cc.CashBandID
 		INNER JOIN tblMasterCashClosing ccm ON cc.MasterCashClosingID=ccm.MasterCashClosingID
 		LEFT OUTER JOIN tblCashReturn cr ON ccm.MasterCashClosingID=ISNULL(cr.MasterCashClosingID,ccm.MasterCashClosingID)
-		INNER JOIN UserManagement usr ON ccm.EmployeeID=usr.EmployeeID
+		INNER JOIN UserManagement usr ON ccm.EmployeeID=usr.UserID
 		INNER JOIN EmployeeDetails emp ON usr.EmployeeID=emp.EmpID
 
 		WHERE ccm.MasterCashClosingID=@MasterCashClosingID

@@ -2,7 +2,7 @@
 	[MasterCashClosingID] [int] IDENTITY(1,1) NOT NULL,
 	[CashNo] [nvarchar](50) NOT NULL,
 	[CashBoxDate] DATE NULL,
-	   [StoreID] INT NULL,
+	[StoreID] INT NULL,
 	[EmployeeID] [int] NOT NULL,
 	[TotalCashValue] [decimal](18, 3) NULL,
 	[RoundBalance] [decimal](18, 3) NULL,

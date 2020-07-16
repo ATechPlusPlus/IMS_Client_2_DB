@@ -107,6 +107,13 @@
     <Build Include="Tables\tblStoreTransferItemDetails.sql" />
     <Build Include="Stores Procedures\SPR_Get_CashClosing_Details.sql" />
     <Build Include="Stores Procedures\SPR_Insert_CloseCash.sql" />
+    <Build Include="Sequances\Seq_StoreTransferReceiveBill.sql" />
+    <Build Include="Stores Procedures\SPR_Get_ReceiveBranch_Transfer_List.sql" />
+    <Build Include="Stores Procedures\SPR_Get_StoreTransfer_List.sql" />
+    <Build Include="Stores Procedures\SPR_Insert_ReceiveBillDetails.sql" />
+    <Build Include="Stores Procedures\SPR_Get_StoreTransfer_ItemDetails.sql" />
+    <Build Include="Tables\tblStoreTransferReceiveBillItemDetails.sql" />
+    <Build Include="Tables\tblStoreTransferReceiveBillDetails.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IMS_Client_2_DB.publish.xml" />

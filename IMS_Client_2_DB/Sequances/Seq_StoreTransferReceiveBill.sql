@@ -1,0 +1,7 @@
+﻿CREATE SEQUENCE [dbo].[Seq_StoreTransferReceiveBill]
+		AS BIGINT
+		START WITH 1001
+		INCREMENT BY 1
+		NO MAXVALUE
+		NO CYCLE
+		CACHE 10

@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <13th JULY 2020>
--- Update date: <16th JULY 2020>
+-- Update date: <17th JULY 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC SPR_Get_CashClosing_Details 5
@@ -31,7 +31,7 @@ BEGIN
 		
 		SELECT cb.CashBandID, cb.CashBand,CONCAT('X ', cb.CashBand) [CashBandValue]
 		, cc.[Count], cc.Value, ccm.CashBoxDate, ccm.CashStatus, ccm.StoreID
-		, ccm.MasterCashClosingID, ccm.CashNo, ccm.EmployeeID, ISNULL(ccm.TotalCashValue,0)TotalCashValue
+		, ccm.MasterCashClosingID, ccm.CashNo, usr.EmployeeID, ISNULL(ccm.TotalCashValue,0)TotalCashValue
 		, usr.Name, ISNULL(cr.Value,0) [CashReturn]
 		FROM tblCloseCashBandMaster cb
 		LEFT OUTER JOIN tblCashClosing cc ON cb.CashBandID=cc.CashBandID AND cc.MasterCashClosingID=@MasterCashClosingID
@@ -51,7 +51,7 @@ BEGIN
 
 		SELECT cb.CashBandID, cb.CashBand,CONCAT('X ', cb.CashBand) [CashBandValue]
 		, cc.[Count], cc.Value, ccm.CashBoxDate, ccm.CashStatus, ccm.StoreID
-		, ccm.MasterCashClosingID, ccm.CashNo, ccm.EmployeeID, ccm.TotalCashValue
+		, ccm.MasterCashClosingID, ccm.CashNo, usr.EmployeeID, ccm.TotalCashValue
 		, emp.Name, ISNULL(cr.Value,0) [CashReturn]
 		FROM tblCloseCashBandMaster cb
 		INNER JOIN tblCashClosing cc ON cb.CashBandID=cc.CashBandID

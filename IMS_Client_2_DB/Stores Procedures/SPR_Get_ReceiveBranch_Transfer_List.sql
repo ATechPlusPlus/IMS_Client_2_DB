@@ -1,6 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <16th JULY 2020>
+-- Update date: <18th JULY 2020>
 -- Description:	<>
 -- =============================================
 --EXEC SPR_Get_ReceiveBranch_Transfer_List
@@ -20,7 +21,7 @@ BEGIN
 	SELECT stb.StoreTransferID,sm.StoreName [Branch],stb.BillNo,stb.BillDate,stb.TotalQTY
 	,usr.UserName [Sender], ' ' as Post,'Identical' as Identical
 	FROM tblStoreTransferBillDetails stb
-	INNER JOIN StoreMaster sm ON stb.FromStore=sm.StoreID
+	INNER JOIN StoreMaster sm ON stb.ToStore=sm.StoreID
 	INNER JOIN UserManagement usr ON stb.CreatedBy=usr.UserID
 	WHERE sm.StoreID = @StoreID
 	AND stb.BillStatus ='Not Posted'

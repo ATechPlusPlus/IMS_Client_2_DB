@@ -4,7 +4,7 @@
 -- Description:	<>
 -- =============================================
 --EXEC SPR_Get_ProductDetails_ForVioletColor 1,1001
-CREATE PROCEDURE [dbo].[SPR_Get_ProductDetails_ForVioletColor]
+CREATE PROCEDURE [SPR_Get_ProductDetails_ForVioletColor]
 @BillNo AS NVARCHAR(100)='0'
 ,@BarCode AS INT=0
 AS

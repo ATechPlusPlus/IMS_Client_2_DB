@@ -115,6 +115,7 @@
     <Build Include="Tables\tblStoreTransferReceiveBillItemDetails.sql" />
     <Build Include="Tables\tblStoreTransferReceiveBillDetails.sql" />
     <Build Include="Stores Procedures\SPR_Get_ProductDetails_ForVioletColor.sql" />
+    <Build Include="Stores Procedures\SPR_Get_StoreTransfer_ListItems.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IMS_Client_2_DB.publish.xml" />

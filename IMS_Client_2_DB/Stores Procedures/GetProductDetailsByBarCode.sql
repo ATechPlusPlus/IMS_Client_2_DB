@@ -5,7 +5,7 @@
 -- Description:	<Description,,>
 -- =============================================
 --EXEC GetProductDetailsByBarCode 1,1
-CREATE PROCEDURE [dbo].[GetProductDetailsByBarCode]
+CREATE PROCEDURE GetProductDetailsByBarCode
 @StoreID as int=0
 ,@BarCode as int=0
 

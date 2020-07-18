@@ -5,7 +5,7 @@
 -- Description:	<Description,,>
 -- =============================================
 --EXEC GetProductDetails_By_Color_Size 1,19,1
-CREATE PROCEDURE [dbo].[GetProductDetails_By_Color_Size]
+CREATE PROCEDURE [GetProductDetails_By_Color_Size]
 @StoreID as int=0,
 @SizeID as int=0,
 @ColorID as int=0

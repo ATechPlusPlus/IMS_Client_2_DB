@@ -280,4 +280,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="CashBoxDate" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="d8b10f95-6582-4a42-995b-fdb418c1dfdf" ChangeDateTime="07/19/2020 12:10:25">
+    <Property Name="ElementName" Value="[dbo].[tblPrinterSetting].[Action]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[tblPrinterSetting]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="BarCodePrinter" />
+  </Operation>
 </Operations>

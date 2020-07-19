@@ -90,7 +90,7 @@
     <Build Include="Sequances\SequenceInvoice.sql" />
     <Build Include="Stores Procedures\sp_DetailPurchaseInvoiceReport.sql" />
     <Build Include="Tables\tblReplaceReturn.sql" />
-    <Build Include="Stores Procedures\sp_GetReplaceReturnDetails.sql" />
+    <Build Include="Stores Procedures\spr_GetReplaceReturnDetails.sql" />
     <Build Include="Tables\tblMasterCashClosing.sql" />
     <Build Include="Tables\tblCashClosing.sql" />
     <Build Include="Tables\tblCreditClosing.sql" />

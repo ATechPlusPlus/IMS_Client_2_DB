@@ -125,6 +125,7 @@
     <Build Include="Tables\tblTotalPettyCashExpenses.sql" />
     <Build Include="Triggers\trg_UpdateTotalPettyCashBAL.sql" />
     <Build Include="Tables\tblPettyCashExpensesDetails.sql" />
+    <Build Include="Tables\tblSalesPayment.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IMS_Client_2_DB.publish.xml" />

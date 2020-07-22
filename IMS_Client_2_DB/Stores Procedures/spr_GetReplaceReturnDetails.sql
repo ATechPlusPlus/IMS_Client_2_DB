@@ -16,15 +16,14 @@ AS
 	DECLARE @StoreID INT=0
 	SET @PARAMERES=CONCAT(@InvoiceID,',',@BarCode)
 
-	SELECT @StoreID=StoreID FROM DefaultStoreSetting WITH(NOLOCK) WHERE MachineName=HOST_NAME()
+	
 
 	SELECT * FROM (SELECT InvoiceID, ProductID,
 	(SELECT ProductName from ProductMaster WHERE ProductID=s1.ProductID) AS ProductName,
 	QTY,Rate,ColorID,
 	(SELECT ColorName FROM ColorMaster WHERE ColorID=s1.ColorID) AS Color,
 	(SELECT Size FROM SizeMaster WHERE SizeID=s1.SizeID) AS Size,SizeID,
-	(SELECT BarcodeNo FROM ProductStockColorSizeMaster WHERE ColorID=s1.ColorID and 
-	SizeID=s1.SizeID and ProductID=s1.ProductID AND StoreID=@StoreID) AS BarCode FROM SalesDetails s1
+	@BarCode AS BarCode FROM SalesDetails s1
 	 WHERE InvoiceID=@InvoiceID) AS tb WHERE BarCode=@BarCode
 
 	END TRY

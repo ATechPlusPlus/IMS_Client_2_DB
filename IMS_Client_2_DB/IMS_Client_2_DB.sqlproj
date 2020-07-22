@@ -62,6 +62,7 @@
     <Folder Include="Stores Procedures" />
     <Folder Include="Functions" />
     <Folder Include="Sequances" />
+    <Folder Include="Triggers" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\BackupConfig.sql" />
@@ -117,6 +118,13 @@
     <Build Include="Stores Procedures\SPR_Get_ProductDetails_ForVioletColor.sql" />
     <Build Include="Stores Procedures\SPR_Get_StoreTransfer_ListItems.sql" />
     <Build Include="Tables\tblPrinterSetting.sql" />
+    <Build Include="Stores Procedures\SPR_Insert_PettyCashExpAmt.sql" />
+    <Build Include="Stores Procedures\SPR_Insert_PettyCashAmt.sql" />
+    <Build Include="Stores Procedures\SPR_Get_PettyCashAmt.sql" />
+    <Build Include="Stores Procedures\SPR_GetDefaultShopName.sql" />
+    <Build Include="Tables\tblTotalPettyCashExpenses.sql" />
+    <Build Include="Triggers\trg_UpdateTotalPettyCashBAL.sql" />
+    <Build Include="Tables\tblPettyCashExpensesDetails.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IMS_Client_2_DB.publish.xml" />

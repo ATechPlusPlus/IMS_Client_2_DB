@@ -1,12 +1,14 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <13th JULY 2020>
--- Update date: <17th JULY 2020>
+-- Update date: <22th JULY 2020>
 -- Description:	<Description,,>
 -- =============================================
---EXEC SPR_Get_CashClosing_Details 5
+--EXEC SPR_Get_CashClosing_Details 7,2,0
 CREATE PROCEDURE [dbo].[SPR_Get_CashClosing_Details]
 @MasterCashClosingID INT=0
+,@StoreID INT=0
+,@PettyCashBAL DECIMAL(18,3) OUTPUT
 --,@CashCredit INT=0
 AS
 BEGIN
@@ -14,12 +16,17 @@ BEGIN
 	BEGIN TRY
 	DECLARE @PARAMERES VARCHAR(MAX)=''
 	DECLARE @CashStatus INT=0
-	DECLARE @CashBoxDate DATE=null
-
-	SET @PARAMERES=@MasterCashClosingID
+	DECLARE @CashBoxDate DATE=NULL
+	DECLARE @ExpensesAmt DECIMAL(18,3)
+	SET @PARAMERES=CONCAT(@MasterCashClosingID,',',@StoreID)
 
 	SET NOCOUNT ON;
 	
+	SELECT @PettyCashBAL=PettyCashBalance FROM tblTotalPettyCashExpenses WITH(NOLOCK) 
+	WHERE StoreID=@StoreID
+
+	SET @PettyCashBAL=ISNULL(@PettyCashBAL,0)
+
 	IF @MasterCashClosingID > 0
 	BEGIN
 
@@ -68,6 +75,24 @@ BEGIN
 		SELECT CreditClosingID, MasterCashClosingID, [Type], [Count], Value 
 		FROM [dbo].[tblCreditClosing] WITH(NOLOCK)
 		WHERE MasterCashClosingID=@MasterCashClosingID
+
+		IF @CashStatus = 0
+		BEGIN
+		
+		SELECT '' AS MasterCashClosingID,'' AS PettyCashExpID,''AS Particulars,@ExpensesAmt ExpensesAmt
+		
+		END
+
+		ELSE
+		BEGIN
+		
+		SELECT @MasterCashClosingID MasterCashClosingID,PettyCashExpID,Particulars,ExpensesAmt
+		FROM tblPettyCashExpensesDetails WITH(NOLOCK)
+		WHERE StoreID=@StoreID
+		AND TransactionDate = CONVERT(DATE,GETDATE())
+		AND ExpensesAmt > 0
+		
+		END
 
 	END
 

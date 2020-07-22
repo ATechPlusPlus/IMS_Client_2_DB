@@ -4,7 +4,7 @@ CREATE TABLE [dbo].[ProductMaster](
 	[ProductArabicName] [nvarchar](100) NULL,
 	[CategoryID] [int] NULL,
 	[Rate] [decimal](18, 3) NULL CONSTRAINT [DF_ProductMaster_Rate]  DEFAULT ((1)),
-	[Photo] NVARCHAR(50) NULL,
+	[Photo] [nvarchar](50) NULL,
 	[ActiveStatus] [bit] NOT NULL CONSTRAINT [DF_ProductMaster_ActiveStatus]  DEFAULT ((1)),
 	[CreatedBy] [int] NOT NULL CONSTRAINT [DF_ProductMaster_CreatedBy]  DEFAULT ((0)),
 	[CreatedOn] [datetime] NOT NULL CONSTRAINT [DF_ProductMaster_CreatedOn]  DEFAULT (getdate()),

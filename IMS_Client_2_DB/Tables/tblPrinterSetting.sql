@@ -3,11 +3,10 @@
 	[MachineName] [nvarchar](50) NULL,
 	[BarCodePrinter] [nvarchar](50) NULL,
 	[InvoicePrinter] [nvarchar](50) NULL,
-
-	[CreatedOn] [datetime] NULL,
-	[CreateBy] [int] NULL,
-	[ModifiedOn] [datetime] NULL,
-	[ModifiedBy] [int] NULL,
+	[CreatedBy] [int] NOT NULL CONSTRAINT [DF_tblPrinterSetting_CreatedBy]  DEFAULT ((0)),
+	[CreatedOn] [datetime] NOT NULL CONSTRAINT [DF_tblPrinterSetting_CreatedOn]  DEFAULT (getdate()),
+	[UpdatedBy] [int] NULL,
+	[UpdatedOn] [datetime] NULL,
  CONSTRAINT [PK_tblPrinterSetting] PRIMARY KEY CLUSTERED 
 (
 	[ID] ASC
@@ -15,4 +14,3 @@
 ) ON [PRIMARY]
 
 GO
-

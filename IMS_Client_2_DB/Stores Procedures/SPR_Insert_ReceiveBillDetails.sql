@@ -1,12 +1,14 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <16th JULY 2020>
+-- Update date: <23th JULY 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC SPR_Insert_ReceiveBillDetails 'RECEBILL-1002',1,5
 CREATE PROCEDURE [dbo].[SPR_Insert_ReceiveBillDetails]
 @ReceiveBillNo NVARCHAR(50)='0'
 ,@StoreBillDetailsID INT=0
+,@StoreID INT=0
 ,@CreatedBy INT=0
 AS
 BEGIN
@@ -24,27 +26,38 @@ BEGIN
 		DECLARE @Barcode AS NVARCHAR(50)=0
 		DECLARE @ProductID AS INT=0 
 		
-		DECLARE @StoreID AS INT=0 
-		
 		DECLARE @ColorID AS INT=0 
 		DECLARE @SizeID AS INT=0
 		DECLARE @BillQTY AS INT=0
 		DECLARE @Rate AS DECIMAL(18,3)=0
 
+		DECLARE @EnteredQTY AS INT=0
+		DECLARE @FromStoreID INT=0
 		--DECLARE @ModelNo AS VARCHAR(50)=0
 
-		SET @PARAMERES=CONCAT(@ReceiveBillNo,',',@StoreBillDetailsID,',',@CreatedBy)
+		SET @PARAMERES=CONCAT(@ReceiveBillNo,',',@StoreBillDetailsID,',',@StoreID,',',@CreatedBy)
 		
 		BEGIN TRY
 		
-		SELECT @StoreID=StoreID FROM DefaultStoreSetting WITH(NOLOCK) WHERE MachineName=HOST_NAME()
+		--SELECT @StoreID=StoreID FROM DefaultStoreSetting WITH(NOLOCK) WHERE MachineName=HOST_NAME()
 
-		BEGIN TRANSACTION
+		--SELECT @TotalQTY=ISNULL(SUM(BillQTY),0)
+		--FROM dbo.tblStoreTransferItemDetails WITH(NOLOCK)
+		--WHERE StoreBillDetailsID=@StoreBillDetailsID
+		--AND BillQTY=EnterQTY
 
-		SELECT @TotalQTY=ISNULL(SUM(BillQTY),0)
+		SELECT @TotalQTY=ISNULL(SUM(BillQTY),0), @EnteredQTY=ISNULL(SUM(EnterQTY),0)
 		FROM dbo.tblStoreTransferItemDetails WITH(NOLOCK)
 		WHERE StoreBillDetailsID=@StoreBillDetailsID
-		AND BillQTY=EnterQTY
+
+		SELECT @FromStoreID=FromStore 
+		FROM tblStoreTransferBillDetails WITH(NOLOCK)
+		WHERE StoreTransferID=@StoreBillDetailsID
+
+		IF @TotalQTY = @EnteredQTY
+		BEGIN
+
+		BEGIN TRANSACTION
 
 		INSERT INTO tblStoreTransferReceiveBillDetails
 		(
@@ -114,7 +127,7 @@ BEGIN
 				IF EXISTS(SELECT 1 FROM ProductStockColorSizeMaster WITH(NOLOCK) WHERE ProductID=@ProductID 
 				AND StoreID=@StoreID AND ColorID=@ColorID AND SizeID=@SizeID)
 				BEGIN
-
+				--Adding QTY in Receiver Store
 				UPDATE ProductStockColorSizeMaster SET
 				QTY=QTY+@BillQTY
 				,UpdatedBy=@CreatedBy
@@ -122,11 +135,19 @@ BEGIN
 				WHERE ProductID=@ProductID 
 				AND StoreID=@StoreID AND ColorID=@ColorID AND SizeID=@SizeID
 
+				--Substracting QTY in Sender Store
+				UPDATE ProductStockColorSizeMaster SET
+				QTY=QTY-@BillQTY
+				,UpdatedBy=@CreatedBy
+				,UpdatedOn=GETDATE()
+				WHERE ProductID=@ProductID 
+				AND StoreID=@FromStoreID AND ColorID=@ColorID AND SizeID=@SizeID
+				
 				END
 
 				ELSE
 				BEGIN
-
+				--Adding QTY in Receiver Store
 				INSERT INTO ProductStockColorSizeMaster
 				(
 				ProductID
@@ -148,6 +169,14 @@ BEGIN
 				,@CreatedBy
 				)
 
+				--Substracting QTY in Sender Store
+				UPDATE ProductStockColorSizeMaster SET
+				QTY=QTY-@BillQTY
+				,UpdatedBy=@CreatedBy
+				,UpdatedOn=GETDATE()
+				WHERE ProductID=@ProductID 
+				AND StoreID=@FromStoreID AND ColorID=@ColorID AND SizeID=@SizeID
+
 				END
 
 				UPDATE tblStoreTransferItemDetails
@@ -168,13 +197,21 @@ BEGIN
 			UPDATE tblStoreTransferBillDetails
 			SET BillStatus='Posted'
 			,UpdatedBy=@CreatedBy
-			,UpdatedOn=getdate()
-			WHERE StoreTransferID=@TransferItemID
+			,UpdatedOn=GETDATE()
+			WHERE StoreTransferID=@StoreBillDetailsID--@TransferItemID
 
 		COMMIT
 
 		SELECT 1 AS Flag,'Bill Receive Successfully.' as Msg -- Success
+	END
 
+	ELSE
+	BEGIN
+
+	SELECT 0 AS Flag,'Bill QTY and Entered QTY is not same.' as Msg -- Fail
+
+	END
+	
 	END TRY
 	
 	BEGIN CATCH

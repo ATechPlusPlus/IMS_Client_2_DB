@@ -1,22 +1,22 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <16th JULY 2020>
--- Update date: <18th JULY 2020>
+-- Update date: <23th JULY 2020>
 -- Description:	<>
 -- =============================================
 --EXEC SPR_Get_ReceiveBranch_Transfer_List
-CREATE PROCEDURE SPR_Get_ReceiveBranch_Transfer_List
+CREATE PROCEDURE [dbo].[SPR_Get_ReceiveBranch_Transfer_List]
+@StoreID INT=0
+
 AS
 BEGIN
 
 	SET NOCOUNT ON;
 
 	DECLARE @PARAMERES VARCHAR(MAX)=''
-	DECLARE @StoreID AS INT=0
+	SET @PARAMERES=@StoreID
 
 	BEGIN TRY
-	
-	SELECT @StoreID=StoreID FROM DefaultStoreSetting WITH(NOLOCK) WHERE MachineName=HOST_NAME()
 
 	SELECT stb.StoreTransferID,sm.StoreName [Branch],stb.BillNo,stb.BillDate,stb.TotalQTY
 	,usr.UserName [Sender], ' ' as Post,'Identical' as Identical

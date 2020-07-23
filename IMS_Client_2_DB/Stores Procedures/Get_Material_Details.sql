@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <12th MARCH 2020>
--- Update date:	<16th JULY 2020>
+-- Update date:	<23rd JULY 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC Get_Material_Details NULL,NULL,NULL,NULL,NULL
@@ -23,7 +23,7 @@ BEGIN
 	IF @ProductID > 0 OR @StoreID > 0 OR @BarcodeNo > 0 OR @ColorID > 0 OR @ModelNo!='0'
 	BEGIN
 
-	SELECT pm.ProductID,pm.ProductName [Item],pm.Rate [Sales Price],pm.Photo,ps.BarcodeNo
+	SELECT pm.ProductID,pm.ProductName [Item],pm.Rate [EndUser],pm.Photo,ps.BarcodeNo
 	,pm.CategoryID,cm.CategoryName [Category]
 	,ps.StoreID,sm.StoreName [Store],s1.SizeTypeID,c1.ColorName [Color],ps.SizeID,s1.Size,ps.QTY
 	FROM ProductMaster pm
@@ -60,7 +60,7 @@ BEGIN
 
 	ELSE
 	BEGIN
-	SELECT TOP 100 pm.ProductID,pm.ProductName,pm.Rate [Sales Price],pm.Photo,ps.BarcodeNo,pm.CategoryID,cm.CategoryName [Category]
+	SELECT TOP 100 pm.ProductID,pm.ProductName,pm.Rate [EndUser],pm.Photo,ps.BarcodeNo,pm.CategoryID,cm.CategoryName [Category]
 	,ps.StoreID,sm.StoreName,s1.SizeTypeID,c1.ColorName,ps.SizeID,s1.Size,ps.QTY
 	FROM ProductMaster pm
 	INNER JOIN [dbo].[ProductStockColorSizeMaster] ps ON pm.ProductID = ps.ProductID

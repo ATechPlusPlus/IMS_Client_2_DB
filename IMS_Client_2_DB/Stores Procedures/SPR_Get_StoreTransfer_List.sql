@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <16th JULY 2020>
--- Update date: <23rd JULY 2020>
+-- Update date: <24th JULY 2020>
 -- Description:	<>
 -- =============================================
 --EXEC SPR_Get_StoreTransfer_List '2020-07-15','2020-07-20',-1
@@ -117,7 +117,7 @@ BEGIN
 			(
 				SELECT UserID,UserName FROM UserManagement WITH(NOLOCK)
 			) usr1 ON [str].CreatedBy=usr1.UserID
-			WHERE ISNULL([str].StoreTransferID,0) = ISNULL(@BillStatus,0)
+			WHERE ISNULL([str].StoreTransferID,0) = IIF(@BillStatus=1,stb.StoreTransferID,0)
 			--ORDER BY stb.BillDate DESC
 
 		END

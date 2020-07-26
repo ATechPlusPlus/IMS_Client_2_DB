@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <13th JULY 2020>
--- Update date: <22th JULY 2020>
+-- Update date: <25th JULY 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC SPR_Get_CashClosing_Details 7,2,0
@@ -30,7 +30,7 @@ BEGIN
 	IF @MasterCashClosingID > 0
 	BEGIN
 
-		SELECT @CashStatus=CashStatus FROM tblMasterCashClosing WITH(NOLOCK) 
+		SELECT @CashStatus=CashStatus,@CashBoxDate=CashBoxDate FROM tblMasterCashClosing WITH(NOLOCK) 
 		WHERE MasterCashClosingID=@MasterCashClosingID
 
 		IF @CashStatus = 0
@@ -89,7 +89,7 @@ BEGIN
 		SELECT @MasterCashClosingID MasterCashClosingID,PettyCashExpID,Particulars,ExpensesAmt
 		FROM tblPettyCashExpensesDetails WITH(NOLOCK)
 		WHERE StoreID=@StoreID
-		AND TransactionDate = CONVERT(DATE,GETDATE())
+		AND TransactionDate = @CashBoxDate--CONVERT(DATE,GETDATE())
 		AND ExpensesAmt > 0
 		
 		END

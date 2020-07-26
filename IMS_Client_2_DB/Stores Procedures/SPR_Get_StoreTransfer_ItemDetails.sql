@@ -1,10 +1,10 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <15th JULY 2020>
--- Update date: <16th JULY 2020>
+-- Update date: <25th JULY 2020>
 -- Description:	<Description,,>
 -- =============================================
---EXEC SPR_Get_StoreTransfer_ItemDetails 1
+--EXEC SPR_Get_StoreTransfer_ItemDetails 1003
 CREATE PROCEDURE [dbo].[SPR_Get_StoreTransfer_ItemDetails]
 @StoreBillDetailsID INT=0
 AS
@@ -23,15 +23,29 @@ BEGIN
 	,psm.ModelNo
 	,st.ProductID,pm.ProductName [Item],cm.ColorName [Color],sm.Size
 	,stb.BillDate,stb.BillNo,stb.TotalQTY,st.Total
+	,st.ColorID,st.SizeID
 	FROM tblStoreTransferItemDetails st
 	INNER JOIN [tblStoreTransferBillDetails] stb ON st.StoreBillDetailsID=stb.StoreTransferID
 	INNER JOIN ProductStockMaster psm ON st.ProductID=psm.ProductID AND st.ColorID=psm.ColorID AND st.SizeID=psm.SizeID 
 	AND psm.BarcodeNo IS NOT NULL AND psm.QTY > 0
-	
+
 	INNER JOIN ProductMaster pm ON st.ProductID=pm.ProductID
 	INNER JOIN ColorMaster cm ON st.ColorID=cm.ColorID
 	INNER JOIN SizeMaster sm ON st.SizeID=sm.SizeID
 	WHERE st.StoreBillDetailsID=@StoreBillDetailsID
+
+	UNION
+
+	SELECT [TransferItemID], [StoreBillDetailsID],[Barcode]
+	, BillQTY, [EnterQTY],'' [State]
+	,'Violet' [CellColor],'' ModelNo
+	, ProductID,'' [Item],'' [Color],'' [Size]
+	,'' BillDate,'' BillNo,'' TotalQTY
+    ,0 [Total]
+	,ColorID,SizeID
+	FROM tblStoreTransferItemDetails_Voilet WITH(NOLOCK)
+	WHERE StoreBillDetailsID=@StoreBillDetailsID
+	ORDER BY [TransferItemID] DESC
 
 	END TRY
 

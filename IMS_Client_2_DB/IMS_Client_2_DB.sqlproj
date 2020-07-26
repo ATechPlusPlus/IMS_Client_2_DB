@@ -127,6 +127,9 @@
     <Build Include="Tables\tblPettyCashExpensesDetails.sql" />
     <Build Include="Tables\tblSalesPayment.sql" />
     <Build Include="Stores Procedures\SPR_Get_PettyCashExpAmt.sql" />
+    <Build Include="Stores Procedures\SPR_Get_Material_NewDetails.sql" />
+    <Build Include="Stores Procedures\SPR_Insert_StoreTransferItemDetails_Voilet.sql" />
+    <Build Include="Tables\tblStoreTransferItemDetails_Voilet.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IMS_Client_2_DB.publish.xml" />

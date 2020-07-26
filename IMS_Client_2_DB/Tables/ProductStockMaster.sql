@@ -1,6 +1,7 @@
 CREATE TABLE [dbo].[ProductStockMaster](
 	[ProductStockID] [bigint] IDENTITY(1,1) NOT NULL,
 	[PurchaseInvoiceID] [int] NULL,
+	[StoreTransferID] [int] NULL CONSTRAINT [DF_ProductStockMaster_StoreTransferID]  DEFAULT ((0)),
 	[ProductID] [int] NULL,
 	[StoreID] [int] NULL,
 	[BarcodeNo] [bigint] NULL,

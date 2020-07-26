@@ -25,7 +25,7 @@ BEGIN
 
 	SELECT pm.ProductID,pm.ProductName [Item],pm.Rate [EndUser],pm.Photo,ps.BarcodeNo
 	,pm.CategoryID,cm.CategoryName [Category]
-	,ps.StoreID,sm.StoreName [Store],s1.SizeTypeID,c1.ColorName [Color],ps.SizeID,s1.Size,ps.QTY
+	,ps.StoreID,sm.StoreName [Store],s1.SizeTypeID,c1.ColorName [Color],ps.SizeID,s1.Size,ps.QTY,ps.ColorID
 	FROM ProductMaster pm
 	--INNER JOIN DeliveryPurchaseBill1 pid1 ON pm.ProductID=pid1.ProductID
 	INNER JOIN ProductStockColorSizeMaster ps ON pm.ProductID = ps.ProductID
@@ -61,7 +61,7 @@ BEGIN
 	ELSE
 	BEGIN
 	SELECT TOP 100 pm.ProductID,pm.ProductName,pm.Rate [EndUser],pm.Photo,ps.BarcodeNo,pm.CategoryID,cm.CategoryName [Category]
-	,ps.StoreID,sm.StoreName,s1.SizeTypeID,c1.ColorName,ps.SizeID,s1.Size,ps.QTY
+	,ps.StoreID,sm.StoreName,s1.SizeTypeID,c1.ColorName,ps.SizeID,s1.Size,ps.QTY,ps.ColorID
 	FROM ProductMaster pm
 	INNER JOIN [dbo].[ProductStockColorSizeMaster] ps ON pm.ProductID = ps.ProductID
 	INNER JOIN CategoryMaster cm ON pm.CategoryID = cm.CategoryID

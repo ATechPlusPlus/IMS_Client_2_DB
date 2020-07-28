@@ -1,9 +1,10 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <08th MARCH 2020>
+-- Update date: <28th JULY 2020>
 -- Description:	<When User is posting purchase invoice then Inserted into Productstock color size master table>
 -- =============================================
--- EXEC [dbo].[Insert_PurchaseInvoice_BulkPrint_Color_Size] 1,1,100,1,'purinv01',0
+-- EXEC [dbo].[Insert_PurchaseInvoice_BulkPrint_Color_Size] 12,3,5,0,'V101',5
 CREATE PROCEDURE [dbo].[Insert_PurchaseInvoice_BulkPrint_Color_Size]
 @PurchaseInvoiceID INT=0
 ,@StoreID INT=0
@@ -33,6 +34,7 @@ BEGIN
 		DECLARE @ModelNo NVARCHAR(50) =''
 	
 		DECLARE @ProductID INT =0
+		DECLARE @SubProductID INT =0
 		DECLARE @ColorID INT =0
 		DECLARE @QTY	 INT =0
 		DECLARE @SizeID	 INT =0
@@ -54,26 +56,26 @@ BEGIN
 		--	,BarcodeNo BIGINT
 		--	)
 
-		SET @PARAMERES=CONCAT(@PurchaseInvoiceID,',',@StoreID,',',@EntryType,',',@SupplierBillNo,',',@CreatedBy)
+		SET @PARAMERES=CONCAT(@PurchaseInvoiceID,',',@StoreID,',',@TotalQTY,',',@EntryType,',',@SupplierBillNo,',',@CreatedBy)
 
 		DECLARE ColorSize_CURSOR CURSOR 
 		FOR
 		--SELECT ProductID, StoreID, ColorID, Size , QTY
 		--FROM #PurchaseInvoice_Color_Size
 		--WHERE QTY > 0
-		SELECT ProductID, StoreID, ColorID, SizeID , QTY
+		SELECT ProductID,SubProductID, StoreID, ColorID, SizeID , QTY
 		FROM dbo.ProductStockMaster
 		WHERE QTY > 0
 		
 		DECLARE OUTER_CURSOR CURSOR 
 		FOR
-		SELECT SizeTypeID,DeliveryPurchaseID1,ModelNo
+		SELECT SizeTypeID,DeliveryPurchaseID1,ModelNo,SubProductID
 		FROM DeliveryPurchaseBill1 WITH(NOLOCK)
 		WHERE PurchaseInvoiceID=@PurchaseInvoiceID
 		
 		OPEN OUTER_CURSOR 
 		
-		FETCH NEXT FROM OUTER_CURSOR INTO @SizeType_ID,  @DeliveryPurchaseID, @ModelNo
+		FETCH NEXT FROM OUTER_CURSOR INTO @SizeType_ID,  @DeliveryPurchaseID, @ModelNo,@SubProductID
 		
 		WHILE @@FETCH_STATUS <> -1
 		BEGIN
@@ -111,15 +113,16 @@ BEGIN
 			DEALLOCATE cursor_Size;
 
 	SET @query2='
-	SELECT PurchaseInvoiceID,ColorID,ProductID,QTY,Size,ModelNo,Rate,StoreID FROM
+	SELECT PurchaseInvoiceID,ColorID,ProductID,SubProductID,QTY,Size,ModelNo,Rate,StoreID FROM
 	(SELECT pd1.PurchaseInvoiceID,
-	clr.ColorID,pd1.ProductID,pd1.ModelNo,pm.Rate,pd1.StoreID,'+@query1+'pd3.Total,FROM DeliveryPurchaseBill1 pd1
+	clr.ColorID,pd1.ProductID,pd1.SubProductID,pd1.ModelNo,pm.Rate,pd1.StoreID,'+@query1+'pd3.Total,FROM DeliveryPurchaseBill1 pd1
 	INNER JOIN DeliveryPurchaseBill2 pd2 ON pd2.DeliveryPurchaseID1=pd1.DeliveryPurchaseID1
 	INNER JOIN DeliveryPurchaseBill3 pd3 ON pd3.DeliveryPurchaseID2=pd2.DeliveryPurchaseID2
 	INNER JOIN ColorMaster clr ON pd3.ColorID=clr.ColorID
 	INNER JOIN ProductMaster pm on pd1.ProductID = pm.ProductID
 	WHERE 
-	pd1.PurchaseInvoiceID='+CAST(@PurchaseInvoiceID AS VARCHAR)+' AND pd2.DeliveryPurchaseID1='+CAST(@DeliveryPurchaseID as VARCHAR)+' group by	pd1.PurchaseInvoiceID,pd1.ProductID,clr.ColorID,pd1.ModelNo,pm.Rate,pd1.StoreID,pd3.Total)a UNPIVOT
+	pd1.PurchaseInvoiceID='+CAST(@PurchaseInvoiceID AS VARCHAR)+' AND pd2.DeliveryPurchaseID1='+CAST(@DeliveryPurchaseID as VARCHAR)+' group by	pd1.PurchaseInvoiceID,pd1.ProductID,pd1.SubProductID,clr.ColorID,pd1.ModelNo,pm.Rate,pd1.StoreID,pd3.Total)a UNPIV
+OT
 	(
 	QTY
 	FOR SIZE IN ('+@queryunpivot+')
@@ -131,8 +134,8 @@ BEGIN
 	--PRINT @queryunpivot;
 	--PRINT @query2
 	
-	IF @i = 1
-	PRINT @query2;
+	--IF @i = 1
+	--PRINT @query2;
 
 	--INSERT INTO #PurchaseInvoice_Color_Size
 	--(ColorID 
@@ -149,6 +152,7 @@ BEGIN
 	(PurchaseInvoiceID
 	,ColorID 	
 	,ProductID
+	,SubProductID
 	,QTY 
 	,SizeID 
 	,ModelNo
@@ -156,14 +160,14 @@ BEGIN
 	,StoreID)
 	EXEC (@query2);
 
-FETCH NEXT FROM OUTER_CURSOR INTO @SizeType_ID,  @DeliveryPurchaseID, @ModelNo
+FETCH NEXT FROM OUTER_CURSOR INTO @SizeType_ID,  @DeliveryPurchaseID, @ModelNo,@SubProductID
 END
 CLOSE OUTER_CURSOR
 DEALLOCATE OUTER_CURSOR
 
 	OPEN ColorSize_CURSOR 
 
-	FETCH NEXT FROM ColorSize_CURSOR INTO @ProductID, @StoreID, @ColorID, @SizeID , @QTY
+	FETCH NEXT FROM ColorSize_CURSOR INTO @ProductID, @SubProductID, @StoreID, @ColorID, @SizeID , @QTY
 	WHILE @@FETCH_STATUS <> -1
 	BEGIN
 
@@ -171,20 +175,21 @@ DEALLOCATE OUTER_CURSOR
 
 	SET @i = 1
 
-	IF EXISTS(SELECT 1 FROM ProductStockColorSizeMaster WHERE ProductID=@ProductID AND ColorID=@ColorID AND StoreID=@StoreID
+	IF EXISTS(SELECT 1 FROM ProductStockColorSizeMaster WHERE ProductID=@ProductID AND SubProductID=@SubProductID AND ColorID=@ColorID AND StoreID=@StoreID
 		AND SizeID=@SizeID)
 	BEGIN
 	
-	--SELECT ProductID, StoreID, ColorID, Size , QTY
+	--SELECT ProductID, StoreID, ColorID, SizeID , QTY
 	--FROM ProductStockColorSizeMaster WITH(NOLOCK)
-	--WHERE ProductID=@ProductID AND ColorID=@ColorID AND StoreID=@StoreID AND Size=@Size
+	--WHERE SubProductID=@SubProductID AND ProductID=@ProductID AND ColorID=@ColorID AND StoreID=@StoreID AND SizeID=@SizeID
 
 		UPDATE ProductStockColorSizeMaster
 		SET QTY = QTY + @QTY
 		,UpdatedBy = @CreatedBy
 		,UpdatedOn = getdate()
 		WHERE 
-		ProductID=@ProductID 
+		SubProductID=@SubProductID
+		AND ProductID=@ProductID 
 		AND ColorID=@ColorID 
 		AND StoreID=@StoreID
 		AND SizeID=@SizeID
@@ -192,20 +197,20 @@ DEALLOCATE OUTER_CURSOR
 
 	ELSE
 	BEGIN
-		--SELECT 'insert',@ProductID, @StoreID, @ColorID, @Size , @QTY, @CreatedBy
+		--SELECT 'insert',@ProductID,@SubProductID, @StoreID, @ColorID, @SizeID , @QTY, @CreatedBy
 		INSERT INTO ProductStockColorSizeMaster
 		(
-			ProductID, StoreID, ColorID, SizeID , QTY, CreatedBy
+			ProductID, SubProductID, StoreID, ColorID, SizeID , QTY, CreatedBy
 		)
 		VALUES
 		(
-			@ProductID, @StoreID, @ColorID, @SizeID , @QTY, @CreatedBy
+			@ProductID, @SubProductID, @StoreID, @ColorID, @SizeID , @QTY, @CreatedBy
 		)
 
 	END
 
 	SET @i+=1;
-	    FETCH NEXT FROM ColorSize_CURSOR INTO @ProductID, @StoreID, @ColorID, @SizeID , @QTY
+	    FETCH NEXT FROM ColorSize_CURSOR INTO @ProductID, @SubProductID, @StoreID, @ColorID, @SizeID , @QTY
 
 	    END
 

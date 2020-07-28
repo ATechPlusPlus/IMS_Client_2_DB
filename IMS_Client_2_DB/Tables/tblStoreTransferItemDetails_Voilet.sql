@@ -3,6 +3,7 @@
 	[TransferItemID] [int] NOT NULL,
 	[StoreBillDetailsID] [int] NOT NULL,
 	[ProductID] [int] NOT NULL,
+	[SubProductID] [int] NOT NULL,
 	[Barcode] [nvarchar](50) NOT NULL,
 	[ModelNo] [nvarchar](50) NULL,
 	[Rate] [decimal](18, 3) NOT NULL,
@@ -13,7 +14,7 @@
 	[StoreID] [int] NOT NULL,
 	[Total] [decimal](18, 3) NULL,
 	[CreatedOn] [datetime] NOT NULL CONSTRAINT [DF_tblStoreTransferItemDetails_Voilet_CreatedOn]  DEFAULT (getdate()),
-	[CreatedBy] [int] NOT NULL,
+	[CreatedBy] [int] NOT NULL CONSTRAINT [DF_tblStoreTransferItemDetails_Voilet_CreatedBy]  DEFAULT ((0)),
 	[UpdatedBy] [int] NULL,
 	[UpdatedOn] [datetime] NULL,
  CONSTRAINT [PK_tblStoreTransferItemDetails_Voilet] PRIMARY KEY CLUSTERED 

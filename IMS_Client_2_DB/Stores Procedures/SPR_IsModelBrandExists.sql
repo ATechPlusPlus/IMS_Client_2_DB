@@ -37,7 +37,7 @@ BEGIN
 		AND ProductID=@ProductID
 		AND StoreID=@StoreID
 		
-		SELECT @IsAdd,@SubProductID [SubProductID]
+		SELECT @IsAdd [IsAdd], @SubProductID [SubProductID]
 
 		END
 

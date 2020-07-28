@@ -20,7 +20,7 @@ BEGIN
 	DECLARE @SupplierBillNo VARCHAR(MAX)=''
 	SET @PARAMERES=CONCAT(@PurchaseInvoiceID,',',@status)
 
-	SELECT @SupplierBillNo=SupplierBillNo FROM PurchaseInvoice WHERE PurchaseInvoiceID=@PurchaseInvoiceID
+	SELECT @SupplierBillNo=SupplierBillNo FROM PurchaseInvoice WITH(NOLOCK) WHERE PurchaseInvoiceID=@PurchaseInvoiceID
 
 	IF @status = 0
 	BEGIN

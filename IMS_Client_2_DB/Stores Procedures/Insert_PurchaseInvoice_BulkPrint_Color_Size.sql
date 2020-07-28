@@ -40,32 +40,16 @@ BEGIN
 		DECLARE @SizeID	 INT =0
 		--DECLARE @Size	 VARCHAR(20) ='0'
 
-		--IF OBJECT_ID('tempdb..#PurchaseInvoice_Color_Size') IS NOT NULL DROP TABLE #PurchaseInvoice_Color_Size
-		--	CREATE TABLE #PurchaseInvoice_Color_Size
-		--	(
-		--	ID INT IDENTITY(1,1)
-		--	,ColorID INT
-		--	,Color	NVARCHAR(50)
-		--	,ProductID INT
-		--	,ProductName NVARCHAR(50)
-		--	,StoreID INT
-		--	,ModelNo NVARCHAR(50)
-		--	,QTY INT
-		--	,SizeID INT
-		--	,Rate DECIMAL(18,2)
-		--	,BarcodeNo BIGINT
-		--	)
 
 		SET @PARAMERES=CONCAT(@PurchaseInvoiceID,',',@StoreID,',',@TotalQTY,',',@EntryType,',',@SupplierBillNo,',',@CreatedBy)
 
 		DECLARE ColorSize_CURSOR CURSOR 
 		FOR
-		--SELECT ProductID, StoreID, ColorID, Size , QTY
-		--FROM #PurchaseInvoice_Color_Size
-		--WHERE QTY > 0
+		
 		SELECT ProductID,SubProductID, StoreID, ColorID, SizeID , QTY
-		FROM dbo.ProductStockMaster
-		WHERE QTY > 0
+		FROM dbo.ProductStockMaster WITH(NOLOCK)
+		WHERE PurchaseInvoiceID=@PurchaseInvoiceID 
+		AND QTY > 0
 		
 		DECLARE OUTER_CURSOR CURSOR 
 		FOR
@@ -121,8 +105,7 @@ BEGIN
 	INNER JOIN ColorMaster clr ON pd3.ColorID=clr.ColorID
 	INNER JOIN ProductMaster pm on pd1.ProductID = pm.ProductID
 	WHERE 
-	pd1.PurchaseInvoiceID='+CAST(@PurchaseInvoiceID AS VARCHAR)+' AND pd2.DeliveryPurchaseID1='+CAST(@DeliveryPurchaseID as VARCHAR)+' group by	pd1.PurchaseInvoiceID,pd1.ProductID,pd1.SubProductID,clr.ColorID,pd1.ModelNo,pm.Rate,pd1.StoreID,pd3.Total)a UNPIV
-OT
+	pd1.PurchaseInvoiceID='+CAST(@PurchaseInvoiceID AS VARCHAR)+' AND pd2.DeliveryPurchaseID1='+CAST(@DeliveryPurchaseID as VARCHAR)+' group by	pd1.PurchaseInvoiceID,pd1.ProductID,pd1.SubProductID,clr.ColorID,pd1.ModelNo,pm.Rate,pd1.StoreID,pd3.Total)a UNPIVOT
 	(
 	QTY
 	FOR SIZE IN ('+@queryunpivot+')
@@ -136,17 +119,6 @@ OT
 	
 	--IF @i = 1
 	--PRINT @query2;
-
-	--INSERT INTO #PurchaseInvoice_Color_Size
-	--(ColorID 
-	--,Color	
-	--,ProductID 
-	--,ProductName
-	--,QTY 
-	--,Size 
-	--,ModelNo
-	--,Rate
-	--,StoreID)
 	
 	INSERT INTO dbo.ProductStockMaster
 	(PurchaseInvoiceID
@@ -171,15 +143,14 @@ DEALLOCATE OUTER_CURSOR
 	WHILE @@FETCH_STATUS <> -1
 	BEGIN
 
-	--SELECT CONCAT(@PurchaseInvoiceID,',',@ProductID,',', @StoreID,',', @ColorID,',', @Size,',' , @QTY,',')
+	--SELECT CONCAT(@PurchaseInvoiceID,',',@ProductID,',',@SubProductID,',', @StoreID,',', @ColorID,',', @SizeID,',' , @QTY)
 
 	SET @i = 1
 
-	IF EXISTS(SELECT 1 FROM ProductStockColorSizeMaster WHERE ProductID=@ProductID AND SubProductID=@SubProductID AND ColorID=@ColorID AND StoreID=@StoreID
-		AND SizeID=@SizeID)
+	IF EXISTS(SELECT 1 FROM ProductStockColorSizeMaster WHERE ProductID=@ProductID AND SubProductID=@SubProductID AND ColorID=@ColorID AND StoreID=@StoreID AND SizeID=@SizeID)
 	BEGIN
-	
-	--SELECT ProductID, StoreID, ColorID, SizeID , QTY
+
+	--SELECT 'select',SubProductID,ProductID, StoreID, ColorID, SizeID , QTY
 	--FROM ProductStockColorSizeMaster WITH(NOLOCK)
 	--WHERE SubProductID=@SubProductID AND ProductID=@ProductID AND ColorID=@ColorID AND StoreID=@StoreID AND SizeID=@SizeID
 

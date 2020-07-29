@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <28th JULY 2020>
--- Update date: <>
+-- Update date: <29th JULY 2020>
 -- Description:	<>
 -- =============================================
 --EXEC SPR_IsModelBrandExists
@@ -19,6 +19,7 @@ BEGIN
 
 	DECLARE @IsAdd BIT=0
 	DECLARE @SubProductID INT=0
+	DECLARE @EndUser DECIMAL(18,3)=0
 	DECLARE @ProductName VARCHAR(MAX)=''
 	DECLARE @PARAMERES VARCHAR(MAX)=''
 	SET @PARAMERES=CONCAT(@ProductID,',',@ModelNo,',',@BrandID,',',@StoreID)
@@ -31,13 +32,13 @@ BEGIN
 
 		SET @IsAdd=1
 		
-		SELECT @SubProductID=SubProductID
+		SELECT @SubProductID=SubProductID,@EndUser=EndUser
 		FROM tblProductWiseModelNo WITH(NOLOCK) WHERE ModelNo=@ModelNo 
 		AND BrandID=@BrandID 
 		AND ProductID=@ProductID
 		AND StoreID=@StoreID
 		
-		SELECT @IsAdd [IsAdd], @SubProductID [SubProductID]
+		SELECT @IsAdd [IsAdd], @SubProductID [SubProductID],@EndUser [EndUser]
 
 		END
 
@@ -45,6 +46,12 @@ BEGIN
 		BEGIN
 
 		SET @IsAdd=0
+		
+		SELECT @ProductID=ProductID
+		FROM tblProductWiseModelNo WITH(NOLOCK) WHERE ModelNo=@ModelNo 
+		AND BrandID=@BrandID 
+		AND StoreID=@StoreID
+
 		SELECT @ProductName=ProductName FROM ProductMaster WITH(NOLOCK) WHERE ProductID=@ProductID
 		SELECT @IsAdd [IsAdd],'ModelNo. '+@ModelNo+' is already exists for Item '+@ProductName [Msg]
 
@@ -56,7 +63,7 @@ BEGIN
 	BEGIN
 
 	SET @IsAdd=1 --first time insert
-	SELECT @IsAdd [IsAdd],@SubProductID [SubProductID]
+	SELECT @IsAdd [IsAdd],@SubProductID [SubProductID],0 [EndUser]
 
 	END
 

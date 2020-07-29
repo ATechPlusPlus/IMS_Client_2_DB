@@ -1,6 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <21st JULY 2020>
+-- Update date: <29th JULY 2020>
 -- Description:	<>
 -- =============================================
 --EXEC SPR_Insert_PettyCashExpAmt
@@ -18,6 +19,8 @@ BEGIN
 	BEGIN TRY
 	DECLARE @PARAMERES VARCHAR(MAX)=''
 	SET @PARAMERES=CONCAT(@PettyCashExpAmt,',',@StoreID,',',@Particulars,',',@MasterCashClosingID,',',@CreatedBy)
+	
+	BEGIN TRANSACTION
 
 	IF @PettyCashExpAmt > 0
 	BEGIN
@@ -44,9 +47,14 @@ BEGIN
 	)
 	END
 
+	COMMIT
+
 	END TRY
 
 	BEGIN CATCH
+	
+	ROLLBACK
+
 	INSERT [dbo].[ERROR_Log]
 	(
 	ERR_NUMBER

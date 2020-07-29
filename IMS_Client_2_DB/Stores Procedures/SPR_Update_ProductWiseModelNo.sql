@@ -1,49 +1,36 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
--- Create date: <21st JULY 2020>
--- Update date: <29th JULY 2020>
+-- Create date: <29th JULY 2020>
 -- Description:	<>
 -- =============================================
---EXEC SPR_Insert_PettyCashAmt
-CREATE PROCEDURE [dbo].[SPR_Insert_PettyCashAmt]
-@PettyCashAmt DECIMAL(18,3)=0
+--EXEC SPR_Update_ProductWiseModelNo
+CREATE PROCEDURE [dbo].[SPR_Update_ProductWiseModelNo]
+@ProductID INT=0
+,@ModelNo NVARCHAR(MAX)=0
+,@BrandID INT=0
 ,@StoreID INT=0
+,@EndUser DECIMAL(18,3)=0
 ,@CreatedBy INT=0
+,@SubProductID INT=0
 AS
 BEGIN
-
+	
 	SET NOCOUNT ON;
 
 	BEGIN TRY
+
 	DECLARE @PARAMERES VARCHAR(MAX)=''
-	SET @PARAMERES=CONCAT(@PettyCashAmt,',',@StoreID,',',@CreatedBy)
 	
 	BEGIN TRANSACTION
 
-	IF @PettyCashAmt > 0
-	BEGIN
-
-	INSERT INTO tblPettyCashExpensesDetails
-	(
-	  MasterCashClosingID
-	 ,Particulars
-	 ,TransactionDate
-	 ,PettyCashAmt
-	 ,ExpensesAmt
-	 ,StoreID
-	 ,CreatedBy	
-	)
-	VALUES
-	(
-	 0
-	,'Cash Received'
-	,CONVERT(DATE,GETDATE())
-	,@PettyCashAmt
-	,0
-	,@StoreID
-	,@CreatedBy
-	)
-	END
+	SET @PARAMERES=CONCAT(@ProductID,',',@ModelNo,',',@BrandID,',',@StoreID,',',@EndUser,',',@CreatedBy,',',@SubProductID)
+	
+	UPDATE tblProductWiseModelNo SET EndUser=@EndUser
+	,UpdatedBy=@CreatedBy
+	,UpdatedOn=GETDATE()
+	WHERE SubProductID=@SubProductID
+	AND ProductID=@ProductID
+	AND StoreID=@StoreID
 
 	COMMIT
 
@@ -73,5 +60,4 @@ BEGIN
 	,@PARAMERES
 	
 	END CATCH
-
 END

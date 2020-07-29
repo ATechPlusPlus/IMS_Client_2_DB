@@ -1,10 +1,10 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <26th FEB 2020>
--- Modify date: <28th JULY 2020>
+-- Modify date: <29th JULY 2020>
 -- Description:	<Description,,>
 -- =============================================
---EXEC [dbo].[Get_Delivering_PurchaseInvoice_BillDetails] 2,1
+--EXEC [dbo].[Get_Delivering_PurchaseInvoice_BillDetails] 12,1
 CREATE PROCEDURE [dbo].[Get_Delivering_PurchaseInvoice_BillDetails]
 --@Supplier_BillNo varchar(50)
 @PurchaseInvoiceID INT = 0
@@ -27,7 +27,7 @@ BEGIN
 		SELECT ISNULL(pid1.DeliveryPurchaseID1,0) DeliveryPurchaseID1,pid.PurchaseInvoiceDetailsID, 
 		pid.PurchaseInvoiceID, @SupplierBillNo AS SupplierBillNo,
 		pid.ProductID, pid.SubProductID, pid.ModelNo, pid.BrandID, pid.SupplierID, pid.QTY, pid.Rate, 
-		pid.BillDate, pid.Sales_Price [Sales Price], ISNULL(cat.CategoryID,0)CategoryID,pm.ProductName,
+		pid.BillDate, pid.Sales_Price [Sales Price], ISNULL(cat.CategoryID,0)CategoryID,pm.ProductName [ItemName],
 		bm.BrandName,sm.SupplierName,sm.CountryID,cm.CountryName
 		,ISNULL(pid1.SizeTypeID,0)SizeTypeID,ISNULL(pid1.StoreID,0)StoreID
 		FROM [dbo].[PurchaseInvoiceDetails] pid
@@ -48,7 +48,7 @@ BEGIN
 		SELECT ISNULL(pid1.DeliveryPurchaseID1,0) DeliveryPurchaseID1,pid.PurchaseInvoiceDetailsID, 
 		pid.PurchaseInvoiceID, @SupplierBillNo AS SupplierBillNo,
 		pid.ProductID, pid.SubProductID, pid.ModelNo, pid.BrandID, pid.SupplierID, pid.QTY, pid.Rate, 
-		pid.BillDate, pid.Sales_Price [Sales Price], ISNULL(cat.CategoryID,0)CategoryID,pm.ProductName,
+		pid.BillDate, pid.Sales_Price [Sales Price], ISNULL(cat.CategoryID,0)CategoryID,pm.ProductName [ItemName],
 		bm.BrandName,sm.SupplierName,sm.CountryID,cm.CountryName
 		,ISNULL(pid1.SizeTypeID,0)SizeTypeID,ISNULL(pid1.StoreID,0)StoreID
 		FROM [dbo].[PurchaseInvoiceDetails] pid

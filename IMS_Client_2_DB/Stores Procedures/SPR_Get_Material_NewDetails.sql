@@ -1,14 +1,16 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <25th JULY 2020>
--- Update date: <26th JULY 2020>
+-- Update date: <30th JULY 2020>
 -- Description:	<>
 -- =============================================
---EXEC SPR_Get_Material_NewDetails 0,1,0
+--EXEC SPR_Get_Material_NewDetails 0,0,0,'0'
 CREATE PROCEDURE [dbo].[SPR_Get_Material_NewDetails]
-@BarcodeNo BIGINT=0
-,@ProductID INT=0
-,@ColorID   INT=0
+@BarcodeNo		BIGINT=0
+,@ProductID		INT=0
+,@ColorID		INT=0
+--,@SubProductID  INT=0
+,@ModelNo		NVARCHAR(MAX)
 AS
 BEGIN
 
@@ -27,7 +29,7 @@ BEGIN
 		DECLARE @StoreID INT=0
 		DECLARE @StoreName VARCHAR(MAX)=''
 
-		SET @PARAMERES=CONCAT(@BarcodeNo,',',@ProductID,',',@ColorID)
+		SET @PARAMERES=CONCAT(@BarcodeNo,',',@ProductID,',',@ColorID,',',@ModelNo)
 		--BEGIN TRANSACTION
 
 			DECLARE cursor_Store CURSOR
@@ -57,15 +59,17 @@ BEGIN
 			SET @WHERE='WHERE ps.ProductID=IIF('+CAST(@ProductID AS VARCHAR)+'=0,ps.ProductID,'+CAST(@ProductID AS VARCHAR)+')
 			AND ISNULL(ps.BarcodeNo,0)=IIF('+CAST(@BarcodeNo AS VARCHAR)+'=0,ISNULL(ps.BarcodeNo,0),'+CAST(@BarcodeNo AS VARCHAR)+')
 			AND ps.ColorID=IIF('+CAST(@ColorID AS VARCHAR)+'=0,ps.ColorID,'+CAST(@ColorID AS VARCHAR)+')
-			GROUP BY ps.BarcodeNo,cm.ColorName,sz.Size,pm.ProductName,pm.ProductID'
+			AND pwm.ModelNo=IIF('''+CAST(@ModelNo AS NVARCHAR)+'''=''0'',pwm.ModelNo,'''+CAST(@ModelNo AS NVARCHAR)+''')
+			GROUP BY ps.BarcodeNo,cm.ColorName,sz.Size,pm.ProductName,pm.ProductID,pwm.EndUser,pwm.Photo'
 
-			SET @query2='SELECT CAST(ISNULL(ps.BarcodeNo,0) AS VARCHAR)BarcodeNo,cm.ColorName [Color],sz.Size,pm.ProductID,pm.ProductName [Item Name],
+			SET @query2='SELECT CAST(ISNULL(ps.BarcodeNo,0) AS VARCHAR)BarcodeNo,cm.ColorName [Color],sz.Size,pm.ProductID,pm.ProductName [Item Name],CAST(pwm.EndUser AS VARCHAR)[EndUser],pwm.Photo,
 			'+@query1+'
 			[Remove],ISNULL(SUM(ps.QTY),0) AS Total FROM ProductStockColorSizeMaster ps
 			INNER JOIN ProductMaster pm ON ps.ProductID=pm.ProductID
 			INNER JOIN StoreMaster sm ON ps.StoreID=sm.StoreID
 			INNER JOIN ColorMaster cm ON ps.ColorID=cm.ColorID
 			INNER JOIN SizeMaster sz ON ps.SizeID=sz.SizeID
+			INNER JOIN tblProductWiseModelNo pwm ON ps.SubProductID=pwm.SubProductID AND ps.ProductID=pwm.ProductID
 			'+@WHERE+'
 			'
 			SET @query2=REPLACE(@query2,',
@@ -74,23 +78,23 @@ BEGIN
 			--print @query2
 
 			SET @TotalStoreQuery1='UNION 
-			SELECT CAST(''Total'' AS VARCHAR) [BarcodeNo],'''' [Color],'''' [Size],'''' [ProductID],'''' [Item Name],'+@SumOfQTY+'SUM(pt.Total) [Total] FROM (SELECT '+@query1+'ISNULL(SUM(ps.QTY),0) AS Total 
+			SELECT CAST(''Total'' AS VARCHAR) [BarcodeNo],'''' [Color],'''' [Size],'''' [ProductID],'''' [Item Name],'''' [EndUser],'''' Photo,'+@SumOfQTY+'SUM(pt.Total) [Total] FROM (SELECT '+@query1+'ISNULL(SUM(ps.QTY),0) AS Total 
 			FROM ProductStockColorSizeMaster ps
 			INNER JOIN ProductMaster pm ON ps.ProductID=pm.ProductID
 			INNER JOIN StoreMaster sm ON ps.StoreID=sm.StoreID
 			INNER JOIN ColorMaster cm ON ps.ColorID=cm.ColorID
 			INNER JOIN SizeMaster sz ON ps.SizeID=sz.SizeID
+			INNER JOIN tblProductWiseModelNo pwm ON ps.SubProductID=pwm.SubProductID AND ps.ProductID=pwm.ProductID
 			'+@WHERE+'
 			)pt'
-			--PRINT @TotalStoreQuery1
-
+			
+			PRINT @query2 + @TotalStoreQuery1
 			EXEC (@query2 + @TotalStoreQuery1)
-			--COMMIT
 			 
 			END TRY
 	
 			BEGIN CATCH
-			--ROLLBACK
+
 			INSERT [dbo].[ERROR_Log]
 			(
 			ERR_NUMBER

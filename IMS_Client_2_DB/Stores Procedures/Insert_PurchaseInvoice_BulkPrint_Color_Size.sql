@@ -1,9 +1,10 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <08th MARCH 2020>
--- Update date: <28th JULY 2020>
+-- Update date: <29th JULY 2020>
 -- Description:	<When User is posting purchase invoice then Inserted into Productstock color size master table>
 -- =============================================
+-- EXEC [dbo].[Insert_PurchaseInvoice_BulkPrint_Color_Size] 2,3,10,0,'B201',5
 -- EXEC [dbo].[Insert_PurchaseInvoice_BulkPrint_Color_Size] 12,3,5,0,'V101',5
 CREATE PROCEDURE [dbo].[Insert_PurchaseInvoice_BulkPrint_Color_Size]
 @PurchaseInvoiceID INT=0
@@ -99,13 +100,16 @@ BEGIN
 	SET @query2='
 	SELECT PurchaseInvoiceID,ColorID,ProductID,SubProductID,QTY,Size,ModelNo,Rate,StoreID FROM
 	(SELECT pd1.PurchaseInvoiceID,
-	clr.ColorID,pd1.ProductID,pd1.SubProductID,pd1.ModelNo,pm.Rate,pd1.StoreID,'+@query1+'pd3.Total,FROM DeliveryPurchaseBill1 pd1
+	clr.ColorID,pd1.ProductID,pd1.SubProductID,pwm.ModelNo,pwm.EndUser [Rate],pd1.StoreID,'+@query1+'pd3.Total
+	,FROM DeliveryPurchaseBill1 pd1
 	INNER JOIN DeliveryPurchaseBill2 pd2 ON pd2.DeliveryPurchaseID1=pd1.DeliveryPurchaseID1
 	INNER JOIN DeliveryPurchaseBill3 pd3 ON pd3.DeliveryPurchaseID2=pd2.DeliveryPurchaseID2
 	INNER JOIN ColorMaster clr ON pd3.ColorID=clr.ColorID
 	INNER JOIN ProductMaster pm on pd1.ProductID = pm.ProductID
+	INNER JOIN tblProductWiseModelNo pwm ON pd1.ProductID=pwm.ProductID AND pd1.SubProductID=pwm.SubProductID AND pwm.StoreID='+CAST(@StoreID AS VARCHAR)+'
 	WHERE 
-	pd1.PurchaseInvoiceID='+CAST(@PurchaseInvoiceID AS VARCHAR)+' AND pd2.DeliveryPurchaseID1='+CAST(@DeliveryPurchaseID as VARCHAR)+' group by	pd1.PurchaseInvoiceID,pd1.ProductID,pd1.SubProductID,clr.ColorID,pd1.ModelNo,pm.Rate,pd1.StoreID,pd3.Total)a UNPIVOT
+	pd1.PurchaseInvoiceID='+CAST(@PurchaseInvoiceID AS VARCHAR)+' AND pd2.DeliveryPurchaseID1='+CAST(@DeliveryPurchaseID as VARCHAR)+' group by pd1.PurchaseInvoiceID,pd1.ProductID,pd1.SubProductID,clr.ColorID,pwm.ModelNo,pwm.EndUser,pd1.StoreID,pd3.Total)a U
+NPIVOT
 	(
 	QTY
 	FOR SIZE IN ('+@queryunpivot+')
@@ -115,7 +119,7 @@ BEGIN
 	
 	--PRINT @query1
 	--PRINT @queryunpivot;
-	--PRINT @query2
+	PRINT @query2
 	
 	--IF @i = 1
 	--PRINT @query2;
@@ -125,7 +129,7 @@ BEGIN
 	,ColorID 	
 	,ProductID
 	,SubProductID
-	,QTY 
+	,QTY
 	,SizeID 
 	,ModelNo
 	,Rate

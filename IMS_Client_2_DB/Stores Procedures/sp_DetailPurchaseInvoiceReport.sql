@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<MATEEN KHAN>
 -- Create date: <5th JULY 2020>
--- Update date:	<7th JULY 2020>
+-- Update date:	<29th JULY 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC sp_DetailPurchaseInvoiceReport 1002
@@ -18,14 +18,14 @@ BEGIN
 
 	SELECT PurchaseInvoiceID,SupplierBillNo,ShipmentNo,
 	(SELECT DISTINCT SupplierName FROM SupplierMaster WHERE SupplierID=p1.SupplierID) AS Supplier,
-	BillDate,(CASE WHEN p1.IsInvoiceDone =1 THEN 'Posted' WHEN p1.IsInvoiceDone =0 THEN 'Not Posted' END) IsInvoiceDone,TotalQTY,BillValue,Discount,ForeignExp,GrandTotal,LocalValue,LocalExp,LocalValue
+	BillDate,(CASE WHEN p1.IsInvoiceDone =1 THEN 'Posted' WHEN p1.IsInvoiceDone =0 THEN 'Not Posted' END) IsInvoiceDone,TotalQTY,BillValue,Discount,ForeignExp,GrandTotal,LocalValue,LocalExp
 	FROM [dbo].[PurchaseInvoice] AS p1 WHERE p1.PurchaseInvoiceID=@BillNo
 	
 	
 	SELECT PurchaseInvoiceID, 
 	(SELECT DISTINCT  item.ProductName FROM ProductMaster AS item WHERE item.ProductID=p1.ProductID) AS Item,ModelNo,
 	(SELECT DISTINCT BrandName FROM BrandMaster AS b WHERE b.BrandID=p1.BrandID) AS Brand,
-	QTY,Rate,Sales_Price,AddedRatio,SuppossedPrice
+	QTY,Rate,Sales_Price [EndUser Price],AddedRatio,SuppossedPrice
 	FROM [dbo].[PurchaseInvoiceDetails] AS p1 WHERE  p1.PurchaseInvoiceID=@BillNo
 	
 	
@@ -35,7 +35,7 @@ BEGIN
 	BarcodeNo, 
 	(SELECT DISTINCT ColorName FROM ColorMaster WHERE ColorID=p1.ColorID) AS Color,
 	(SELECT DISTINCT SizeID FROM SizeMaster WHERE SizeID=p1.SizeID) AS Size,
-	ModelNo, QTY, Rate
+	QTY, Rate
 	FROM [dbo].[ProductStockMaster] AS p1 
 	WHERE p1.PurchaseInvoiceID=@BillNo
 	AND p1.QTY > 0

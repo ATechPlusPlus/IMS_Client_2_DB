@@ -134,6 +134,8 @@
     <Build Include="Tables\tblProductWiseModelNo.sql" />
     <Build Include="Stores Procedures\SPR_Insert_ProductWiseModelNo.sql" />
     <Build Include="Stores Procedures\SPR_IsModelBrandExists.sql" />
+    <Build Include="Stores Procedures\SPR_Update_ProductWiseModelNo.sql" />
+    <Build Include="Stores Procedures\SPR_Delete_Delivering_PurchaseBill.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IMS_Client_2_DB.publish.xml" />

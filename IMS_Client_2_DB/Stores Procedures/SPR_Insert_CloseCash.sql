@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <14th JULY 2020>
--- Update date: <>
+-- Update date: <29th JULY 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC [dbo].[SPR_Insert_CloseCash] 0,0,0,0,0
@@ -21,10 +21,16 @@ BEGIN
 	BEGIN TRY
 	DECLARE @PARAMERES VARCHAR(MAX)=''
 	SET @PARAMERES=CONCAT(@MasterCashClosingID,',',@CashBandID,',',@Count,',',@Count,',',@Value,',',@CreatedBy)
+	BEGIN TRANSACTION
+
+	COMMIT
 
 	END TRY
 
 	BEGIN CATCH
+	
+	ROLLBACK
+
 	INSERT [dbo].[ERROR_Log]
 	(
 	ERR_NUMBER

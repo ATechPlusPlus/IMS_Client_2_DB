@@ -1,11 +1,11 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <28th JULY 2020>
--- Update date: <>
+-- Update date: <29th JULY 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC SPR_Insert_ProductWiseModelNo
-CREATE PROCEDURE SPR_Insert_ProductWiseModelNo
+CREATE PROCEDURE [dbo].[SPR_Insert_ProductWiseModelNo]
 @ProductID INT=0
 ,@ModelNo NVARCHAR(MAX)=0
 ,@BrandID INT=0
@@ -24,6 +24,8 @@ BEGIN
 
 	SET @PARAMERES=CONCAT(@ProductID,',',@ModelNo,',',@BrandID,',',@StoreID,',',@EndUser,',',@CreatedBy,',',@SubProductID)
 	
+	BEGIN TRANSACTION
+
 	IF NOT EXISTS(SELECT 1 FROM tblProductWiseModelNo WITH(NOLOCK) WHERE ModelNo=@ModelNo AND BrandID=@BrandID AND ProductID=@ProductID AND StoreID=@StoreID)
 		BEGIN
 
@@ -56,10 +58,14 @@ BEGIN
 		SELECT @SubProductID=0
 
 		END
+	
+	COMMIT
 
 	END TRY
 
 	BEGIN CATCH
+	
+	ROLLBACK
 
 	INSERT [dbo].[ERROR_Log]
 	(

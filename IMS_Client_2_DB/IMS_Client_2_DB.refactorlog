@@ -287,4 +287,25 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="BarCodePrinter" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="e7ac4aa7-6e6e-415a-ba3f-51d388c311b4" ChangeDateTime="07/30/2020 16:56:33">
+    <Property Name="ElementName" Value="[dbo].[tblPC_Store_Mapping].[StoreName]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[tblPC_Store_Mapping]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="StoreID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="86407f90-0ef1-44ee-9b75-8f0239510ef5" ChangeDateTime="07/30/2020 16:57:19">
+    <Property Name="ElementName" Value="[dbo].[tblPC_Store_Mapping].[AdededOn]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[tblPC_Store_Mapping]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CreatedOn" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="f162819a-b4d8-4286-81bf-90b1f58fc3f4" ChangeDateTime="07/30/2020 17:00:07">
+    <Property Name="ElementName" Value="[dbo].[tblPC_Store_Mapping].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[tblPC_Store_Mapping]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PC_Store_ID" />
+  </Operation>
 </Operations>

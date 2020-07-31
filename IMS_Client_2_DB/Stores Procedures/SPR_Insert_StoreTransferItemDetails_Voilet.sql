@@ -1,13 +1,14 @@
 ﻿-- =============================================
 -- Author:		<Author,,Name>
 -- Create date: <24th JULY 2020>
--- Update date: <26th JULY 2020>
+-- Update date: <31th JULY 2020>
 -- Description:	<Description,,>
 -- =============================================
 CREATE PROCEDURE [dbo].[SPR_Insert_StoreTransferItemDetails_Voilet]
 @TransferItemID			INT=0
 ,@StoreBillDetailsID	INT=0
 ,@ProductID				INT=0
+,@SubProductID			INT=0
 ,@ModelNo				NVARCHAR(MAX)=''
 ,@Barcode				NVARCHAR(MAX)=''
 ,@Rate					DECIMAL(18,3)=0
@@ -26,7 +27,7 @@ BEGIN
 
 	BEGIN TRY
 	DECLARE @PARAMERES VARCHAR(MAX)=''
-	SET @PARAMERES=CONCAT(@TransferItemID,',',@StoreBillDetailsID,',',@ProductID,',',@Barcode,',',@Rate,',',@BillQTY
+	SET @PARAMERES=CONCAT(@TransferItemID,',',@StoreBillDetailsID,',',@ProductID,',',@SubProductID,',',@Barcode,',',@Rate,',',@BillQTY
 	,',',@EnterQTY,',',@ColorID,',',@SizeID,',',@Total,',',@StoreID,',',@CreatedBy,',',@CellColor)
 
 	BEGIN TRANSACTION
@@ -43,6 +44,7 @@ BEGIN
 	TransferItemID
 	,StoreBillDetailsID
 	,ProductID
+	,SubProductID
 	,ModelNo
 	,Barcode
 	,Rate
@@ -59,6 +61,7 @@ BEGIN
 	 @TransferItemID
 	,@StoreBillDetailsID
 	,@ProductID
+	,@SubProductID
 	,@ModelNo
 	,@Barcode
 	,@Rate

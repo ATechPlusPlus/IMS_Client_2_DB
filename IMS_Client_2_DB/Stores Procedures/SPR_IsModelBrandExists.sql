@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
--- Create date: <28th JULY 2020>
--- Update date: <29th JULY 2020>
+-- Create date: <29th JULY 2020>
+-- Update date: <31st JULY 2020>
 -- Description:	<>
 -- =============================================
 --EXEC SPR_IsModelBrandExists
@@ -24,10 +24,12 @@ BEGIN
 	DECLARE @PARAMERES VARCHAR(MAX)=''
 	SET @PARAMERES=CONCAT(@ProductID,',',@ModelNo,',',@BrandID,',',@StoreID)
 	
-	IF EXISTS(SELECT 1 FROM tblProductWiseModelNo WITH(NOLOCK) WHERE ModelNo=@ModelNo AND BrandID=@BrandID AND StoreID=@StoreID)
+	IF EXISTS(SELECT 1 FROM tblProductWiseModelNo WITH(NOLOCK) WHERE ModelNo=@ModelNo AND BrandID=@BrandID --AND StoreID=@StoreID
+	)
 	BEGIN
 
-		IF EXISTS(SELECT 1 FROM tblProductWiseModelNo WITH(NOLOCK) WHERE ModelNo=@ModelNo AND BrandID=@BrandID AND ProductID=@ProductID AND StoreID=@StoreID)
+		IF EXISTS(SELECT 1 FROM tblProductWiseModelNo WITH(NOLOCK) WHERE ModelNo=@ModelNo AND BrandID=@BrandID AND ProductID=@ProductID --AND StoreID=@StoreID
+		)
 		BEGIN
 
 		SET @IsAdd=1
@@ -36,7 +38,7 @@ BEGIN
 		FROM tblProductWiseModelNo WITH(NOLOCK) WHERE ModelNo=@ModelNo 
 		AND BrandID=@BrandID 
 		AND ProductID=@ProductID
-		AND StoreID=@StoreID
+		--AND StoreID=@StoreID
 		
 		SELECT @IsAdd [IsAdd], @SubProductID [SubProductID],@EndUser [EndUser]
 

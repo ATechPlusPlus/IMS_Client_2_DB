@@ -1,16 +1,17 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <25th JULY 2020>
--- Update date: <30th JULY 2020>
+-- Update date: <31th JULY 2020>
 -- Description:	<>
 -- =============================================
---EXEC SPR_Get_Material_NewDetails 0,0,0,'0'
+--EXEC SPR_Get_Material_NewDetails 0,0,0,'0',0
 CREATE PROCEDURE [dbo].[SPR_Get_Material_NewDetails]
 @BarcodeNo		BIGINT=0
 ,@ProductID		INT=0
 ,@ColorID		INT=0
 --,@SubProductID  INT=0
 ,@ModelNo		NVARCHAR(MAX)
+,@CategoryID    INT=0
 AS
 BEGIN
 
@@ -60,12 +61,14 @@ BEGIN
 			AND ISNULL(ps.BarcodeNo,0)=IIF('+CAST(@BarcodeNo AS VARCHAR)+'=0,ISNULL(ps.BarcodeNo,0),'+CAST(@BarcodeNo AS VARCHAR)+')
 			AND ps.ColorID=IIF('+CAST(@ColorID AS VARCHAR)+'=0,ps.ColorID,'+CAST(@ColorID AS VARCHAR)+')
 			AND pwm.ModelNo=IIF('''+CAST(@ModelNo AS NVARCHAR)+'''=''0'',pwm.ModelNo,'''+CAST(@ModelNo AS NVARCHAR)+''')
+			AND cat.CategoryID=IIF('+CAST(@CategoryID AS VARCHAR)+'=0,cat.CategoryID,'+CAST(@CategoryID AS VARCHAR)+')
 			GROUP BY ps.BarcodeNo,cm.ColorName,sz.Size,pm.ProductName,pm.ProductID,pwm.EndUser,pwm.Photo'
 
 			SET @query2='SELECT CAST(ISNULL(ps.BarcodeNo,0) AS VARCHAR)BarcodeNo,cm.ColorName [Color],sz.Size,pm.ProductID,pm.ProductName [Item Name],CAST(pwm.EndUser AS VARCHAR)[EndUser],pwm.Photo,
 			'+@query1+'
 			[Remove],ISNULL(SUM(ps.QTY),0) AS Total FROM ProductStockColorSizeMaster ps
 			INNER JOIN ProductMaster pm ON ps.ProductID=pm.ProductID
+			INNER JOIN CategoryMaster cat ON pm.CategoryID=cat.CategoryID
 			INNER JOIN StoreMaster sm ON ps.StoreID=sm.StoreID
 			INNER JOIN ColorMaster cm ON ps.ColorID=cm.ColorID
 			INNER JOIN SizeMaster sz ON ps.SizeID=sz.SizeID
@@ -81,6 +84,7 @@ BEGIN
 			SELECT CAST(''Total'' AS VARCHAR) [BarcodeNo],'''' [Color],'''' [Size],'''' [ProductID],'''' [Item Name],'''' [EndUser],'''' Photo,'+@SumOfQTY+'SUM(pt.Total) [Total] FROM (SELECT '+@query1+'ISNULL(SUM(ps.QTY),0) AS Total 
 			FROM ProductStockColorSizeMaster ps
 			INNER JOIN ProductMaster pm ON ps.ProductID=pm.ProductID
+			INNER JOIN CategoryMaster cat ON pm.CategoryID=cat.CategoryID
 			INNER JOIN StoreMaster sm ON ps.StoreID=sm.StoreID
 			INNER JOIN ColorMaster cm ON ps.ColorID=cm.ColorID
 			INNER JOIN SizeMaster sz ON ps.SizeID=sz.SizeID

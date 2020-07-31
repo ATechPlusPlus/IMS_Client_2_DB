@@ -1,6 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <29th JULY 2020>
+-- Update date: <31th JULY 2020>
 -- Description:	<>
 -- =============================================
 --EXEC SPR_Update_ProductWiseModelNo
@@ -30,7 +31,7 @@ BEGIN
 	,UpdatedOn=GETDATE()
 	WHERE SubProductID=@SubProductID
 	AND ProductID=@ProductID
-	AND StoreID=@StoreID
+	--AND StoreID=@StoreID
 
 	COMMIT
 

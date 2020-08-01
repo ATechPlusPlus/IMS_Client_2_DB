@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <16th JULY 2020>
--- Update date: <23th JULY 2020>
+-- Update date: <31th JULY 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC SPR_Insert_ReceiveBillDetails 'RECEBILL-1002',1,5
@@ -25,7 +25,8 @@ BEGIN
 		DECLARE @TransferItemID AS INT=0
 		DECLARE @Barcode AS NVARCHAR(50)=0
 		DECLARE @ProductID AS INT=0 
-		
+		DECLARE @SubProductID AS INT=0 
+
 		DECLARE @ColorID AS INT=0 
 		DECLARE @SizeID AS INT=0
 		DECLARE @BillQTY AS INT=0
@@ -82,7 +83,7 @@ BEGIN
 		DECLARE ReceiveBill_CURSOR CURSOR 
 		FOR
 		
-		SELECT TransferItemID,Barcode,ProductID, ColorID, SizeID , BillQTY
+		SELECT TransferItemID,Barcode,ProductID, SubProductID, ColorID, SizeID , BillQTY
 		,Rate
 		FROM dbo.tblStoreTransferItemDetails WITH(NOLOCK)
 		WHERE StoreBillDetailsID=@StoreBillDetailsID
@@ -90,7 +91,7 @@ BEGIN
 
 		OPEN ReceiveBill_CURSOR
 
-		FETCH NEXT FROM ReceiveBill_CURSOR INTO @TransferItemID,@Barcode,@ProductID, 
+		FETCH NEXT FROM ReceiveBill_CURSOR INTO @TransferItemID,@Barcode,@ProductID,@SubProductID, 
 		@ColorID, @SizeID , @BillQTY,@Rate
 
 			WHILE @@FETCH_STATUS <> -1
@@ -101,6 +102,7 @@ BEGIN
 				StoreTransferReceiveID
 				,StoreBillDetailsID
 				,ProductID
+				,SubProductID
 				,Barcode
 				,Rate
 				,QTY
@@ -114,6 +116,7 @@ BEGIN
 				@StoreTransferReceiveID
 				,@StoreBillDetailsID
 				,@ProductID
+				,@SubProductID
 				,@Barcode
 				,@Rate
 				,@BillQTY
@@ -151,6 +154,7 @@ BEGIN
 				INSERT INTO ProductStockColorSizeMaster
 				(
 				ProductID
+				,SubProductID
 				,StoreID
 				,BarcodeNo
 				,ColorID
@@ -161,6 +165,7 @@ BEGIN
 				VALUES
 				(
 				@ProductID
+				,@SubProductID
 				,@StoreID
 				,@Barcode
 				,@ColorID

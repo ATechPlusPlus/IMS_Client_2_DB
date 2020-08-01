@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <15th JULY 2020>
--- Update date: <25th JULY 2020>
+-- Update date: <31th JULY 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC SPR_Get_StoreTransfer_ItemDetails 1003
@@ -21,7 +21,7 @@ BEGIN
 	 (CASE WHEN st.BillQTY = ISNULL(st.EnterQTY,0) THEN 'Green'
 	 WHEN st.BillQTY < ISNULL(st.EnterQTY,0) THEN 'Orange' ELSE 'Red' END) [CellColor]
 	,psm.ModelNo
-	,st.ProductID,pm.ProductName [Item],cm.ColorName [Color],sm.Size
+	,st.ProductID,st.SubProductID,pm.ProductName [Item],cm.ColorName [Color],sm.Size
 	,stb.BillDate,stb.BillNo,stb.TotalQTY,st.Total
 	,st.ColorID,st.SizeID
 	FROM tblStoreTransferItemDetails st
@@ -39,7 +39,7 @@ BEGIN
 	SELECT [TransferItemID], [StoreBillDetailsID],[Barcode]
 	, BillQTY, [EnterQTY],'' [State]
 	,'Violet' [CellColor],'' ModelNo
-	, ProductID,'' [Item],'' [Color],'' [Size]
+	, ProductID,SubProductID,'' [Item],'' [Color],'' [Size]
 	,'' BillDate,'' BillNo,'' TotalQTY
     ,0 [Total]
 	,ColorID,SizeID

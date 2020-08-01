@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <28th JULY 2020>
--- Update date: <29th JULY 2020>
+-- Update date: <31th JULY 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC SPR_Insert_ProductWiseModelNo
@@ -26,7 +26,8 @@ BEGIN
 	
 	BEGIN TRANSACTION
 
-	IF NOT EXISTS(SELECT 1 FROM tblProductWiseModelNo WITH(NOLOCK) WHERE ModelNo=@ModelNo AND BrandID=@BrandID AND ProductID=@ProductID AND StoreID=@StoreID)
+	IF NOT EXISTS(SELECT 1 FROM tblProductWiseModelNo WITH(NOLOCK) WHERE ModelNo=@ModelNo AND BrandID=@BrandID AND ProductID=@ProductID --AND StoreID=@StoreID
+	)
 		BEGIN
 
 		INSERT tblProductWiseModelNo

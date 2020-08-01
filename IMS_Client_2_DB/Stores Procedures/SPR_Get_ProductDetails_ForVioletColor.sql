@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <18th JULY 2020>
--- Update date: <25th JULY 2020>
+-- Update date: <31th JULY 2020>
 -- Description:	<>
 -- =============================================
 --EXEC SPR_Get_ProductDetails_ForVioletColor 'TRANS-60015',1002
@@ -25,15 +25,17 @@ BEGIN
 
 	SELECT 0 [TransferItemID],@StoreTransferID [StoreBillDetailsID],p2.BarcodeNo [Barcode]
 	--,'' BillQTY,1 [EnterQTY],'' [State]
-	,'Violet' [CellColor],p2.ModelNo
-	, p1.ProductID, p1.ProductName [Item],c1.ColorName [Color]
+	,'Violet' [CellColor],pwm.ModelNo
+	, p1.ProductID,p2.SubProductID, p1.ProductName [Item],c1.ColorName [Color]
     ,s1.Size,0 [Total]
 	,p2.colorID,p2.SizeID
 	--,'' BillDate,'' BillNo,'' TotalQTY
 	FROM dbo.ProductMaster p1
-    INNER JOIN ProductStockMaster p2 ON p1.ProductID=p2.ProductID AND p2.StoreID = @StoreID AND p2.BarcodeNo IS NOT NULL
+    --INNER JOIN ProductStockMaster p2 ON p1.ProductID=p2.ProductID AND p2.StoreID = @StoreID AND p2.BarcodeNo IS NOT NULL
+	INNER JOIN ProductStockColorSizeMaster p2 ON p1.ProductID=p2.ProductID AND p2.StoreID = @StoreID AND p2.BarcodeNo IS NOT NULL
 	INNER JOIN ColorMaster c1 ON p2.colorID=c1.ColorID 
     INNER JOIN SizeMaster s1 ON p2.SizeID=s1.SizeID
+	INNER JOIN tblProductWiseModelNo pwm ON p2.ProductID=pwm.ProductID AND p2.SubProductID=pwm.SubProductID--AND pwm.StoreID=@StoreID
     WHERE p2.StoreID = @StoreID 
 	AND p2.BarcodeNo =@BarCode
 

@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <26th FEB 2020>
--- Modify date: <29th JULY 2020>
+-- Update date: <02th JULY 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC [dbo].[Get_Delivering_PurchaseInvoice_BillDetails] 12,1
@@ -34,7 +34,7 @@ BEGIN
 		INNER JOIN [dbo].[ProductMaster] pm ON pid.ProductID = pm.ProductID
 	
 		LEFT OUTER JOIN [dbo].[DeliveryPurchaseBill1] pid1 ON pid.ProductID = pid1.ProductID
-		AND pid1.PurchaseInvoiceID = @PurchaseInvoiceID
+		AND pid1.PurchaseInvoiceID = @PurchaseInvoiceID AND pid.SubProductID=pid1.SubProductID
 
 		INNER JOIN [dbo].[CategoryMaster] cat ON pm.CategoryID = cat.CategoryID
 		INNER JOIN [dbo].[BrandMaster] bm ON pid.BrandID = bm.BrandID
@@ -55,7 +55,7 @@ BEGIN
 		INNER JOIN [dbo].[ProductMaster] pm ON pid.ProductID = pm.ProductID
 	
 		INNER JOIN [dbo].[DeliveryPurchaseBill1] pid1 ON pid.ProductID = pid1.ProductID
-		AND pid1.PurchaseInvoiceID = @PurchaseInvoiceID
+		AND pid1.PurchaseInvoiceID = @PurchaseInvoiceID AND pid.SubProductID=pid1.SubProductID
 
 		INNER JOIN [dbo].[CategoryMaster] cat ON pm.CategoryID = cat.CategoryID
 		INNER JOIN [dbo].[BrandMaster] bm ON pid.BrandID = bm.BrandID

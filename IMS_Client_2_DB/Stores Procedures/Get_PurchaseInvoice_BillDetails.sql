@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <15th MARCH 2020>
--- Update date: <28th July 2020>
+-- Update date: <02th AUGUST 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC Get_PurchaseInvoice_BillDetails 2

@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <29th JULY 2020>
--- Update date: <31st JULY 2020>
+-- Update date: <02nd AUGUST 2020>
 -- Description:	<>
 -- =============================================
 --EXEC SPR_IsModelBrandExists
@@ -52,7 +52,7 @@ BEGIN
 		SELECT @ProductID=ProductID
 		FROM tblProductWiseModelNo WITH(NOLOCK) WHERE ModelNo=@ModelNo 
 		AND BrandID=@BrandID 
-		AND StoreID=@StoreID
+		--AND StoreID=@StoreID
 
 		SELECT @ProductName=ProductName FROM ProductMaster WITH(NOLOCK) WHERE ProductID=@ProductID
 		SELECT @IsAdd [IsAdd],'ModelNo. '+@ModelNo+' is already exists for Item '+@ProductName [Msg]

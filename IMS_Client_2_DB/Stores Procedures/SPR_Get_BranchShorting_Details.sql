@@ -21,7 +21,7 @@ BEGIN
 	SELECT a.* 
 	FROM
 	(
-	SELECT psm.SubProductID,psm.ProductID,pm.ProductName,cm.ColorID,cm.ColorName,sm.SizeID,sm.Size,COUNT(sd.ProductID) [Sold]
+	SELECT psm.SubProductID,psm.ProductID,pm.ProductName [ItemName],cm.ColorID,cm.ColorName,sm.SizeID,sm.Size,COUNT(sd.ProductID) [Sold]
 	,st.StoreID,st.StoreName,psm.QTY [Branch],0 AS [Store],CONVERT(DATE,sd.CreatedOn) [SalesDate],psm.BarcodeNo,pwm.ModelNo,bm.BrandName,pwm.EndUser
 	FROM ProductStockColorSizeMaster psm
 	INNER JOIN SalesDetails sd ON sd.ProductID=psm.ProductID AND sd.SubProductID=psm.SubProductID

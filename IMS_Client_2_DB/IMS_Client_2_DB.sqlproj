@@ -137,6 +137,7 @@
     <Build Include="Stores Procedures\SPR_Update_ProductWiseModelNo.sql" />
     <Build Include="Stores Procedures\SPR_Delete_Delivering_PurchaseBill.sql" />
     <Build Include="Tables\tblPC_Store_Mapping.sql" />
+    <Build Include="Stores Procedures\SPR_Get_BranchShorting_Details.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IMS_Client_2_DB.publish.xml" />

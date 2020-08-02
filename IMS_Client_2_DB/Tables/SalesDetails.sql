@@ -3,7 +3,7 @@
 	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
     [InvoiceID] INT NULL, 
     [ProductID] INT NULL, 
-    [SubtProductID] INT NULL, 
+    [SubProdubctID] INT NULL, 
     [BarCode] NVARCHAR(50) NULL, 
     [QTY] INT NULL,
     [Rate] DECIMAL(18, 2) NULL,

@@ -138,6 +138,7 @@
     <Build Include="Stores Procedures\SPR_Delete_Delivering_PurchaseBill.sql" />
     <Build Include="Tables\tblPC_Store_Mapping.sql" />
     <Build Include="Stores Procedures\SPR_Get_BranchShorting_Details.sql" />
+    <Build Include="Stores Procedures\SPR_Get_Color_Master.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IMS_Client_2_DB.publish.xml" />
@@ -177,5 +178,8 @@
     <Build Include="Tables\Login_History.sql" />
     <Build Include="Tables\PostingDeliveryEntry.sql" />
     <Build Include="Sequances\Barcode_Sequance.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PreDeploy Include="tblFormRightDetails Insert script.PreDeployment1.sql" />
   </ItemGroup>
 </Project>

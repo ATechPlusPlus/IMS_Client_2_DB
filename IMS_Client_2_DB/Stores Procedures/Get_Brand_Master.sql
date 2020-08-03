@@ -1,11 +1,12 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <14th MARCH 2020>
+-- Update date: <03th AUGUST 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC Get_Brand_Master '0'
 --EXEC Get_Brand_Master 'brand1'
-CREATE PROCEDURE Get_Brand_Master
+CREATE PROCEDURE [dbo].[Get_Brand_Master]
 @BrandName NVARCHAR(100)='0'
 AS
 BEGIN
@@ -20,7 +21,7 @@ BEGIN
 
 	SELECT bm.BrandID,bm.BrandName,bm.SupplierID,cm.CountryID
 	,sm.SupplierName,cm.CountryName,
-	(CASE WHEN bm.ActiveStatus =1 THEN 'Active' WHEN bm.ActiveStatus =0 THEN 'InActive' END)ActiveStatus
+	(CASE bm.ActiveStatus WHEN 1 THEN 'Active' WHEN 0 THEN 'InActive' END)ActiveStatus
 	FROM [dbo].[BrandMaster] bm
 	INNER JOIN [dbo].[SupplierMaster] sm ON bm.SupplierID = sm.SupplierID
 	INNER JOIN [dbo].[CountryMaster] cm ON sm.CountryID = cm.CountryID
@@ -32,7 +33,7 @@ BEGIN
 	
 	SELECT bm.BrandID,bm.BrandName,bm.SupplierID,cm.CountryID
 	,sm.SupplierName,cm.CountryName,
-	(CASE WHEN bm.ActiveStatus =1 THEN 'Active' WHEN bm.ActiveStatus =0 THEN 'InActive' END)ActiveStatus
+	(CASE bm.ActiveStatus WHEN 1 THEN 'Active' WHEN 0 THEN 'InActive' END)ActiveStatus
 	FROM [dbo].[BrandMaster] bm
 	INNER JOIN [dbo].[SupplierMaster] sm ON bm.SupplierID = sm.SupplierID
 	INNER JOIN [dbo].[CountryMaster] cm ON sm.CountryID = cm.CountryID

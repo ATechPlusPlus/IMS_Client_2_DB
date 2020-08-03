@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[SizeTypeMaster](
 	[SizeTypeID] [int] IDENTITY(1,1) NOT NULL,
 	[SizeTypeName] [nvarchar](50) NOT NULL,
-	[CategoryID] [int] NULL,
+	[CategoryID] [int] NOT NULL DEFAULT 0,
 	[ActiveStatus] [bit] NOT NULL CONSTRAINT [DF_Table_1_ActiveStatus1]  DEFAULT ((1)),
 	[CreatedBy] [int] NOT NULL CONSTRAINT [DF_SizeTypeMaster_CreatedBy]  DEFAULT ((0)),
 	[CreatedOn] [datetime] NOT NULL CONSTRAINT [DF_SizeTypeMaster_CreatedOn]  DEFAULT (getdate()),

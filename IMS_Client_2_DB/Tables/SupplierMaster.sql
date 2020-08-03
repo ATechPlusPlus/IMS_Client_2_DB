@@ -2,7 +2,7 @@
 CREATE TABLE [dbo].[SupplierMaster](
 	[SupplierID] [int] IDENTITY(1,1) NOT NULL,
 	[SupplierName] [nvarchar](50) NOT NULL,
-	[CountryID] [int] NULL,
+	[CountryID] [int] NOT NULL DEFAULT 0,
 	[Phone] [varchar](50) NULL,
 	[EmailID] [varchar](50) NULL,
 	[BankName] [nvarchar](50) NULL,

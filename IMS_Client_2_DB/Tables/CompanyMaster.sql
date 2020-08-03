@@ -5,8 +5,8 @@ CREATE TABLE [dbo].[CompanyMaster](
 	[Address] [nvarchar](max) NULL,
 	[MobileNo] [varchar](13) NULL,
 	[EmailID] [varchar](50) NULL,
-	[CreatedBy] [int] NULL CONSTRAINT [DF_CompanyMaster_CreatedBy]  DEFAULT ((0)),
-	[CreatedOn] [datetime] NULL CONSTRAINT [DF_CompanyMaster_CreatedOn]  DEFAULT (getdate()),
+	[CreatedBy] [int] NOT NULL CONSTRAINT [DF_CompanyMaster_CreatedBy]  DEFAULT ((0)),
+	[CreatedOn] [datetime] NOT NULL CONSTRAINT [DF_CompanyMaster_CreatedOn]  DEFAULT (getdate()),
 	[UpdatedBy] [int] NULL,
 	[UpdatedOn] [datetime] NULL,
  CONSTRAINT [PK_CompanyMaster] PRIMARY KEY CLUSTERED 

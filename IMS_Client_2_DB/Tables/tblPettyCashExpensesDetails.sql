@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[tblPettyCashExpensesDetails](
 	[PettyCashExpID] [int] IDENTITY(1,1) NOT NULL,
-	[MasterCashClosingID] [int] NULL,
+	[MasterCashClosingID] [int] NOT NULL DEFAULT 0,
 	[Particulars] [nvarchar](200) NOT NULL,
 	[TransactionDate] [date] NOT NULL,
 	[PettyCashAmt] [decimal](18, 3) NOT NULL CONSTRAINT [DF_tblPettyCashExpenses_PettyCashAmt]  DEFAULT ((0)),

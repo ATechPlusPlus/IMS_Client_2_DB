@@ -4,7 +4,7 @@ CREATE TABLE [dbo].[CountryMaster](
 	[CountryCode] [nvarchar](10) NULL,
 	[CountryName] [nvarchar](50) NULL,
 	[ActiveStatus] [bit] NOT NULL CONSTRAINT [DF_CountryMaster_ActiveStatus]  DEFAULT ((1)),
-	[CreatedBy] [int] NOT NULL,
+	[CreatedBy] [int] NOT NULL DEFAULT 0,
 	[CreatedOn] [datetime] NOT NULL CONSTRAINT [DF_CountryMaster_CreatedOn]  DEFAULT (getdate()),
 	[UpdatedBy] [int] NULL,
 	[UpdatedOn] [datetime] NULL,

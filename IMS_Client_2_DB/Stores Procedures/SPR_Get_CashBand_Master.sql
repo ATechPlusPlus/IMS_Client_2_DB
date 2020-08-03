@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <12th JULY 2020>
--- Update date: <14th JULY 2020>
+-- Update date: <03th AUGUST 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC SPR_Get_CashBand_Master
@@ -17,8 +17,8 @@ BEGIN
 	SET NOCOUNT ON;
 	
 	SELECT cb.CashBandID,cb.CashBand,
-	(CASE WHEN cb.ActiveStatus =1 THEN 'Active' WHEN cb.ActiveStatus =0 THEN 'InActive' END)ActiveStatus
-	FROM tblCloseCashBandMaster cb
+	(CASE cb.ActiveStatus WHEN 1 THEN 'Active' WHEN 0 THEN 'InActive' END) ActiveStatus
+	FROM tblCloseCashBandMaster cb WITH(NOLOCK)
 	ORDER BY cb.CashBand
 	
 	END TRY

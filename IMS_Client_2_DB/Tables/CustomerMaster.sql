@@ -4,7 +4,7 @@ CREATE TABLE [dbo].[CustomerMaster](
 	[Address] [nvarchar](max) NULL,
 	[PhoneNo] [nvarchar](50) NULL,
 	[ActiveStatus] [bit] NOT NULL,
-	[CreatedBy] [int] NOT NULL,
+	[CreatedBy] [int] NOT NULL DEFAULT 0,
 	[CreatedOn] [datetime] NOT NULL,
 	[UpdatedBy] [int] NULL,
 	[UpdatedOn] [datetime] NULL,

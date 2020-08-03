@@ -102,5 +102,9 @@ INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID
 GO
 INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (45, N'Mini Sales Report', N'tblMiniSalesReport', 6)
 GO
+INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (46, N'Purchase Details', N'frmPurchaseDetails', 2)
+GO
+INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (47, N'Received Branch Transfer', N'frmReceivedBranchTransfer', 5)
+GO
 SET IDENTITY_INSERT [dbo].[tblFormRightDetails] OFF
 GO

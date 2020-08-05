@@ -139,6 +139,7 @@
     <Build Include="Tables\tblPC_Store_Mapping.sql" />
     <Build Include="Stores Procedures\SPR_Get_BranchShorting_Details.sql" />
     <Build Include="Stores Procedures\SPR_Get_Color_Master.sql" />
+    <Build Include="Stores Procedures\SPR_GetQuickBarCodeDetails.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IMS_Client_2_DB.publish.xml" />

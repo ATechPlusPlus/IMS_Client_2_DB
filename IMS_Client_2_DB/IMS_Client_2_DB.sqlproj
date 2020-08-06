@@ -142,6 +142,7 @@
     <Build Include="Stores Procedures\SPR_Get_PurchaseInvoice.sql" />
     <Build Include="Stores Procedures\SPR_Get_ProductPhoto.sql" />
     <Build Include="Stores Procedures\SPR_Get_ItemWiseModelNo.sql" />
+    <Build Include="Stores Procedures\SPR_GetQuickBarCodeDetails.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IMS_Client_2_DB.publish.xml" />

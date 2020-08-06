@@ -19,7 +19,7 @@ BEGIN
 	--Normal Store  0
 	--Wearhouse     1
     SELECT de.StoreID,sm.StoreName,de.StoreCategory
-	,(CASE de.StoreCategory WHEN 0 THEN 'Normal Store' WHEN 1 THEN 'Wearhouse' END)[StoreCategoryName]
+	,(CASE de.StoreCategory WHEN 0 THEN 'Normal Store' WHEN 1 THEN 'Warehouse' END)[StoreCategoryName]
     FROM DefaultStoreSetting de
     INNER JOIN StoreMaster sm ON de.StoreID=sm.StoreID
 	WHERE MachineName=@MachineName

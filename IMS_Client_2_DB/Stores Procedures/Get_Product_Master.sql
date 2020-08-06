@@ -1,10 +1,10 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <14th MARCH 2020>
--- Update date: <29th JULY 2020>
+-- Update date: <06th AUGUST 2020>
 -- Description:	<Description,,>
 -- =============================================
---EXEC Get_Product_Master '0',0
+--EXEC Get_Product_Master 'b',3
 CREATE PROCEDURE [dbo].[Get_Product_Master]
 @ProductName NVARCHAR(100)='0',
 @CategoryId INT=0
@@ -20,22 +20,25 @@ BEGIN
 	IF @ProductName = '0' AND @CategoryId = 0
 	BEGIN
 
-	SELECT pm.ProductID,pm.ProductName AS [ItemName],pm.ProductArabicName [Arabic Name],pm.CategoryID,cm.CategoryName AS [Department],pm.Photo
-	,(CASE WHEN pm.ActiveStatus =1 THEN 'Active' WHEN pm.ActiveStatus =0 THEN 'InActive' END)ActiveStatus
-	FROM ProductMaster pm
-	INNER JOIN CategoryMaster cm ON pm.CategoryID = cm.CategoryID
+		SELECT pm.ProductID,pm.ProductName AS [ItemName],pm.ProductArabicName [Arabic Name],pm.CategoryID,cm.CategoryName AS [Department]
+		,(CASE pm.ActiveStatus WHEN 1 THEN 'Active' WHEN 0 THEN 'InActive' END)ActiveStatus
+		FROM ProductMaster pm
+		INNER JOIN CategoryMaster cm ON pm.CategoryID = cm.CategoryID
+		ORDER BY cm.CategoryName
 
 	END
 
 	ELSE
 	BEGIN
 	
-	SELECT pm.ProductID,pm.ProductName AS [ItemName],pm.ProductArabicName [Arabic Name],pm.CategoryID,cm.CategoryName AS [Department],pm.Photo
-	,(CASE WHEN pm.ActiveStatus =1 THEN 'Active' WHEN pm.ActiveStatus =0 THEN 'InActive' END)ActiveStatus
-	FROM ProductMaster pm
-	INNER JOIN CategoryMaster cm ON pm.CategoryID = cm.CategoryID
-	WHERE pm.ProductName LIKE ''+@ProductName+'%' 
-	OR pm.CategoryID = @CategoryId
+		SELECT pm.ProductID,pm.ProductName AS [ItemName],pm.ProductArabicName [Arabic Name],pm.CategoryID,cm.CategoryName AS [Department]
+		,(CASE pm.ActiveStatus WHEN 1 THEN 'Active' WHEN 0 THEN 'InActive' END)ActiveStatus
+		FROM ProductMaster pm
+		INNER JOIN CategoryMaster cm ON pm.CategoryID = cm.CategoryID
+		WHERE 
+		pm.ProductName LIKE ''+IIF(@ProductName='0',pm.ProductName,@ProductName)+'%' 
+		AND pm.CategoryID = IIF(@CategoryId=0,pm.CategoryID,@CategoryId)
+		ORDER BY cm.CategoryName
 
 	END
 	

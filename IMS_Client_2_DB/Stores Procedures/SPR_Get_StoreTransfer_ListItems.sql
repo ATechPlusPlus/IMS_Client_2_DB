@@ -1,6 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <18th JULY 2020>
+-- Update date: <06th AUGUST 2020>
 -- Description:	<>
 -- =============================================
 --EXEC SPR_Get_StoreTransfer_ListItems 1
@@ -22,22 +23,23 @@ BEGIN
 	SET @PARAMERES=@StoreBillDetailsID
 
 	SELECT 
-      @ReceiveBillNo=ReceiveBillNo
-      ,@TotalQTY=TotalQTY
-      ,@ReceiveBillDate=ReceiveBillDate
-  FROM tblStoreTransferReceiveBillDetails WITH(NOLOCK) WHERE StoreTransferID=@StoreBillDetailsID
+    @ReceiveBillNo=ReceiveBillNo
+    ,@TotalQTY=TotalQTY
+    ,@ReceiveBillDate=ReceiveBillDate
+	FROM tblStoreTransferReceiveBillDetails WITH(NOLOCK) WHERE StoreTransferID=@StoreBillDetailsID
 
 	SELECT st.TransferItemID,st.StoreBillDetailsID,st.Barcode,st.BillQTY,ISNULL(st.EnterQTY,0)EnterQTY
 	,'' [State],
 	 (CASE WHEN st.BillQTY = ISNULL(st.EnterQTY,0) THEN 'Green'
 	 WHEN st.BillQTY < ISNULL(st.EnterQTY,0) THEN 'Orange' ELSE 'Red' END) [CellColor]
-	,psm.ModelNo,@ReceiveBillNo [ReceiveBillNo],@TotalQTY [ReceivedTotalQTY],@ReceiveBillDate [ReceiveBillDate]
+	,pwm.ModelNo [StyleNo],@ReceiveBillNo [ReceiveBillNo],@TotalQTY [ReceivedTotalQTY],@ReceiveBillDate [ReceiveBillDate]
 	,st.ProductID,pm.ProductName [Item],cm.ColorName [Color],sm.Size
 	,stb.BillDate,stb.BillNo,stb.TotalQTY,st.Total,stm.StoreName
 	FROM tblStoreTransferItemDetails st
 	INNER JOIN [tblStoreTransferBillDetails] stb ON st.StoreBillDetailsID=stb.StoreTransferID
-	INNER JOIN ProductStockMaster psm ON st.ProductID=psm.ProductID AND st.ColorID=psm.ColorID AND st.SizeID=psm.SizeID 
-	AND psm.BarcodeNo IS NOT NULL AND psm.QTY > 0
+	INNER JOIN tblProductWiseModelNo pwm ON st.SubProductID=pwm.SubProductID AND st.ProductID=pwm.ProductID 
+	--INNER JOIN ProductStockMaster psm ON st.ProductID=psm.ProductID AND st.ColorID=psm.ColorID AND st.SizeID=psm.SizeID 
+	--AND psm.BarcodeNo IS NOT NULL AND psm.QTY > 0
 	
 	INNER JOIN ProductMaster pm ON st.ProductID=pm.ProductID
 	INNER JOIN ColorMaster cm ON st.ColorID=cm.ColorID

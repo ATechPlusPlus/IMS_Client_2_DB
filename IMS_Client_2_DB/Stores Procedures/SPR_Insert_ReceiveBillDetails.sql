@@ -1,10 +1,10 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <16th JULY 2020>
--- Update date: <31th JULY 2020>
+-- Update date: <06th AUGUST 2020>
 -- Description:	<Description,,>
 -- =============================================
---EXEC SPR_Insert_ReceiveBillDetails 'RECEBILL-1002',1,5
+--EXEC SPR_Insert_ReceiveBillDetails 'RECEBILL-1001',2,1
 CREATE PROCEDURE [dbo].[SPR_Insert_ReceiveBillDetails]
 @ReceiveBillNo NVARCHAR(50)='0'
 ,@StoreBillDetailsID INT=0
@@ -34,18 +34,15 @@ BEGIN
 
 		DECLARE @EnteredQTY AS INT=0
 		DECLARE @FromStoreID INT=0
-		--DECLARE @ModelNo AS VARCHAR(50)=0
+
+		DECLARE @VioletQTY AS INT=0
 
 		SET @PARAMERES=CONCAT(@ReceiveBillNo,',',@StoreBillDetailsID,',',@StoreID,',',@CreatedBy)
 		
 		BEGIN TRY
-		
-		--SELECT @StoreID=StoreID FROM DefaultStoreSetting WITH(NOLOCK) WHERE MachineName=HOST_NAME()
 
-		--SELECT @TotalQTY=ISNULL(SUM(BillQTY),0)
-		--FROM dbo.tblStoreTransferItemDetails WITH(NOLOCK)
-		--WHERE StoreBillDetailsID=@StoreBillDetailsID
-		--AND BillQTY=EnterQTY
+		SELECT @VioletQTY=COUNT(1) FROM tblStoreTransferItemDetails_Voilet WITH(NOLOCK)
+		WHERE StoreBillDetailsID=@StoreBillDetailsID
 
 		SELECT @TotalQTY=ISNULL(SUM(BillQTY),0), @EnteredQTY=ISNULL(SUM(EnterQTY),0)
 		FROM dbo.tblStoreTransferItemDetails WITH(NOLOCK)
@@ -55,168 +52,179 @@ BEGIN
 		FROM tblStoreTransferBillDetails WITH(NOLOCK)
 		WHERE StoreTransferID=@StoreBillDetailsID
 
-		IF @TotalQTY = @EnteredQTY
+		IF @VioletQTY = 0
 		BEGIN
 
-		BEGIN TRANSACTION
+			IF @TotalQTY = @EnteredQTY
+			BEGIN
 
-		INSERT INTO tblStoreTransferReceiveBillDetails
-		(
-		ReceiveBillNo
-		,StoreTransferID
-		,TotalQTY
-		,ReceiveBillStatus
-		,ReceiveBillDate
-		,CreatedBy
-		)
-		VALUES
-		(
-		 @ReceiveBillNo
-		,@StoreBillDetailsID
-		,@TotalQTY
-		,'Posted'
-		,CONVERT(DATE,GETDATE())
-		,@CreatedBy
-		)
-		SELECT @StoreTransferReceiveID=SCOPE_IDENTITY()
+			BEGIN TRANSACTION
 
-		DECLARE ReceiveBill_CURSOR CURSOR 
-		FOR
+			INSERT INTO tblStoreTransferReceiveBillDetails
+			(
+			ReceiveBillNo
+			,StoreTransferID
+			,TotalQTY
+			,ReceiveBillStatus
+			,ReceiveBillDate
+			,CreatedBy
+			)
+			VALUES
+			(
+			 @ReceiveBillNo
+			,@StoreBillDetailsID
+			,@TotalQTY
+			,'Posted'
+			,CONVERT(DATE,GETDATE())
+			,@CreatedBy
+			)
+			SELECT @StoreTransferReceiveID=SCOPE_IDENTITY()
+
+			DECLARE ReceiveBill_CURSOR CURSOR 
+			FOR
 		
-		SELECT TransferItemID,Barcode,ProductID, SubProductID, ColorID, SizeID , BillQTY
-		,Rate
-		FROM dbo.tblStoreTransferItemDetails WITH(NOLOCK)
-		WHERE StoreBillDetailsID=@StoreBillDetailsID
-		AND BillQTY=EnterQTY
+			SELECT TransferItemID,Barcode,ProductID, SubProductID, ColorID, SizeID , BillQTY
+			,Rate
+			FROM dbo.tblStoreTransferItemDetails WITH(NOLOCK)
+			WHERE StoreBillDetailsID=@StoreBillDetailsID
+			AND BillQTY=EnterQTY
 
-		OPEN ReceiveBill_CURSOR
+			OPEN ReceiveBill_CURSOR
 
-		FETCH NEXT FROM ReceiveBill_CURSOR INTO @TransferItemID,@Barcode,@ProductID,@SubProductID, 
-		@ColorID, @SizeID , @BillQTY,@Rate
+			FETCH NEXT FROM ReceiveBill_CURSOR INTO @TransferItemID,@Barcode,@ProductID,@SubProductID, 
+			@ColorID, @SizeID , @BillQTY,@Rate
 
-			WHILE @@FETCH_STATUS <> -1
-				BEGIN
+				WHILE @@FETCH_STATUS <> -1
+					BEGIN
 
-				INSERT INTO tblStoreTransferReceiveBillItemDetails
-				(
-				StoreTransferReceiveID
-				,StoreBillDetailsID
-				,ProductID
-				,SubProductID
-				,Barcode
-				,Rate
-				,QTY
-				,ColorID
-				,SizeID
-				,Total
-				,CreatedBy
-				)
-				VALUES
-				(
-				@StoreTransferReceiveID
-				,@StoreBillDetailsID
-				,@ProductID
-				,@SubProductID
-				,@Barcode
-				,@Rate
-				,@BillQTY
-				,@ColorID
-				,@SizeID
-				,(@Rate * @BillQTY)
-				,@CreatedBy
-				)
-				SELECT @TransferReceiveBillItemID=SCOPE_IDENTITY()
+					INSERT INTO tblStoreTransferReceiveBillItemDetails
+					(
+					StoreTransferReceiveID
+					,StoreBillDetailsID
+					,ProductID
+					,SubProductID
+					,Barcode
+					,Rate
+					,QTY
+					,ColorID
+					,SizeID
+					,Total
+					,CreatedBy
+					)
+					VALUES
+					(
+					@StoreTransferReceiveID
+					,@StoreBillDetailsID
+					,@ProductID
+					,@SubProductID
+					,@Barcode
+					,@Rate
+					,@BillQTY
+					,@ColorID
+					,@SizeID
+					,(@Rate * @BillQTY)
+					,@CreatedBy
+					)
+					SELECT @TransferReceiveBillItemID=SCOPE_IDENTITY()
 
-				IF EXISTS(SELECT 1 FROM ProductStockColorSizeMaster WITH(NOLOCK) WHERE ProductID=@ProductID 
-				AND StoreID=@StoreID AND ColorID=@ColorID AND SizeID=@SizeID)
-				BEGIN
-				--Adding QTY in Receiver Store
-				UPDATE ProductStockColorSizeMaster SET
-				QTY=QTY+@BillQTY
-				,UpdatedBy=@CreatedBy
-				,UpdatedOn=GETDATE()
-				WHERE ProductID=@ProductID 
-				AND StoreID=@StoreID AND ColorID=@ColorID AND SizeID=@SizeID
+					IF EXISTS(SELECT 1 FROM ProductStockColorSizeMaster WITH(NOLOCK) WHERE ProductID=@ProductID 
+					AND StoreID=@StoreID AND ColorID=@ColorID AND SizeID=@SizeID)
+					BEGIN
+					--Adding QTY in Receiver Store
+					UPDATE ProductStockColorSizeMaster SET
+					QTY=QTY+@BillQTY
+					,UpdatedBy=@CreatedBy
+					,UpdatedOn=GETDATE()
+					WHERE ProductID=@ProductID 
+					AND StoreID=@StoreID AND ColorID=@ColorID AND SizeID=@SizeID
 
-				--Substracting QTY in Sender Store
-				UPDATE ProductStockColorSizeMaster SET
-				QTY=QTY-@BillQTY
-				,UpdatedBy=@CreatedBy
-				,UpdatedOn=GETDATE()
-				WHERE ProductID=@ProductID 
-				AND StoreID=@FromStoreID AND ColorID=@ColorID AND SizeID=@SizeID
+					--Substracting QTY in Sender Store
+					UPDATE ProductStockColorSizeMaster SET
+					QTY=QTY-@BillQTY
+					,UpdatedBy=@CreatedBy
+					,UpdatedOn=GETDATE()
+					WHERE ProductID=@ProductID 
+					AND StoreID=@FromStoreID AND ColorID=@ColorID AND SizeID=@SizeID
 				
-				END
+					END
 
-				ELSE
-				BEGIN
-				--Adding QTY in Receiver Store
-				INSERT INTO ProductStockColorSizeMaster
-				(
-				ProductID
-				,SubProductID
-				,StoreID
-				,BarcodeNo
-				,ColorID
-				,SizeID
-				,QTY
-				,CreatedBy
-				)
-				VALUES
-				(
-				@ProductID
-				,@SubProductID
-				,@StoreID
-				,@Barcode
-				,@ColorID
-				,@SizeID
-				,@BillQTY
-				,@CreatedBy
-				)
+					ELSE
+					BEGIN
+					--Adding QTY in Receiver Store
+					INSERT INTO ProductStockColorSizeMaster
+					(
+					ProductID
+					,SubProductID
+					,StoreID
+					,BarcodeNo
+					,ColorID
+					,SizeID
+					,QTY
+					,CreatedBy
+					)
+					VALUES
+					(
+					@ProductID
+					,@SubProductID
+					,@StoreID
+					,@Barcode
+					,@ColorID
+					,@SizeID
+					,@BillQTY
+					,@CreatedBy
+					)
 
-				--Substracting QTY in Sender Store
-				UPDATE ProductStockColorSizeMaster SET
-				QTY=QTY-@BillQTY
+					--Substracting QTY in Sender Store
+					UPDATE ProductStockColorSizeMaster SET
+					QTY=QTY-@BillQTY
+					,UpdatedBy=@CreatedBy
+					,UpdatedOn=GETDATE()
+					WHERE ProductID=@ProductID 
+					AND StoreID=@FromStoreID AND ColorID=@ColorID AND SizeID=@SizeID
+
+					END
+
+					UPDATE tblStoreTransferItemDetails
+					SET StoreTransferReceiveID=@TransferReceiveBillItemID
+					,UpdatedBy=@CreatedBy
+					,UpdatedOn=GETDATE()
+					,ReceiveBillQTYStatus=1
+					WHERE TransferItemID=@TransferItemID
+
+					FETCH NEXT FROM ReceiveBill_CURSOR INTO @TransferItemID,@Barcode,@ProductID,@SubProductID
+					, @ColorID, @SizeID , @BillQTY, @Rate
+
+					END
+
+				CLOSE ReceiveBill_CURSOR;
+				DEALLOCATE ReceiveBill_CURSOR;
+
+				UPDATE tblStoreTransferBillDetails
+				SET BillStatus='Posted'
 				,UpdatedBy=@CreatedBy
 				,UpdatedOn=GETDATE()
-				WHERE ProductID=@ProductID 
-				AND StoreID=@FromStoreID AND ColorID=@ColorID AND SizeID=@SizeID
+				WHERE StoreTransferID=@StoreBillDetailsID--@TransferItemID
 
-				END
+			COMMIT
 
-				UPDATE tblStoreTransferItemDetails
-				SET StoreTransferReceiveID=@TransferReceiveBillItemID
-				,UpdatedBy=@CreatedBy
-			    ,UpdatedOn=GETDATE()
-				,ReceiveBillQTYStatus=1
-				WHERE TransferItemID=@TransferItemID
+			SELECT 1 AS Flag,'Bill Receive Successfully.' as Msg -- Success
+		END
 
-				FETCH NEXT FROM ReceiveBill_CURSOR INTO @TransferItemID,@Barcode,@ProductID
-				, @ColorID, @SizeID , @BillQTY, @Rate
+		ELSE
+		BEGIN
 
-				END
+		SELECT 0 AS Flag,'Bill QTY and Entered QTY is not same.' as Msg -- Fail
 
-			CLOSE ReceiveBill_CURSOR;
-			DEALLOCATE ReceiveBill_CURSOR;
-
-			UPDATE tblStoreTransferBillDetails
-			SET BillStatus='Posted'
-			,UpdatedBy=@CreatedBy
-			,UpdatedOn=GETDATE()
-			WHERE StoreTransferID=@StoreBillDetailsID--@TransferItemID
-
-		COMMIT
-
-		SELECT 1 AS Flag,'Bill Receive Successfully.' as Msg -- Success
+		END
 	END
-
+	
 	ELSE
 	BEGIN
 
-	SELECT 0 AS Flag,'Bill QTY and Entered QTY is not same.' as Msg -- Fail
+	SELECT 0 AS Flag,'Please Validate Not Exist Items.' as Msg -- Fail
 
 	END
-	
+
 	END TRY
 	
 	BEGIN CATCH

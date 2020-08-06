@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <25th JULY 2020>
--- Update date: <31th JULY 2020>
+-- Update date: <04th AUGUST 2020>
 -- Description:	<>
 -- =============================================
 --EXEC SPR_Get_Material_NewDetails 0,0,0,'0',0
@@ -19,16 +19,16 @@ BEGIN
 
 		BEGIN TRY
 
-		DECLARE @PARAMERES VARCHAR(MAX)=''
-		DECLARE @query1 VARCHAR(MAX)=''
-		DECLARE @query2 VARCHAR(MAX)=''
+		DECLARE @PARAMERES NVARCHAR(MAX)=''
+		DECLARE @query1 NVARCHAR(MAX)=''
+		DECLARE @query2 NVARCHAR(MAX)=''
 		
-		DECLARE @SumOfQTY VARCHAR(MAX)=''
-		DECLARE @TotalStoreQuery1 VARCHAR(MAX)=''
+		DECLARE @SumOfQTY NVARCHAR(MAX)=''
+		DECLARE @TotalStoreQuery1 NVARCHAR(MAX)=''
 		DECLARE @WHERE VARCHAR(MAX)=''
 		
 		DECLARE @StoreID INT=0
-		DECLARE @StoreName VARCHAR(MAX)=''
+		DECLARE @StoreName NVARCHAR(MAX)=''
 
 		SET @PARAMERES=CONCAT(@BarcodeNo,',',@ProductID,',',@ColorID,',',@ModelNo)
 		--BEGIN TRANSACTION
@@ -36,7 +36,8 @@ BEGIN
 			DECLARE cursor_Store CURSOR
 			FOR
 			
-			SELECT StoreID,StoreName FROM StoreMaster WITH(NOLOCK) WHERE ISNULL(ActiveStatus,0) = 1
+			SELECT StoreID,StoreName 
+			FROM StoreMaster WITH(NOLOCK) WHERE ISNULL(ActiveStatus,0) = 1
 	
 			OPEN cursor_Store;
 
@@ -45,8 +46,11 @@ BEGIN
 				WHILE @@FETCH_STATUS <> -1
 				BEGIN
 
-				SET @query1 += 'ISNULL(MAX(CASE WHEN sm.StoreName = '''+@StoreName+
-				''' THEN ps.QTY END),0) '+QUOTENAME(@StoreName)+',';
+				SET @query1 += 'ISNULL(MAX(CASE sm.StoreID WHEN '+CAST(@StoreID AS VARCHAR)+
+				' THEN ps.QTY END),0) '+QUOTENAME(@StoreName)+',';
+
+				--SET @query1 += 'ISNULL(MAX(CASE WHEN sm.StoreName = '''+@StoreName+
+				--''' THEN ps.QTY END),0) '+QUOTENAME(@StoreName)+',';
 				
 				SET @SumOfQTY +='SUM(pt.'+QUOTENAME(@StoreName)+') '+QUOTENAME(@StoreName)+','
 
@@ -62,11 +66,14 @@ BEGIN
 			AND ps.ColorID=IIF('+CAST(@ColorID AS VARCHAR)+'=0,ps.ColorID,'+CAST(@ColorID AS VARCHAR)+')
 			AND pwm.ModelNo=IIF('''+CAST(@ModelNo AS NVARCHAR)+'''=''0'',pwm.ModelNo,'''+CAST(@ModelNo AS NVARCHAR)+''')
 			AND cat.CategoryID=IIF('+CAST(@CategoryID AS VARCHAR)+'=0,cat.CategoryID,'+CAST(@CategoryID AS VARCHAR)+')
-			GROUP BY ps.BarcodeNo,cm.ColorName,sz.Size,pm.ProductName,pm.ProductID,pwm.EndUser,pwm.Photo'
+			GROUP BY ps.BarcodeNo,cm.ColorName,sz.Size,pm.ProductName,pm.ProductID,pwm.EndUser,pwm.Photo,ps.SubProductID,pwm.ModelNo'
 
-			SET @query2='SELECT CAST(ISNULL(ps.BarcodeNo,0) AS VARCHAR)BarcodeNo,cm.ColorName [Color],sz.Size,pm.ProductID,pm.ProductName [Item Name],CAST(pwm.EndUser AS VARCHAR)[EndUser],pwm.Photo,
+			SET @query2='SELECT CAST(ISNULL(ps.BarcodeNo,0) AS VARCHAR)BarcodeNo,ps.SubProductID
+			,cm.ColorName[Color],sz.Size,pwm.ModelNo [Style No],pm.ProductID,pm.ProductName [Item Name]
+			,CAST(pwm.EndUser AS VARCHAR)[EndUser],pwm.Photo,
 			'+@query1+'
-			[Remove],ISNULL(SUM(ps.QTY),0) AS Total FROM ProductStockColorSizeMaster ps
+			[Remove],ISNULL(SUM(ps.QTY),0) AS Total 
+			FROM ProductStockColorSizeMaster ps
 			INNER JOIN ProductMaster pm ON ps.ProductID=pm.ProductID
 			INNER JOIN CategoryMaster cat ON pm.CategoryID=cat.CategoryID
 			INNER JOIN StoreMaster sm ON ps.StoreID=sm.StoreID
@@ -81,7 +88,9 @@ BEGIN
 			--print @query2
 
 			SET @TotalStoreQuery1='UNION 
-			SELECT CAST(''Total'' AS VARCHAR) [BarcodeNo],'''' [Color],'''' [Size],'''' [ProductID],'''' [Item Name],'''' [EndUser],'''' Photo,'+@SumOfQTY+'SUM(pt.Total) [Total] FROM (SELECT '+@query1+'ISNULL(SUM(ps.QTY),0) AS Total 
+			SELECT CAST(''Total'' AS VARCHAR) [BarcodeNo],'''' SubProductID,'''' [Color],'''' [Size],
+			'''' [Style No],'''' [ProductID],'''' [Item Name],'''' [EndUser],'''' Photo,'+@SumOfQTY+'SUM(pt.Total) [Total]
+			FROM (SELECT '+@query1+'ISNULL(SUM(ps.QTY),0) AS Total 
 			FROM ProductStockColorSizeMaster ps
 			INNER JOIN ProductMaster pm ON ps.ProductID=pm.ProductID
 			INNER JOIN CategoryMaster cat ON pm.CategoryID=cat.CategoryID
@@ -92,7 +101,7 @@ BEGIN
 			'+@WHERE+'
 			)pt'
 			
-			PRINT @query2 + @TotalStoreQuery1
+			--PRINT @query2 + @TotalStoreQuery1
 			EXEC (@query2 + @TotalStoreQuery1)
 			 
 			END TRY

@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<Author,,Name>
 -- Create date: <24th JULY 2020>
--- Update date: <31th JULY 2020>
+-- Update date: <05th AUGUST 2020>
 -- Description:	<Description,,>
 -- =============================================
 CREATE PROCEDURE [dbo].[SPR_Insert_StoreTransferItemDetails_Voilet]
@@ -32,58 +32,58 @@ BEGIN
 
 	BEGIN TRANSACTION
 
+	DELETE FROM tblStoreTransferItemDetails_Voilet
+	WHERE StoreBillDetailsID=@StoreBillDetailsID
+
 	IF @CellColor='Violet'
 	
 	BEGIN
-	
-	DELETE FROM tblStoreTransferItemDetails_Voilet
-	WHERE StoreID=@StoreID
 
-	INSERT tblStoreTransferItemDetails_Voilet
-	(
-	TransferItemID
-	,StoreBillDetailsID
-	,ProductID
-	,SubProductID
-	,ModelNo
-	,Barcode
-	,Rate
-	,BillQTY
-	,EnterQTY
-	,ColorID
-	,SizeID
-	,Total
-	,StoreID
-	,CreatedBy
-	)
-	VALUES
-	(
-	 @TransferItemID
-	,@StoreBillDetailsID
-	,@ProductID
-	,@SubProductID
-	,@ModelNo
-	,@Barcode
-	,@Rate
-	,@BillQTY
-	,@EnterQTY
-	,@ColorID
-	,@SizeID
-	,@Total
-	,@StoreID
-	,@CreatedBy
-	)
+		INSERT tblStoreTransferItemDetails_Voilet
+		(
+		TransferItemID
+		,StoreBillDetailsID
+		,ProductID
+		,SubProductID
+		,ModelNo
+		,Barcode
+		,Rate
+		,BillQTY
+		,EnterQTY
+		,ColorID
+		,SizeID
+		,Total
+		,StoreID
+		,CreatedBy
+		)
+		VALUES
+		(
+		 @TransferItemID
+		,@StoreBillDetailsID
+		,@ProductID
+		,@SubProductID
+		,@ModelNo
+		,@Barcode
+		,@Rate
+		,@BillQTY
+		,@EnterQTY
+		,@ColorID
+		,@SizeID
+		,@Total
+		,@StoreID
+		,@CreatedBy
+		)
 	END
 
 	ELSE
 	
 	BEGIN
 
-	UPDATE tblStoreTransferItemDetails
-	SET EnterQTY = @EnterQTY
-	,UpdatedBy=@CreatedBy
-	,UpdatedOn=GETDATE()
-	WHERE TransferItemID=@TransferItemID
+		UPDATE tblStoreTransferItemDetails
+		SET EnterQTY = @EnterQTY
+		,UpdatedBy=@CreatedBy
+		,UpdatedOn=GETDATE()
+		WHERE TransferItemID=@TransferItemID
 
 	END
 	

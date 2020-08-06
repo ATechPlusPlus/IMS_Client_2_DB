@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <12th MARCH 2020>
--- Update date: <07th JULY 2020>
+-- Update date: <05th AUGUST 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC Get_ProductDetails_Popup 'bag'
@@ -17,7 +17,7 @@ BEGIN
 	DECLARE @PARAMERES VARCHAR(MAX)=''
 	SET @PARAMERES=@ProductName
 
-	SELECT pm.ProductID,pm.ProductName,pm.CategoryID,cm.CategoryName
+	SELECT pm.ProductID,pm.ProductName [ItemName],pm.CategoryID,cm.CategoryName
 	FROM ProductMaster pm
 	LEFT OUTER JOIN CategoryMaster cm ON pm.CategoryID = cm.CategoryID
 	WHERE ISNULL(pm.ActiveStatus,1) = 1

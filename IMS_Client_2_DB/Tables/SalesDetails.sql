@@ -9,6 +9,7 @@
     [BarCode] NVARCHAR(50) NOT NULL,
     [QTY] INT NOT NULL,
     [Rate] DECIMAL(18, 2) NOT NULL,
+     IsReplaceReturn bit NOT NULL,
 	[CreatedBy] [int] NOT NULL CONSTRAINT [DF_SalesDetails_CreatedBy]  DEFAULT ((0)),
 	[CreatedOn] [datetime] NOT NULL CONSTRAINT [DF_SalesDetails_CreatedOn]  DEFAULT (getdate()),
     [UpdatedBy] INT NULL, 

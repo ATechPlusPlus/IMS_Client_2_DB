@@ -4,7 +4,7 @@
 -- Update date: <25th JULY 2020>
 -- Description:	<Description,,>
 -- =============================================
---EXEC SPR_Get_CashClosing_Details 7,2,0
+--EXEC SPR_Get_CashClosing_Details 1,1,0
 CREATE PROCEDURE [dbo].[SPR_Get_CashClosing_Details]
 @MasterCashClosingID INT=0
 ,@StoreID INT=0
@@ -32,6 +32,8 @@ BEGIN
 
 		SELECT @CashStatus=CashStatus,@CashBoxDate=CashBoxDate FROM tblMasterCashClosing WITH(NOLOCK) 
 		WHERE MasterCashClosingID=@MasterCashClosingID
+
+		PRINT CONCAT(@CashStatus,',',@CashBoxDate,',',@MasterCashClosingID)
 
 		IF @CashStatus = 0
 		BEGIN

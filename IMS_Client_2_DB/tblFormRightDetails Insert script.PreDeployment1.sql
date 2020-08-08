@@ -106,5 +106,9 @@ INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID
 GO
 INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (47, N'Received Branch Transfer', N'frmReceivedBranchTransfer', 5)
 GO
+INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (48, N'DashBoard Settings', N'frmDashBoardSettings', 3)
+GO
+INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (49, N'DashBoard', N'frmDashBoard', 3)
+GO
 SET IDENTITY_INSERT [dbo].[tblFormRightDetails] OFF
 GO

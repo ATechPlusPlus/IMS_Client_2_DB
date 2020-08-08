@@ -13,6 +13,8 @@ AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	SET NOCOUNT ON;
+	DECLARE @PARAMERES VARCHAR(MAX)=''
+	SET @PARAMERES=@BarCodeNo
 
 	BEGIN TRY
 
@@ -47,7 +49,7 @@ BEGIN
 	,ERROR_LINE()
 	,ERROR_MESSAGE()
 	,ERROR_PROCEDURE()
-	,''
+	,@PARAMERES
 	END CATCH
 
 END

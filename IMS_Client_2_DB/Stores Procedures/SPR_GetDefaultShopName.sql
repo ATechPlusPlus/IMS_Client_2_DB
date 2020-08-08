@@ -1,10 +1,10 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <21st JULY 2020>
--- Update date: <05th AUGUST 2020>
+-- Update date: <07th AUGUST 2020>
 -- Description:	<Description,,>
 -- =============================================
---EXEC SPR_GetDefaultShopName ''
+--EXEC SPR_GetDefaultShopName 'KHAN'
 CREATE PROCEDURE [dbo].[SPR_GetDefaultShopName]
 @MachineName NVARCHAR(MAX)=''
 AS
@@ -17,11 +17,12 @@ BEGIN
 	SET @PARAMERES=@MachineName
 
 	--Normal Store  0
-	--Wearhouse     1
-    SELECT de.StoreID,sm.StoreName,de.StoreCategory
-	,(CASE de.StoreCategory WHEN 0 THEN 'Normal Store' WHEN 1 THEN 'Warehouse' END)[StoreCategoryName]
-    FROM DefaultStoreSetting de
-    INNER JOIN StoreMaster sm ON de.StoreID=sm.StoreID
+	--Warehouse     1
+
+    SELECT psm.PC_Store_ID,psm.StoreID,sm.StoreName,psm.StoreCategory
+	,(CASE psm.StoreCategory WHEN 0 THEN 'Normal Store' WHEN 1 THEN 'Warehouse' END)[StoreCategoryName]
+    FROM tblPC_Store_Mapping psm
+    INNER JOIN StoreMaster sm ON psm.StoreID=sm.StoreID
 	WHERE MachineName=@MachineName
 
 	END TRY

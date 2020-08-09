@@ -32,9 +32,9 @@ BEGIN
 
 			UNION
 
-			SELECT ImagePath,Extension, NULL [Photo]
+			SELECT TOP 1 ImagePath,Extension, NULL [Photo]
 			FROM DefaultStoreSetting WITH(NOLOCK)
-			WHERE MachineName=HOST_NAME()
+			--WHERE MachineName=HOST_NAME()
 		)a
 
 	END

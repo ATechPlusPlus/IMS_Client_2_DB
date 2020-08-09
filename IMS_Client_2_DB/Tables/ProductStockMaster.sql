@@ -11,6 +11,7 @@ CREATE TABLE [dbo].[ProductStockMaster](
 	[ModelNo] [nvarchar](50) NOT NULL,
 	[QTY] [int] NOT NULL,
 	[Rate] [decimal](18, 2) NULL,
+	[PrintCount] [int] NULL,
 	[CreatedBy] [int] NOT NULL CONSTRAINT [DF_ProductStockMaster_CreatedBy]  DEFAULT ((0)),
 	[CreatedOn] [datetime] NOT NULL CONSTRAINT [DF_ProductStockMaster_CreatedOn]  DEFAULT (getdate()),
 	[UpdatedBy] [int] NULL,

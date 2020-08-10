@@ -41,8 +41,8 @@ BEGIN
 	AND ISNULL(PrintCount,0)<QTY
 	AND QTY>0
 
-	SELECT ps.ProductStockID, ps.PurchaseInvoiceID, ps.SubProductID, ps.ProductID,pm.ProductName [ItemName],ps.Rate
-	, ps.StoreID, ps.BarcodeNo, ps.ColorID,cm.ColorName AS Color,sm.SizeID,sm.Size, ps.QTY, ps.ModelNo [Style No]
+	SELECT ps.ProductStockID, ps.PurchaseInvoiceID, ps.SubProductID, ps.ProductID,pm.ProductName [ItemName],ps.QTY,ps.Rate
+	,ps.ModelNo [Style No],cm.ColorName AS Color, ps.StoreID, ps.BarcodeNo [Barcode], ps.ColorID,sm.SizeID,sm.Size
 	FROM ProductStockMaster ps
 	INNER JOIN ProductMaster pm ON ps.ProductID = pm.ProductID
 	INNER JOIN ColorMaster cm ON ps.ColorID = cm.ColorID

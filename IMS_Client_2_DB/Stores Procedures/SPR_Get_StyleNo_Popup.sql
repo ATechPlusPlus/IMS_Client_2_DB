@@ -1,10 +1,10 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <12th JULY 2020>
--- Update date: <>
+-- Update date: <11th AUGUST 2020>
 -- Description:	<Description,,>
 -- =============================================
---EXEC SPR_Get_StyleNo_Popup '1'
+--EXEC SPR_Get_StyleNo_Popup 'fl'
 CREATE PROCEDURE [dbo].[SPR_Get_StyleNo_Popup]
 @ModelNo NVARCHAR(100)='0'
 AS
@@ -18,9 +18,9 @@ BEGIN
 
 	SELECT DISTINCT pid1.ModelNo [StyleNo]
 	FROM PurchaseInvoice pur
-	INNER JOIN PurchaseInvoiceDetails pid ON pur.PurchaseInvoiceID=pid.PurchaseInvoiceID AND pur.IsInvoiceDone=1
+	INNER JOIN PurchaseInvoiceDetails pid ON pur.PurchaseInvoiceID=pid.PurchaseInvoiceID --AND pur.IsInvoiceDone=1
 	INNER JOIN ProductMaster pm ON pid.ProductID=pm.ProductID
-	INNER JOIN DeliveryPurchaseBill1 pid1 ON pur.PurchaseInvoiceID=pid1.PurchaseInvoiceID AND pm.ProductID=pid1.ProductID
+	INNER JOIN DeliveryPurchaseBill1 pid1 ON pur.PurchaseInvoiceID=pid1.PurchaseInvoiceID AND pid.SubProductID=pid1.SubProductID AND pm.ProductID=pid1.ProductID
 	INNER JOIN StoreMaster sm ON pid1.StoreID=sm.StoreID
 	WHERE pid1.ModelNo LIKE ''+@ModelNo+'%'+''
 

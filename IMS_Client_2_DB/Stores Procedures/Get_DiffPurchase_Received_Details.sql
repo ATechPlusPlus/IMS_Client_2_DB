@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <12th MARCH 2020>
--- Update date: <11th AUGUST 2020>
+-- Update date: <12th AUGUST 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC Get_DiffPurchase_Received_Details 1
@@ -16,7 +16,7 @@ BEGIN
 	
 	SET @PARAMERES=@PurchaseInvoiceID
 
-	SELECT p2.ProductID,p1.SupplierBillNo,p1.BillDate,p1.SupplierID, sm.CountryID, pm.ProductName [ItemName],pwm.Photo,cm.CategoryName
+	SELECT p2.SubProductID,p2.ProductID,p1.SupplierBillNo,p1.BillDate,p1.SupplierID, sm.CountryID, pm.ProductName [ItemName],pwm.Photo,cm.CategoryName
 	, p2.ModelNo [Style No],p2.Sales_Price [Sales Price],CAST((p1.LocalBillValue/p1.BillValue) AS DECIMAL(18,3)) AS [New Rate]
 	,p2.Rate AS [Cost Price] ,p2.QTY AS [Bill QTY],TotalQTY
 	,CAST((p1.LocalBillValue/p1.TotalQTY) AS DECIMAL(18,3)) AS [Local Cost]
@@ -35,7 +35,7 @@ BEGIN
 	INNER JOIN tblProductWiseModelNo pwm ON pd1.SubProductID=pwm.SubProductID AND pd1.ProductID=pwm.ProductID
 	INNER JOIN SupplierMaster sm ON p1.SupplierID=sm.SupplierID
 	WHERE p1.PurchaseInvoiceID=@PurchaseInvoiceID
-	GROUP BY p2.ProductID,pm.ProductName,pwm.Photo,p2.ModelNo, pd1.ModelNo
+	GROUP BY p2.SubProductID,p2.ProductID,pm.ProductName,pwm.Photo,p2.ModelNo, pd1.ModelNo
 	,p2.Sales_Price ,p2.Rate,p2.QTY,cm.CategoryName,p1.LocalBillValue,p1.TotalQTY
 	,p1.SupplierBillNo,p1.SupplierID,sm.CountryID,p1.BillValue,p1.BillDate
 

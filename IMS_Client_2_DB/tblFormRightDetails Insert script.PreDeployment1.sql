@@ -110,5 +110,7 @@ INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID
 GO
 INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (49, N'DashBoard', N'frmDashBoard', 3)
 GO
+INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (50, N'Quick BarCode Print', N'frmQuickBarCodePrint', 4)
+GO
 SET IDENTITY_INSERT [dbo].[tblFormRightDetails] OFF
 GO

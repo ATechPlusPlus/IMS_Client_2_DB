@@ -6,5 +6,7 @@ FROM            dbo.SalesDetails AS s1 INNER JOIN
                          dbo.ProductMaster AS p1 ON s1.ProductID = p1.ProductID INNER JOIN
                          dbo.SizeMaster AS sm ON sm.SizeID = s1.SizeID INNER JOIN
                          dbo.ColorMaster AS c1 ON c1.ColorID = s1.ColorID INNER JOIN
-                         dbo.ProductStockColorSizeMaster AS ps ON s1.SubProductID = ps.SubProductID AND s1.ProductID = ps.ProductID AND s1.ColorID = ps.ColorID AND s1.SizeID = ps.SizeID INNER JOIN
+                         dbo.ProductStockColorSizeMaster AS ps ON s1.SubProductID = ps.SubProductID AND s1.ProductID = ps.ProductID AND s1.ColorID = ps.ColorID AND s1.SizeID = ps.SizeID 
+                         AND   ps.StoreID=(select shopeid from SalesInvoiceDetails where id=s1.InvoiceID)
+                         INNER JOIN
                          dbo.tblProductWiseModelNo AS pwm ON s1.SubProductID = pwm.SubProductID

@@ -7,6 +7,8 @@
 	[BarCodeSetting] [nvarchar](max) NULL,
 	[InvoiceFooterNote] [nvarchar](max) NULL,
 	[UserArabicNumbers] BIT NULL DEFAULT 0, 
+	SalesManIDMandatory  bit  null,
+	CustMobileMandatory  bit NULL, 
     [ImagePath] NVARCHAR(50) NULL, 
     [Extension] NVARCHAR(50) NULL,
     [CreatedBy] INT NOT NULL CONSTRAINT [DF_DefaultStoreSetting_CreatedBy]  DEFAULT ((0)),

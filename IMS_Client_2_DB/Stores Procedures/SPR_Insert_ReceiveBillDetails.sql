@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <16th JULY 2020>
--- Update date: <06th AUGUST 2020>
+-- Update date: <15th AUGUST 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC SPR_Insert_ReceiveBillDetails 'RECEBILL-1001',2,1
@@ -127,7 +127,9 @@ BEGIN
 					)
 					SELECT @TransferReceiveBillItemID=SCOPE_IDENTITY()
 
-					IF EXISTS(SELECT 1 FROM ProductStockColorSizeMaster WITH(NOLOCK) WHERE ProductID=@ProductID 
+					IF EXISTS(SELECT 1 FROM ProductStockColorSizeMaster WITH(NOLOCK) WHERE 
+					SubProductID=@SubProductID
+					AND ProductID=@ProductID 
 					AND StoreID=@StoreID AND ColorID=@ColorID AND SizeID=@SizeID)
 					BEGIN
 					--Adding QTY in Receiver Store
@@ -135,7 +137,8 @@ BEGIN
 					QTY=QTY+@BillQTY
 					,UpdatedBy=@CreatedBy
 					,UpdatedOn=GETDATE()
-					WHERE ProductID=@ProductID 
+					WHERE SubProductID=@SubProductID
+					AND ProductID=@ProductID 
 					AND StoreID=@StoreID AND ColorID=@ColorID AND SizeID=@SizeID
 
 					--Substracting QTY in Sender Store
@@ -143,7 +146,8 @@ BEGIN
 					QTY=QTY-@BillQTY
 					,UpdatedBy=@CreatedBy
 					,UpdatedOn=GETDATE()
-					WHERE ProductID=@ProductID 
+					WHERE SubProductID=@SubProductID
+					AND ProductID=@ProductID 
 					AND StoreID=@FromStoreID AND ColorID=@ColorID AND SizeID=@SizeID
 				
 					END
@@ -179,7 +183,8 @@ BEGIN
 					QTY=QTY-@BillQTY
 					,UpdatedBy=@CreatedBy
 					,UpdatedOn=GETDATE()
-					WHERE ProductID=@ProductID 
+					WHERE SubProductID=@SubProductID
+					AND ProductID=@ProductID
 					AND StoreID=@FromStoreID AND ColorID=@ColorID AND SizeID=@SizeID
 
 					END

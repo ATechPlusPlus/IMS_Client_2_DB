@@ -1,10 +1,10 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <09th AUGUST 2020>
--- Update date: <>
+-- Update date: <16th AUGUST 2020>
 -- Description:	<Saved PIVOT delivery purchase bill details via ModelNo and Barcode is generated>
 -- =============================================
--- EXEC [dbo].[SPR_Get_PurchaseInvoice_Barcode_Generated] 2,3,'B201',5
+-- EXEC [dbo].[SPR_Get_PurchaseInvoice_Barcode_Generated] 19,1,'3966',2
 CREATE PROCEDURE [dbo].[SPR_Get_PurchaseInvoice_Barcode_Generated]
 @PurchaseInvoiceID INT=0
 ,@StoreID INT=0
@@ -30,6 +30,7 @@ BEGIN
 		DECLARE @DeliveryPurchaseID AS INT=0
 		DECLARE @query1  AS VARCHAR(MAX)=''
 		DECLARE @query2  AS VARCHAR(MAX)
+		DECLARE @query3  AS NVARCHAR(MAX)
 		DECLARE @queryunpivot  AS VARCHAR(MAX)=''
 		DECLARE @ModelNo NVARCHAR(50) =''
 	
@@ -50,17 +51,17 @@ BEGIN
 		FROM dbo.ProductStockMaster WITH(NOLOCK)
 		WHERE PurchaseInvoiceID=@PurchaseInvoiceID 
 		AND QTY > 0
-		AND BarcodeNo IS NULL
+		--AND BarcodeNo IS NULL
 
 		DECLARE OUTER_CURSOR CURSOR 
 		FOR
-		SELECT SizeTypeID,DeliveryPurchaseID1,ModelNo,SubProductID
+		SELECT SizeTypeID,DeliveryPurchaseID1,ModelNo,SubProductID,ProductID
 		FROM DeliveryPurchaseBill1 WITH(NOLOCK)
 		WHERE PurchaseInvoiceID=@PurchaseInvoiceID
 		
 		OPEN OUTER_CURSOR 
 		
-		FETCH NEXT FROM OUTER_CURSOR INTO @SizeType_ID,  @DeliveryPurchaseID, @ModelNo,@SubProductID
+		FETCH NEXT FROM OUTER_CURSOR INTO @SizeType_ID,  @DeliveryPurchaseID, @ModelNo,@SubProductID,@ProductID
 		
 		WHILE @@FETCH_STATUS <> -1
 		BEGIN
@@ -110,8 +111,8 @@ BEGIN
 	INNER JOIN tblProductWiseModelNo pwm ON pd1.ProductID=pwm.ProductID AND pd1.SubProductID=pwm.SubProductID
 	--AND pwm.StoreID='+CAST(@StoreID AS VARCHAR)+'
 	LEFT OUTER JOIN ProductStockMaster psm ON pwm.ProductID=psm.ProductID AND pwm.SubProductID=psm.SubProductID
-	WHERE pd1.StoreID='+CAST(@StoreID AS VARCHAR)+' AND psm.SubProductID IS NULL
-	AND pd1.PurchaseInvoiceID='+CAST(@PurchaseInvoiceID AS VARCHAR)+' AND pd2.DeliveryPurchaseID1='+CAST(@DeliveryPurchaseID as VARCHAR)+' group by pd1.PurchaseInvoiceID,pd1.ProductID,pd1.SubProductID,clr.ColorID,pwm.ModelNo,pwm.EndUser,pd1.StoreID,pd3.Total
+	WHERE pd1.StoreID='+CAST(@StoreID AS VARCHAR)+' AND ISNULL(psm.PurchaseInvoiceID,0)!='+CAST(@PurchaseInvoiceID AS VARCHAR)+'
+	AND pd1.PurchaseInvoiceID='+CAST(@PurchaseInvoiceID AS VARCHAR)+' AND pd2.DeliveryPurchaseID1='+CAST(@DeliveryPurchaseID as VARCHAR)+' GROUP BY pd1.PurchaseInvoiceID,pd1.ProductID,pd1.SubProductID,clr.ColorID,pwm.ModelNo,pwm.EndUser,pd1.StoreID,pd3.Total
 
 )a 
 	UNPIVOT
@@ -121,24 +122,29 @@ BEGIN
 	) unpvt'
 	
 	SET @query2=REPLACE(@query2,',FROM',' FROM');
-	
+
 	--PRINT @query1
 	--PRINT @queryunpivot;
-	PRINT @query2
-	
-	INSERT INTO dbo.ProductStockMaster
-	(PurchaseInvoiceID
-	,ColorID 	
-	,ProductID
-	,SubProductID
-	,QTY
-	,SizeID 
-	,ModelNo
-	,Rate
-	,StoreID)
-	EXEC (@query2);
+	--PRINT @query2
+	--SELECT @PurchaseInvoiceID [PurchaseInvoiceID],@StoreID [StoreID],@SubProductID [SubProductID],@ProductID [ProductID]
+	IF NOT EXISTS(SELECT 1 FROM dbo.ProductStockMaster WITH(NOLOCK) WHERE 
+	PurchaseInvoiceID=@PurchaseInvoiceID AND StoreID=@StoreID AND SubProductID=@SubProductID AND ProductID=@ProductID)
+	BEGIN
 
-	FETCH NEXT FROM OUTER_CURSOR INTO @SizeType_ID,  @DeliveryPurchaseID, @ModelNo,@SubProductID
+		INSERT INTO dbo.ProductStockMaster
+		(PurchaseInvoiceID
+		,ColorID 	
+		,ProductID
+		,SubProductID
+		,QTY
+		,SizeID 
+		,ModelNo
+		,Rate
+		,StoreID)
+		EXEC (@query2);
+	END
+
+	FETCH NEXT FROM OUTER_CURSOR INTO @SizeType_ID,  @DeliveryPurchaseID, @ModelNo,@SubProductID,@ProductID
 	END
 	CLOSE OUTER_CURSOR
 	DEALLOCATE OUTER_CURSOR
@@ -153,17 +159,23 @@ BEGIN
 
 	--SELECT CONCAT(@PurchaseInvoiceID,',',@ProductID,',',@SubProductID,',', @StoreID,',', @ColorID,',', @SizeID,',' , @QTY)
 
-	IF EXISTS(SELECT 1 FROM ProductStockMaster WHERE ProductID=@ProductID AND SubProductID=@SubProductID AND ColorID=@ColorID AND StoreID=@StoreID AND SizeID=@SizeID)
-	BEGIN
+	--IF EXISTS(SELECT 1 FROM ProductStockMaster WITH(NOLOCK) WHERE ProductID=@ProductID AND SubProductID=@SubProductID AND ColorID=@ColorID AND StoreID=@StoreID AND SizeID=@SizeID)
+	--BEGIN
 
-	--SELECT 'select',SubProductID,ProductID, StoreID, ColorID, SizeID , QTY
-	--FROM ProductStockColorSizeMaster WITH(NOLOCK)
-	--WHERE SubProductID=@SubProductID AND ProductID=@ProductID AND ColorID=@ColorID AND StoreID=@StoreID AND SizeID=@SizeID
-		
-		-- Getting BarocdeNo
-		SELECT @BarcodeNo=NEXT VALUE FOR Barcode_Sequance
-		
-		--PRINT @BarcodeNo
+		SELECT TOP 1 @BarcodeNo=BarcodeNo FROM ProductStockMaster WITH(NOLOCK)
+		WHERE ProductID=@ProductID 
+		AND SubProductID=@SubProductID 
+		AND ColorID=@ColorID AND StoreID=@StoreID AND SizeID=@SizeID-- AND BarcodeNo IS NOT NULL
+
+		--SELECT @BarcodeNo [BarcodeNo],@ProductID [ProductID],@SubProductID [SubProductID]
+		--,@ColorID [ColorID],@SizeID [SizeID],@StoreID [StoreID]
+
+		IF @BarcodeNo IS NULL OR @BarcodeNo=0
+		BEGIN
+			-- Getting BarocdeNo
+			SELECT @BarcodeNo=NEXT VALUE FOR Barcode_Sequance
+			--PRINT @BarcodeNo
+		END
 
 		UPDATE ProductStockMaster
 		SET BarcodeNo=@BarcodeNo
@@ -175,6 +187,7 @@ BEGIN
 		AND ColorID=@ColorID 
 		AND StoreID=@StoreID
 		AND SizeID=@SizeID
+		AND ISNULL(BarcodeNo,0)=0
 
 		UPDATE ProductMaster
 		SET Photo=@BarcodeNo
@@ -187,7 +200,7 @@ BEGIN
 		AND SubProductID=@SubProductID
 		AND ProductID=@ProductID 
 
-	END
+	--END
 
 	SET @i+=1;
 	    FETCH NEXT FROM ColorSize_CURSOR INTO @ProductID, @SubProductID, @StoreID, @ColorID, @SizeID , @QTY

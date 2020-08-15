@@ -1,12 +1,13 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <15th MARCH 2020>
--- Update date: <02th AUGUST 2020>
+-- Update date: <14th AUGUST 2020>
 -- Description:	<Description,,>
 -- =============================================
---EXEC Get_PurchaseInvoice_BillDetails 2
+--EXEC Get_PurchaseInvoice_BillDetails 2,'0'
 CREATE PROCEDURE [dbo].[Get_PurchaseInvoice_BillDetails]
 @PurchaseInvoiceID INT=0
+,@ModelNo NVARCHAR(MAX)='0'
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -26,6 +27,7 @@ BEGIN
 	LEFT OUTER JOIN [dbo].[ProductMaster] pm ON p2.ProductID = pm.ProductID
 	LEFT OUTER JOIN [dbo].[BrandMaster] bm ON p2.BrandID = bm.BrandID AND p2.SupplierID = bm.SupplierID
 	WHERE p1.PurchaseInvoiceID = @PurchaseInvoiceID
+	AND IIF(p2.ModelNo IS NULL,'0',p2.ModelNo) LIKE ''+IIF(@ModelNo='0',p2.ModelNo,@ModelNo)+'%'
 	
 	END TRY
 

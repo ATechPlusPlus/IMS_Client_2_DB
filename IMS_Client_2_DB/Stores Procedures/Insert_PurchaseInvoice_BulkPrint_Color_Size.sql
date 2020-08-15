@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <08th MARCH 2020>
--- Update date: <11st AUG 2020>
+-- Update date: <14st AUGUST 2020>
 -- Description:	<When User is posting purchase invoice then Inserted into Productstock color size master table>
 -- =============================================
 -- EXEC [dbo].[Insert_PurchaseInvoice_BulkPrint_Color_Size] 2,3,10,0,'B201',5
@@ -11,7 +11,7 @@ CREATE PROCEDURE [dbo].[Insert_PurchaseInvoice_BulkPrint_Color_Size]
 ,@StoreID INT=0
 ,@TotalQTY INT=0
 ,@EntryType INT=0
-,@SupplierBillNo VARCHAR(50)
+,@SupplierBillNo VARCHAR(MAX)
 ,@CreatedBy INT=0
 
 AS
@@ -27,14 +27,14 @@ BEGIN
 		BEGIN TRANSACTION
 
 		DECLARE @PARAMERES VARCHAR(MAX)=''
-		DECLARE @SizeType_ID AS INT=0
-		DECLARE @SizeValue AS VARCHAR(50)
+		--DECLARE @SizeType_ID AS INT=0
+		--DECLARE @SizeValue AS VARCHAR(50)
 		DECLARE @i AS INT=1
-		DECLARE @DeliveryPurchaseID AS INT=0
-		DECLARE @query1  AS VARCHAR(MAX)=''
-		DECLARE @query2  AS VARCHAR(MAX)
-		DECLARE @queryunpivot  AS VARCHAR(MAX)=''
-		DECLARE @ModelNo NVARCHAR(50) =''
+		--DECLARE @DeliveryPurchaseID AS INT=0
+		--DECLARE @query1  AS VARCHAR(MAX)=''
+		--DECLARE @query2  AS VARCHAR(MAX)
+		--DECLARE @queryunpivot  AS VARCHAR(MAX)=''
+		--DECLARE @ModelNo NVARCHAR(50) =''
 	
 		DECLARE @ProductID    INT =0
 		DECLARE @SubProductID INT =0
@@ -46,7 +46,7 @@ BEGIN
 
 		SET @PARAMERES=CONCAT(@PurchaseInvoiceID,',',@StoreID,',',@TotalQTY,',',@EntryType,',',@SupplierBillNo,',',@CreatedBy)
 		
-		DELETE FROM ProductStockMaster WHERE QTY = 0
+		DELETE FROM ProductStockMaster WHERE PurchaseInvoiceID=@PurchaseInvoiceID AND QTY = 0
 
 		DECLARE ColorSize_CURSOR CURSOR 
 		FOR
@@ -112,7 +112,8 @@ BEGIN
 --	INNER JOIN ProductMaster pm on pd1.ProductID = pm.ProductID
 --	INNER JOIN tblProductWiseModelNo pwm ON pd1.ProductID=pwm.ProductID AND pd1.SubProductID=pwm.SubProductID--AND pwm.StoreID='+CAST(@StoreID AS VARCHAR)+'
 --	WHERE 
---	pd1.PurchaseInvoiceID='+CAST(@PurchaseInvoiceID AS VARCHAR)+' AND pd2.DeliveryPurchaseID1='+CAST(@DeliveryPurchaseID as VARCHAR)+' group by pd1.PurchaseInvoiceID,pd1.ProductID,pd1.SubProductID,clr.ColorID,pwm.ModelNo,pwm.EndUser,pd1.StoreID,pd3.Total)a 
+--	pd1.PurchaseInvoiceID='+CAST(@PurchaseInvoiceID AS VARCHAR)+' AND pd2.DeliveryPurchaseID1='+CAST(@DeliveryPurchaseID as VARCHAR)+' group by pd1.PurchaseInvoiceID,pd1.ProductID,pd1.SubProductID,clr.ColorID,pwm.ModelNo,pwm.EndUser,pd1.StoreID,pd3.Total)a
+ 
 --	UNPIVOT
 --	(
 --	QTY
@@ -231,7 +232,8 @@ BEGIN
 		,ERROR_STATE() 
 		,ERROR_LINE()
 		,ERROR_MESSAGE()
-		,ISNULL(ERROR_PROCEDURE(),'Insert_PurchaseInvoice_BulkPrint_Color_Size')
+		--,ISNULL(ERROR_PROCEDURE(),'Insert_PurchaseInvoice_BulkPrint_Color_Size')
+		,ERROR_PROCEDURE()
 		,@PARAMERES
 
 		SELECT -1 AS Flag,ERROR_MESSAGE() as Msg -- Exception occured

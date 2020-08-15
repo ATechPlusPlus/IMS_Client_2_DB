@@ -1,10 +1,10 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <29th JULY 2020>
--- Update date: <31th JULY 2020>
+-- Update date: <15th AUGUST 2020>
 -- Description:	<>
 -- =============================================
---EXEC SPR_Update_ProductWiseModelNo
+--EXEC SPR_Update_ProductWiseModelNo 
 CREATE PROCEDURE [dbo].[SPR_Update_ProductWiseModelNo]
 @ProductID INT=0
 ,@ModelNo NVARCHAR(MAX)=0
@@ -26,12 +26,44 @@ BEGIN
 
 	SET @PARAMERES=CONCAT(@ProductID,',',@ModelNo,',',@BrandID,',',@StoreID,',',@EndUser,',',@CreatedBy,',',@SubProductID)
 	
-	UPDATE tblProductWiseModelNo SET EndUser=@EndUser
+	UPDATE tblProductWiseModelNo SET 
+	 EndUser=@EndUser
+	,ModelNo=@ModelNo
 	,UpdatedBy=@CreatedBy
 	,UpdatedOn=GETDATE()
 	WHERE SubProductID=@SubProductID
 	AND ProductID=@ProductID
 	--AND StoreID=@StoreID
+
+	IF EXISTS(SELECT 1 FROM DeliveryPurchaseBill1 WITH(NOLOCK) WHERE SubProductID=@SubProductID 
+	AND ProductID=@ProductID AND StoreID=@StoreID)
+	BEGIN
+
+		UPDATE DeliveryPurchaseBill1 SET ModelNo=@ModelNo
+		WHERE SubProductID=@SubProductID 
+		AND ProductID=@ProductID AND StoreID=@StoreID
+
+	END
+
+	IF EXISTS(SELECT 1 FROM ProductStockMaster WITH(NOLOCK) WHERE SubProductID=@SubProductID 
+	AND ProductID=@ProductID AND StoreID=@StoreID)
+	BEGIN
+
+		UPDATE ProductStockMaster SET ModelNo=@ModelNo
+		WHERE SubProductID=@SubProductID 
+		AND ProductID=@ProductID AND StoreID=@StoreID
+
+	END
+
+	IF EXISTS(SELECT 1 FROM tblStoreTransferItemDetails_Voilet WITH(NOLOCK) WHERE SubProductID=@SubProductID 
+	AND ProductID=@ProductID AND StoreID=@StoreID)
+	BEGIN
+
+		UPDATE tblStoreTransferItemDetails_Voilet SET ModelNo=@ModelNo
+		WHERE SubProductID=@SubProductID 
+		AND ProductID=@ProductID AND StoreID=@StoreID
+
+	END
 
 	COMMIT
 

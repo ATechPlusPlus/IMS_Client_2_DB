@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <07th MARCH 2020>
--- Update date: <10th AUGUST 2020>
+-- Update date: <14th AUGUST 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC Get_PurchaseInvoice_BulkPrint_Color_Size 2,1,'0',0
@@ -24,6 +24,7 @@ BEGIN
 	SELECT ps.ProductStockID, ps.PurchaseInvoiceID, ps.SubProductID, ps.ProductID,pm.ProductName,ps.Rate
 	, ps.StoreID, ps.BarcodeNo, ps.ColorID,cm.ColorName AS Color,sm.SizeID,sm.Size, ps.QTY, ps.ModelNo
 	FROM ProductStockMaster ps
+	INNER JOIN tblProductWiseModelNo pwm ON ps.SubProductID=pwm.SubProductID AND ps.ProductID=pwm.ProductID
 	INNER JOIN ProductMaster pm ON ps.ProductID = pm.ProductID
 	INNER JOIN ColorMaster cm ON ps.ColorID = cm.ColorID
 	Inner Join SizeMaster sm on ps.SizeID = sm.SizeID
@@ -44,6 +45,7 @@ BEGIN
 	SELECT ps.ProductStockID, ps.PurchaseInvoiceID, ps.SubProductID, ps.ProductID,pm.ProductName [ItemName],ps.QTY,ps.Rate
 	,ps.ModelNo [Style No],cm.ColorName AS Color, ps.StoreID, ps.BarcodeNo [Barcode], ps.ColorID,sm.SizeID,sm.Size
 	FROM ProductStockMaster ps
+	INNER JOIN tblProductWiseModelNo pwm ON ps.SubProductID=pwm.SubProductID AND ps.ProductID=pwm.ProductID
 	INNER JOIN ProductMaster pm ON ps.ProductID = pm.ProductID
 	INNER JOIN ColorMaster cm ON ps.ColorID = cm.ColorID
 	Inner Join SizeMaster sm on ps.SizeID = sm.SizeID

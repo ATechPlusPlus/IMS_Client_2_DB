@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <15th MARCH 2020>
--- Update date: <14th AUGUST 2020>
+-- Update date: <16th AUGUST 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC Get_PurchaseInvoice_BillDetails 2,'0'
@@ -14,7 +14,7 @@ BEGIN
 	SET NOCOUNT ON;
 	BEGIN TRY
 	DECLARE @PARAMERES VARCHAR(MAX)=''
-	SET @PARAMERES=@PurchaseInvoiceID
+	SET @PARAMERES=CONCAT(@PurchaseInvoiceID,',',@ModelNo)
 
 	SELECT p1.PurchaseInvoiceID,ISNULL(p2.PurchaseInvoiceDetailsID,0)PurchaseInvoiceDetailsID
 	,ISNULL(p2.ProductID,0)ProductID,ISNULL(p2.SubProductID,0)SubProductID,pm.ProductName,p2.ModelNo,p2.BrandID,bm.BrandName,p2.QTY,p2.Rate
@@ -27,7 +27,7 @@ BEGIN
 	LEFT OUTER JOIN [dbo].[ProductMaster] pm ON p2.ProductID = pm.ProductID
 	LEFT OUTER JOIN [dbo].[BrandMaster] bm ON p2.BrandID = bm.BrandID AND p2.SupplierID = bm.SupplierID
 	WHERE p1.PurchaseInvoiceID = @PurchaseInvoiceID
-	AND IIF(p2.ModelNo IS NULL,'0',p2.ModelNo) LIKE ''+IIF(@ModelNo='0',p2.ModelNo,@ModelNo)+'%'
+	AND IIF(p2.ModelNo IS NULL,'0',p2.ModelNo) LIKE ''+IIF(@ModelNo='0',ISNULL(p2.ModelNo,'0'),@ModelNo)+'%'
 	
 	END TRY
 

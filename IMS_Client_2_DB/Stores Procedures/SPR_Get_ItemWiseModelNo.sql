@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <04th AUGUST 2020>
--- Update date: <11th AUGUST 2020>
+-- Update date: <19th AUGUST 2020>
 -- Description:	<>
 -- =============================================
 --EXEC SPR_Get_ItemWiseModelNo 0,'0',0
@@ -26,7 +26,7 @@ BEGIN
 	INNER JOIN StoreMaster sm ON md.StoreID = sm.StoreID
 	WHERE pm.ProductID=IIF(@ProductID=0,pm.ProductID,@ProductID)
 	AND md.StoreID=IIF(@StoreID=0,md.StoreID,@StoreID)
-	AND md.ModelNo=IIF(@ModelNo='0',md.ModelNo,@ModelNo)
+	AND md.ModelNo LIKE IIF(@ModelNo='0',md.ModelNo+'%',@ModelNo+'%')
 
 	END TRY
 

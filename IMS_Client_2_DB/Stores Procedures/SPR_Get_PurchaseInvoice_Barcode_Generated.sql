@@ -1,10 +1,10 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <09th AUGUST 2020>
--- Update date: <16th AUGUST 2020>
+-- Update date: <19th AUGUST 2020>
 -- Description:	<Saved PIVOT delivery purchase bill details via ModelNo and Barcode is generated>
 -- =============================================
--- EXEC [dbo].[SPR_Get_PurchaseInvoice_Barcode_Generated] 19,1,'3966',2
+-- EXEC [dbo].[SPR_Get_PurchaseInvoice_Barcode_Generated] 18,1,'3966',2
 CREATE PROCEDURE [dbo].[SPR_Get_PurchaseInvoice_Barcode_Generated]
 @PurchaseInvoiceID INT=0
 ,@StoreID INT=0
@@ -82,7 +82,7 @@ BEGIN
 			WHILE @@FETCH_STATUS <> -1
 				BEGIN
 
-				SET @query1 += 'MAX(CASE WHEN pd2.Col'+CAST(@i AS VARCHAR)+' = pd2.Col'+cast(@i AS VARCHAR)+
+				SET @query1 += 'MAX(CASE pd2.Col'+CAST(@i AS VARCHAR)+' WHEN pd2.Col'+cast(@i AS VARCHAR)+
 				' THEN pd3.Col'+CAST(@i as VARCHAR)+' END) '+QUOTENAME(@SizeValue)+',';
 
 				SET @queryunpivot += QUOTENAME(@SizeValue);
@@ -114,12 +114,14 @@ BEGIN
 	WHERE pd1.StoreID='+CAST(@StoreID AS VARCHAR)+' AND ISNULL(psm.PurchaseInvoiceID,0)!='+CAST(@PurchaseInvoiceID AS VARCHAR)+'
 	AND pd1.PurchaseInvoiceID='+CAST(@PurchaseInvoiceID AS VARCHAR)+' AND pd2.DeliveryPurchaseID1='+CAST(@DeliveryPurchaseID as VARCHAR)+' GROUP BY pd1.PurchaseInvoiceID,pd1.ProductID,pd1.SubProductID,clr.ColorID,pwm.ModelNo,pwm.EndUser,pd1.StoreID,pd3.Total
 
+
 )a 
 	UNPIVOT
 	(
 	QTY
 	FOR SIZE IN ('+@queryunpivot+')
-	) unpvt'
+	) unpvt
+	WHERE QTY>0'
 	
 	SET @query2=REPLACE(@query2,',FROM',' FROM');
 

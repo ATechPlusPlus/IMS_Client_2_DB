@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <25th JULY 2020>
--- Update date: <04th AUGUST 2020>
+-- Update date: <19th AUGUST 2020>
 -- Description:	<>
 -- =============================================
 --EXEC SPR_Get_Material_NewDetails 0,0,0,'0',0
@@ -30,7 +30,7 @@ BEGIN
 		DECLARE @StoreID INT=0
 		DECLARE @StoreName NVARCHAR(MAX)=''
 
-		SET @PARAMERES=CONCAT(@BarcodeNo,',',@ProductID,',',@ColorID,',',@ModelNo)
+		SET @PARAMERES=CONCAT(@BarcodeNo,',',@ProductID,',',@ColorID,',',@ModelNo,',',@CategoryID)
 		--BEGIN TRANSACTION
 
 			DECLARE cursor_Store CURSOR
@@ -64,7 +64,8 @@ BEGIN
 			SET @WHERE='WHERE ps.ProductID=IIF('+CAST(@ProductID AS VARCHAR)+'=0,ps.ProductID,'+CAST(@ProductID AS VARCHAR)+')
 			AND ISNULL(ps.BarcodeNo,0)=IIF('+CAST(@BarcodeNo AS VARCHAR)+'=0,ISNULL(ps.BarcodeNo,0),'+CAST(@BarcodeNo AS VARCHAR)+')
 			AND ps.ColorID=IIF('+CAST(@ColorID AS VARCHAR)+'=0,ps.ColorID,'+CAST(@ColorID AS VARCHAR)+')
-			AND pwm.ModelNo=IIF('''+CAST(@ModelNo AS NVARCHAR)+'''=''0'',pwm.ModelNo,'''+CAST(@ModelNo AS NVARCHAR)+''')
+			AND pwm.ModelNo LIKE IIF('''+CAST(@ModelNo AS NVARCHAR)+'''=''0'',pwm.ModelNo+''%'','''+CAST(@ModelNo AS NVARCHAR)+'%'')
+			--AND pwm.ModelNo=IIF('''+CAST(@ModelNo AS NVARCHAR)+'''=''0'',pwm.ModelNo,'''+CAST(@ModelNo AS NVARCHAR)+''')
 			AND cat.CategoryID=IIF('+CAST(@CategoryID AS VARCHAR)+'=0,cat.CategoryID,'+CAST(@CategoryID AS VARCHAR)+')
 			GROUP BY ps.BarcodeNo,cm.ColorName,sz.Size,pm.ProductName,pm.ProductID,pwm.EndUser,pwm.Photo,ps.SubProductID,pwm.ModelNo'
 

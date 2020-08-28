@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <17th AUGUST 2020>
--- Update date: <19th AUGUST 2020>
+-- Update date: <26th AUGUST 2020>
 -- Description:	<Saved PIVOT delivery purchase bill details via ModelNo and Barcode is generated>
 -- =============================================
 -- EXEC [dbo].[SPR_Get_PurchaseInvoice_Barcode_Generated_Test] 2,117,1,'2470',2
@@ -131,7 +131,6 @@ BEGIN
 	WHERE pd1.StoreID='+CAST(@StoreID AS VARCHAR)+' --AND ISNULL(psm.PurchaseInvoiceID,0)!='+CAST(@PurchaseInvoiceID AS VARCHAR)+'
 	AND pd1.SubProductID='+CAST(@SubProductID AS VARCHAR)+'
 	AND pd1.PurchaseInvoiceID='+CAST(@PurchaseInvoiceID AS VARCHAR)+' AND pd2.DeliveryPurchaseID1='+CAST(@DeliveryPurchaseID as VARCHAR)+' GROUP BY pd1.PurchaseInvoiceID,pd1.ProductID,pd1.SubProductID,clr.ColorID,pwm.ModelNo,pwm.EndUser,pd1.StoreID,pd3.Total
-
 	)a 
 	UNPIVOT
 	(
@@ -180,14 +179,15 @@ BEGIN
 
 	--IF EXISTS(SELECT 1 FROM ProductStockMaster WITH(NOLOCK) WHERE ProductID=@ProductID AND SubProductID=@SubProductID AND ColorID=@ColorID AND StoreID=@StoreID AND SizeID=@SizeID)
 	--BEGIN
+		SET @BarcodeNo=0
 
 		SELECT TOP 1 @BarcodeNo=BarcodeNo FROM ProductStockMaster WITH(NOLOCK)
 		WHERE ProductID=@ProductID
 		AND SubProductID=@SubProductID
 		AND ColorID=@ColorID
 		AND SizeID=@SizeID
-		AND StoreID=@StoreID 
-		AND PurchaseInvoiceID=@PurchaseInvoiceID
+		--AND StoreID=@StoreID 
+		--AND PurchaseInvoiceID=@PurchaseInvoiceID
 
 		--SELECT @BarcodeNo [BarcodeNo],@ProductID [ProductID],@SubProductID [SubProductID]
 		--,@ColorID [ColorID],@SizeID [SizeID],@StoreID [StoreID]
@@ -202,7 +202,7 @@ BEGIN
 		IF EXISTS(SELECT 1 FROM ProductStockMaster WITH(NOLOCK) WHERE ProductID=@ProductID AND SubProductID=@SubProductID AND ColorID=@ColorID AND StoreID=@StoreID AND SizeID=@SizeID AND PurchaseInvoiceID=@PurchaseInvoiceID)
 	BEGIN
 		
-			SELECT @BarcodeNo [Old BarcodeNo],@SizeID [SizeID],@QTY [QTY]
+			--SELECT @BarcodeNo [Old BarcodeNo],@SizeID [SizeID],@QTY [QTY]
 			UPDATE ProductStockMaster
 			SET BarcodeNo = IIF(@QTY>0,@BarcodeNo,NULL)
 			,QTY = @QTY

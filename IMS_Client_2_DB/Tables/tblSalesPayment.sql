@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[tblSalesPayment](
 	[ID] [int] IDENTITY(1,1) NOT NULL,
 	[PaymentType] [nvarchar](50) NULL,
-	[Amount] [decimal](18, 2) NULL,
+	[Amount] [decimal](18, 3) NULL,
 	[SalesInvoiceID] [int] NULL,
 	PaymentNumber [nvarchar](50) NULL,
  CONSTRAINT [PK_tblSalesPayment] PRIMARY KEY CLUSTERED 

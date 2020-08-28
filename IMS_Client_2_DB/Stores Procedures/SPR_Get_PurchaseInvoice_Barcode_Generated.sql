@@ -1,10 +1,10 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <09th AUGUST 2020>
--- Update date: <19th AUGUST 2020>
+-- Update date: <26th AUGUST 2020>
 -- Description:	<Saved PIVOT delivery purchase bill details via ModelNo and Barcode is generated>
 -- =============================================
--- EXEC [dbo].[SPR_Get_PurchaseInvoice_Barcode_Generated] 18,1,'3966',2
+-- EXEC [dbo].[SPR_Get_PurchaseInvoice_Barcode_Generated] 28,1,'4238',2
 CREATE PROCEDURE [dbo].[SPR_Get_PurchaseInvoice_Barcode_Generated]
 @PurchaseInvoiceID INT=0
 ,@StoreID INT=0
@@ -25,7 +25,7 @@ BEGIN
 		BEGIN TRANSACTION
 
 		DECLARE @SizeType_ID AS INT=0
-		DECLARE @SizeValue AS VARCHAR(50)
+		DECLARE @SizeValue AS VARCHAR(MAX)
 		DECLARE @i AS INT=1
 		DECLARE @DeliveryPurchaseID AS INT=0
 		DECLARE @query1  AS VARCHAR(MAX)=''
@@ -113,8 +113,6 @@ BEGIN
 	LEFT OUTER JOIN ProductStockMaster psm ON pwm.ProductID=psm.ProductID AND pwm.SubProductID=psm.SubProductID
 	WHERE pd1.StoreID='+CAST(@StoreID AS VARCHAR)+' AND ISNULL(psm.PurchaseInvoiceID,0)!='+CAST(@PurchaseInvoiceID AS VARCHAR)+'
 	AND pd1.PurchaseInvoiceID='+CAST(@PurchaseInvoiceID AS VARCHAR)+' AND pd2.DeliveryPurchaseID1='+CAST(@DeliveryPurchaseID as VARCHAR)+' GROUP BY pd1.PurchaseInvoiceID,pd1.ProductID,pd1.SubProductID,clr.ColorID,pwm.ModelNo,pwm.EndUser,pd1.StoreID,pd3.Total
-
-
 )a 
 	UNPIVOT
 	(
@@ -163,16 +161,20 @@ BEGIN
 
 	--IF EXISTS(SELECT 1 FROM ProductStockMaster WITH(NOLOCK) WHERE ProductID=@ProductID AND SubProductID=@SubProductID AND ColorID=@ColorID AND StoreID=@StoreID AND SizeID=@SizeID)
 	--BEGIN
+		
+		SET @BarcodeNo=0
 
 		SELECT TOP 1 @BarcodeNo=BarcodeNo FROM ProductStockMaster WITH(NOLOCK)
 		WHERE ProductID=@ProductID 
 		AND SubProductID=@SubProductID 
-		AND ColorID=@ColorID AND StoreID=@StoreID AND SizeID=@SizeID-- AND BarcodeNo IS NOT NULL
+		AND ColorID=@ColorID 
+		--AND StoreID=@StoreID 
+		AND SizeID=@SizeID-- AND BarcodeNo IS NOT NULL
 
 		--SELECT @BarcodeNo [BarcodeNo],@ProductID [ProductID],@SubProductID [SubProductID]
 		--,@ColorID [ColorID],@SizeID [SizeID],@StoreID [StoreID]
 
-		IF @BarcodeNo IS NULL OR @BarcodeNo=0
+		IF ISNULL(@BarcodeNo,0)=0
 		BEGIN
 			-- Getting BarocdeNo
 			SELECT @BarcodeNo=NEXT VALUE FOR Barcode_Sequance

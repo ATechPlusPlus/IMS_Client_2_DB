@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <04th AUGUST 2020>
--- Update date: <19th AUGUST 2020>
+-- Update date: <29th AUGUST 2020>
 -- Description:	<>
 -- =============================================
 --EXEC SPR_Get_ItemWiseModelNo 0,'0',0
@@ -9,6 +9,7 @@ CREATE PROCEDURE [dbo].[SPR_Get_ItemWiseModelNo]
 @ProductID INT=0
 ,@ModelNo NVARCHAR(MAX)='0'
 ,@StoreID INT=0
+--,@BarCode BIGINT=0
 AS
 BEGIN
 
@@ -24,8 +25,14 @@ BEGIN
 	INNER JOIN ProductMaster pm ON md.ProductID = pm.ProductID 
 	INNER JOIN BrandMaster bm ON md.BrandID = bm.BrandID 
 	INNER JOIN StoreMaster sm ON md.StoreID = sm.StoreID
+	--LEFT JOIN
+	--(
+	--	SELECT TOP 1 ProductID,SubProductID,StoreID,BarcodeNo FROM ProductStockMaster WITH(NOLOCK) 
+	--	WHERE QTY > 0 AND BarcodeNo=@BarCode
+	--)psm ON md.SubProductID=psm.SubProductID AND md.ProductID =psm.ProductID AND md.StoreID=psm.StoreID
 	WHERE pm.ProductID=IIF(@ProductID=0,pm.ProductID,@ProductID)
 	AND md.StoreID=IIF(@StoreID=0,md.StoreID,@StoreID)
+	--AND ISNULL(psm.BarcodeNo,0)=IIF(@BarCode=0,ISNULL(psm.BarcodeNo,0),@BarCode)
 	AND md.ModelNo LIKE IIF(@ModelNo='0',md.ModelNo+'%',@ModelNo+'%')
 
 	END TRY

@@ -1,10 +1,10 @@
 ﻿-- =============================================
 -- Author:		<MATEEN KHAN>
 -- Create date: <5th JULY 2020>
--- Update date:	<06th AUGUST 2020>
+-- Update date:	<27th AUGUST 2020>
 -- Description:	<Description,,>
 -- =============================================
---EXEC sp_DetailPurchaseInvoiceReport 1002
+--EXEC sp_DetailPurchaseInvoiceReport '0006'
 CREATE PROCEDURE [dbo].[sp_DetailPurchaseInvoiceReport]
 @BillNo as NVARCHAR(50)
 
@@ -34,7 +34,7 @@ BEGIN
 	(SELECT DISTINCT StoreName FROM StoreMaster AS S1 WHERE S1.StoreID=p1.StoreID) AS StoreName,
 	BarcodeNo, 
 	(SELECT DISTINCT ColorName FROM ColorMaster WHERE ColorID=p1.ColorID) AS Color,
-	(SELECT DISTINCT SizeID FROM SizeMaster WHERE SizeID=p1.SizeID) AS Size,
+	(SELECT DISTINCT Size FROM SizeMaster WHERE SizeID=p1.SizeID) AS Size,
 	QTY, Rate
 	FROM [dbo].[ProductStockMaster] AS p1 
 	WHERE p1.PurchaseInvoiceID=@BillNo

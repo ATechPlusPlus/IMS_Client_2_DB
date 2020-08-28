@@ -146,6 +146,7 @@
     <Build Include="Stores Procedures\SPR_Get_PCStoreMapping.sql" />
     <Build Include="Stores Procedures\SPR_Get_PurchaseInvoice_Barcode_Generated.sql" />
     <Build Include="Stores Procedures\SPR_Get_PurchaseInvoice_Barcode_Generated_Test.sql" />
+    <Build Include="Stores Procedures\SPR_Update_EndUser_Price.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IMS_Client_2_DB.publish.xml" />

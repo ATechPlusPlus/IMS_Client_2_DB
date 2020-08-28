@@ -1,13 +1,13 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <18th JULY 2020>
--- Update date: <31th JULY 2020>
+-- Update date: <29th AUGUST 2020>
 -- Description:	<>
 -- =============================================
 --EXEC SPR_Get_ProductDetails_ForVioletColor 'TRANS-60015',1002
 CREATE PROCEDURE [dbo].[SPR_Get_ProductDetails_ForVioletColor]
-@BillNo AS NVARCHAR(100)='0'
-,@BarCode AS INT=0
+@BillNo AS NVARCHAR(MAX)='0'
+,@BarCode AS BIGINT=0
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -25,7 +25,7 @@ BEGIN
 
 	SELECT 0 [TransferItemID],@StoreTransferID [StoreBillDetailsID],p2.BarcodeNo [Barcode]
 	--,'' BillQTY,1 [EnterQTY],'' [State]
-	,'Violet' [CellColor],pwm.ModelNo
+	,'Violet' [CellColor],pwm.ModelNo [StyleNo]
 	, p1.ProductID,p2.SubProductID, p1.ProductName [Item],c1.ColorName [Color]
     ,s1.Size,0 [Total]
 	,p2.colorID,p2.SizeID

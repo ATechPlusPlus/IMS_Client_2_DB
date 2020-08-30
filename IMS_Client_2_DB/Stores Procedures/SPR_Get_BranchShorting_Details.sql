@@ -1,11 +1,11 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <02nd August 2020>
--- Update date: <>
+-- Update date: <30th August 2020>
 -- Description:	<>
 -- =============================================
 --EXEC SPR_Get_BranchShorting_Details 1,3,'2020-08-02','2020-08-02'
-CREATE PROCEDURE SPR_Get_BranchShorting_Details
+CREATE PROCEDURE [dbo].[SPR_Get_BranchShorting_Details]
 @FromStoreID INT=0
 ,@ToStoreID INT=0
 ,@FromDate DATE='0'
@@ -22,7 +22,8 @@ BEGIN
 	FROM
 	(
 	SELECT psm.SubProductID,psm.ProductID,pm.ProductName [ItemName],cm.ColorID,cm.ColorName,sm.SizeID,sm.Size,COUNT(sd.ProductID) [Sold]
-	,st.StoreID,st.StoreName,psm.QTY [Branch],0 AS [Store],CONVERT(DATE,sd.CreatedOn) [SalesDate],psm.BarcodeNo,pwm.ModelNo,bm.BrandName,pwm.EndUser
+	,st.StoreID,st.StoreName,psm.QTY [Branch],0 AS [Store],CONVERT(DATE,sd.CreatedOn) [SalesDate],psm.BarcodeNo
+	,pwm.ModelNo [Style No],bm.BrandName,pwm.EndUser
 	FROM ProductStockColorSizeMaster psm
 	INNER JOIN SalesDetails sd ON sd.ProductID=psm.ProductID AND sd.SubProductID=psm.SubProductID
 		AND sd.ColorID=psm.ColorID AND sd.SizeID=psm.SizeID
@@ -44,7 +45,8 @@ BEGIN
 	UNION
 
 	SELECT psm.SubProductID,psm.ProductID,pm.ProductName,cm.ColorID,cm.ColorName,sm.SizeID,sm.Size,COUNT(sd.ProductID) [Sold]
-	,st.StoreID,st.StoreName,0 AS [Branch],psm.QTY [Store],Convert(DATE,sd.CreatedOn) [SalesDate],psm.BarcodeNo,pwm.ModelNo,bm.BrandName,pwm.EndUser
+	,st.StoreID,st.StoreName,0 AS [Branch],psm.QTY [Store],Convert(DATE,sd.CreatedOn) [SalesDate],psm.BarcodeNo
+	,pwm.ModelNo [Style No],bm.BrandName,pwm.EndUser
 	FROM ProductStockColorSizeMaster psm
 	INNER JOIN SalesDetails sd ON sd.ProductID=psm.ProductID AND sd.SubProductID=psm.SubProductID
 		AND sd.ColorID=psm.ColorID AND sd.SizeID=psm.SizeID
@@ -90,4 +92,3 @@ BEGIN
 	END CATCH
 
 END
-GO

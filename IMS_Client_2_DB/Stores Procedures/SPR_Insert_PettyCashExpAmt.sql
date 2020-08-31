@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <21st JULY 2020>
--- Update date: <29th JULY 2020>
+-- Update date: <31st AUGUST 2020>
 -- Description:	<>
 -- =============================================
 --EXEC SPR_Insert_PettyCashExpAmt
@@ -18,12 +18,17 @@ BEGIN
 
 	BEGIN TRY
 	DECLARE @PARAMERES VARCHAR(MAX)=''
+	DECLARE @TransactionDate Date
+
 	SET @PARAMERES=CONCAT(@PettyCashExpAmt,',',@StoreID,',',@Particulars,',',@MasterCashClosingID,',',@CreatedBy)
 	
 	BEGIN TRANSACTION
 
 	IF @PettyCashExpAmt > 0
 	BEGIN
+	
+	SELECT @TransactionDate=CashBoxDate FROM tblMasterCashClosing WITH(NOLOCK) 
+		WHERE MasterCashClosingID=@MasterCashClosingID
 
 	INSERT INTO tblPettyCashExpensesDetails
 	(
@@ -39,7 +44,7 @@ BEGIN
 	(
 	@MasterCashClosingID
 	,@Particulars
-	,CONVERT(DATE,GETDATE())
+	,CONVERT(DATE,@TransactionDate)--CONVERT(DATE,GETDATE())
 	,0
 	,@PettyCashExpAmt
 	,@StoreID

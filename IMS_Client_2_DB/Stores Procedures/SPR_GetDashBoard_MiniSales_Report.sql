@@ -32,12 +32,17 @@ BEGIN
 		AND v1.InvoiceDate between @FromDate AND @ToDate 
 		AND v2.Rate>0 
 		GROUP BY v1.Name
+		ORDER BY SUM(v2.QTY * v2.Rate) DESC
 
 		--TotalQTY_Rate
-		SELECT SUM(QTY) AS TotalQTY, SUM(Rate) AS TotalRate
-		FROM (SELECT v1.Name AS SalesMan  , SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate FROM dbo.View_SalesBillDetails v1
+		SELECT SUM(QTY) AS TotalQTY, SUM(Rate) AS TotalRate,SUM(Discount) AS TotalDiscount
+		,(SUM(Rate)-SUM(Discount))+ SUM(TAX) AS GrandTotal
+		FROM (SELECT v1.Name AS SalesMan , SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate
+				,SUM(v1.Discount) Discount,SUM(v1.TAX) AS TAX
+				FROM dbo.View_SalesBillDetails v1
 				JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID
-				WHERE v1.ShopeID = @StoreID AND v1.InvoiceDate between @FromDate AND @ToDate AND v2.Rate>0
+				WHERE v1.ShopeID = @StoreID AND v1.InvoiceDate between @FromDate AND @ToDate 
+				--AND v2.Rate>0
 				GROUP BY v1.Name
 			 ) AS tb
 
@@ -54,19 +59,24 @@ BEGIN
 	BEGIN
 	
 		--reportQuery
-		SELECT  v2.ColorName AS Color  , SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate  
+		SELECT  v2.ColorName AS Color  , SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate
 		FROM dbo.View_SalesBillDetails v1 
 		JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID 
 		WHERE v1.ShopeID = @StoreID 
 		AND v1.InvoiceDate between @FromDate AND @ToDate 
-		AND v2.Rate>0 
+		--AND v2.Rate>0 
 		GROUP BY v2.ColorName
+		ORDER BY SUM(v2.QTY * v2.Rate) DESC
 
 		--TotalQTY_Rate
-		SELECT SUM(QTY) AS TotalQTY,SUM(Rate) AS TotalRate 
-		FROM (SELECT v2.ColorName AS Color, SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate  FROM  dbo.View_SalesBillDetails v1
+		SELECT SUM(QTY) AS TotalQTY,SUM(Rate) AS TotalRate,SUM(Discount) AS TotalDiscount
+		,(SUM(Rate)-SUM(Discount))+ SUM(TAX) AS GrandTotal
+		FROM (SELECT v2.ColorName AS Color, SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate
+				,SUM(v1.Discount) Discount,SUM(v1.TAX) AS TAX
+				FROM  dbo.View_SalesBillDetails v1
 				JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID 
-                WHERE v1.ShopeID = @StoreID AND v1.InvoiceDate between @FromDate AND @ToDate AND v2.Rate>0 
+                WHERE v1.ShopeID = @StoreID AND v1.InvoiceDate between @FromDate AND @ToDate 
+				--AND v2.Rate>0 
 				GROUP BY v2.ColorName
 			  ) AS tb
 
@@ -89,15 +99,20 @@ BEGIN
 		JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID 
 		WHERE v1.ShopeID = @StoreID 
 		AND v1.InvoiceDate between @FromDate AND @ToDate 
-		AND v2.Rate>0 
+		--AND v2.Rate>0 
 		GROUP BY v2.ProductName
+		ORDER BY SUM(v2.QTY * v2.Rate) DESC
 
 		--TotalQTY_Rate
 
-		SELECT SUM(QTY) AS TotalQTY,SUM(Rate) AS TotalRate 
-		FROM (SELECT v2.ProductName AS ItemName, SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate  FROM dbo.View_SalesBillDetails v1
+		SELECT SUM(QTY) AS TotalQTY,SUM(Rate) AS TotalRate,SUM(Discount) AS TotalDiscount
+		,(SUM(Rate)-SUM(Discount))+ SUM(TAX) AS GrandTotal 
+		FROM (SELECT v2.ProductName AS ItemName, SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate
+				,SUM(v1.Discount) Discount,SUM(v1.TAX) AS TAX
+				FROM dbo.View_SalesBillDetails v1
 				JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID 
-                WHERE v1.ShopeID = @StoreID AND v1.InvoiceDate between @FromDate AND @ToDate AND v2.Rate>0 
+                WHERE v1.ShopeID = @StoreID AND v1.InvoiceDate between @FromDate AND @ToDate 
+				--AND v2.Rate>0 
 				GROUP BY v2.ProductName
 			  ) AS tb
 
@@ -119,14 +134,19 @@ BEGIN
 		JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID 
 		WHERE v1.ShopeID = @StoreID 
 		AND v1.InvoiceDate between @FromDate AND @ToDate 
-		AND v2.Rate>0 
+		--AND v2.Rate>0 
 		GROUP BY v1.InvoiceNumber
+		ORDER BY SUM(v2.QTY * v2.Rate) DESC
 
 		--TotalQTY_Rate
-		SELECT SUM(QTY) AS TotalQTY,SUM(Rate) AS TotalRate 
-		FROM (SELECT v1.InvoiceNumber AS InvoiceNo, SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate  FROM dbo.View_SalesBillDetails v1
+		SELECT SUM(QTY) AS TotalQTY,SUM(Rate) AS TotalRate,SUM(Discount) AS TotalDiscount
+		,(SUM(Rate)-SUM(Discount))+ SUM(TAX) AS GrandTotal 
+		FROM (SELECT v1.InvoiceNumber AS InvoiceNo, SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate
+				,SUM(v1.Discount) Discount,SUM(v1.TAX) AS TAX
+				FROM dbo.View_SalesBillDetails v1
 				JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID 
-                WHERE v1.ShopeID = @StoreID AND v1.InvoiceDate between @FromDate AND @ToDate AND v2.Rate>0 
+                WHERE v1.ShopeID = @StoreID AND v1.InvoiceDate between @FromDate AND @ToDate 
+				--AND v2.Rate>0 
 				GROUP BY v1.InvoiceNumber
 			  ) AS tb
 
@@ -144,19 +164,24 @@ BEGIN
 	
 		--reportQuery
 		SELECT (SELECT CategoryName FROM CategoryMaster WHERE CategoryID=v2.CategoryID) AS Category
-		,SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate  FROM dbo.View_SalesBillDetails v1 
+		,SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate
+		FROM dbo.View_SalesBillDetails v1 
 		JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID 
 		WHERE v1.ShopeID = @StoreID AND v1.InvoiceDate between @FromDate AND @ToDate
-		AND v2.Rate>0 
+		--AND v2.Rate>0 
 		GROUP BY v2.CategoryID
+		ORDER BY SUM(v2.QTY * v2.Rate) DESC
 
 		--TotalQTY_Rate
-		SELECT SUM(QTY) AS TotalQTY,SUM(Rate) AS TotalRate 
+		SELECT SUM(QTY) AS TotalQTY,SUM(Rate) AS TotalRate,SUM(Discount) AS TotalDiscount
+		,(SUM(Rate)-SUM(Discount))+ SUM(TAX) AS GrandTotal 
 		FROM (SELECT (SELECT CategoryName FROM CategoryMaster WHERE CategoryID=v2.CategoryID) AS Category
-				,SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate  FROM dbo.View_SalesBillDetails v1 
+				,SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate
+				,SUM(v1.Discount) Discount,SUM(v1.TAX) AS TAX
+				FROM dbo.View_SalesBillDetails v1 
 				JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID 
 				WHERE v1.ShopeID = @StoreID AND v1.InvoiceDate between @FromDate AND @ToDate
-				AND v2.Rate>0 
+				--AND v2.Rate>0 
 				GROUP BY v2.CategoryID
 			  ) AS tb
 
@@ -178,17 +203,20 @@ BEGIN
 		JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID 
 		WHERE v1.ShopeID = @StoreID 
 		AND v1.InvoiceDate between @FromDate AND @ToDate 
-		AND v2.Rate>0 
+		--AND v2.Rate>0 
 		GROUP BY v2.ModelNo
+		ORDER BY SUM(v2.QTY * v2.Rate) DESC
 
 		--TotalQTY_Rate
-		SELECT SUM(QTY) AS TotalQTY,SUM(Rate) AS TotalRate 
+		SELECT SUM(QTY) AS TotalQTY,SUM(Rate) AS TotalRate,SUM(Discount) AS TotalDiscount
+		,(SUM(Rate)-SUM(Discount))+ SUM(TAX) AS GrandTotal 
 		FROM (SELECT v2.ModelNo  AS StyleNo, SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate
+				,SUM(v1.Discount) Discount,SUM(v1.TAX) AS TAX
 				FROM dbo.View_SalesBillDetails v1 
 				JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID 
 				WHERE v1.ShopeID = @StoreID 
 				AND v1.InvoiceDate between @FromDate AND @ToDate 
-				AND v2.Rate>0 
+				--AND v2.Rate>0 
 				GROUP BY v2.ModelNo
 			  ) AS tb
 

@@ -18,9 +18,9 @@ BEGIN
 	IF @ColorName = '0'
 	BEGIN
 
-	SELECT ColorID,ColorName,(CASE ActiveStatus WHEN 1 THEN 'Active' WHEN 0 THEN 'InActive' END) ActiveStatus
-	FROM ColorMaster WITH(NOLOCK)
-	ORDER BY ColorName
+		SELECT ColorID,ColorName,(CASE ActiveStatus WHEN 1 THEN 'Active' WHEN 0 THEN 'InActive' END) ActiveStatus
+		FROM ColorMaster WITH(NOLOCK)
+		ORDER BY ColorName
 
 	END
 
@@ -28,10 +28,10 @@ BEGIN
 
 	BEGIN
 
-	SELECT ColorID,ColorName,(CASE ActiveStatus WHEN 1 THEN 'Active' WHEN 0 THEN 'InActive' END) ActiveStatus
-	FROM ColorMaster WITH(NOLOCK)
-	WHERE ColorName LIKE '%'+@ColorName+'%'
-	ORDER BY ColorName
+		SELECT ColorID,ColorName,(CASE ActiveStatus WHEN 1 THEN 'Active' WHEN 0 THEN 'InActive' END) ActiveStatus
+		FROM ColorMaster WITH(NOLOCK)
+		WHERE ColorName LIKE '%'+@ColorName+'%'
+		ORDER BY ColorName
 
 	END
 	END TRY

@@ -1,6 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR>
 -- Create date: <03 MARCH 2020>
+-- Update date: <03 SEPT 2020>
 -- Description:	<NOT USED>
 -- =============================================
 --EXEC Insert_Posting_Delivery 1,1,1,1,'PURINV01',1 --NOT USED
@@ -31,7 +32,7 @@ BEGIN
 	@EntryType, @SupplierBillNo, @StoreID, 1, @QTY, @CreatedBy
 	)
 
-	IF EXISTS(SELECT 1 FROM ProductStockMaster WHERE ProductID = @ProductID AND StoreID=@StoreID)
+	IF EXISTS(SELECT 1 FROM ProductStockMaster WITH(NOLOCK) WHERE ProductID = @ProductID AND StoreID=@StoreID)
 	BEGIN
 	
 		UPDATE ProductStockMaster

@@ -1,11 +1,11 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <01st Sept 2020>
--- Update date: <02nd Sept 2020>
+-- Update date: <04th Sept 2020>
 -- Description:	<Description,,>
 -- =============================================
---EXEC SPR_GetDashBoard_MiniSales_Report 0,2,'2020-08-01','2020-09-01','Dash',''
-CREATE PROCEDURE SPR_GetDashBoard_MiniSales_Report
+--EXEC SPR_GetDashBoard_MiniSales_Report 0,2,'2020-09-02','2020-09-02','Dash',''
+CREATE PROCEDURE [dbo].[SPR_GetDashBoard_MiniSales_Report]
 @index INT=0
 ,@StoreID INT=0
 ,@FromDate DATE='0'
@@ -25,25 +25,27 @@ BEGIN
 	BEGIN
 
 		--reportQuery
-		SELECT v1.Name AS SalesMan , SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate 
+		SELECT v1.Name AS SalesMan , SUM((CASE WHEN v2.Rate<0 THEN -v2.QTY WHEN v2.Rate>0 THEN v2.QTY END)) AS QTY
+		, SUM(v2.QTY * v2.Rate) AS Rate 
 		FROM dbo.View_SalesBillDetails v1 
 		JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID
 		WHERE v1.ShopeID = @StoreID
 		AND v1.InvoiceDate between @FromDate AND @ToDate 
-		AND v2.Rate>0 
+		--AND v2.Rate>0 
 		GROUP BY v1.Name
 		ORDER BY SUM(v2.QTY * v2.Rate) DESC
 
 		--TotalQTY_Rate
 		SELECT SUM(QTY) AS TotalQTY, SUM(Rate) AS TotalRate,SUM(Discount) AS TotalDiscount
 		,(SUM(Rate)-SUM(Discount))+ SUM(TAX) AS GrandTotal
-		FROM (SELECT v1.Name AS SalesMan , SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate
-				,SUM(v1.Discount) Discount,SUM(v1.Tax) AS TAX
+		FROM (SELECT v1.Name AS SalesMan , SUM((CASE WHEN v2.Rate<0 THEN -v2.QTY WHEN v2.Rate>0 THEN v2.QTY END)) AS QTY
+				, SUM(v2.QTY * v2.Rate) AS Rate
+				,v1.Discount,v1.Tax AS TAX
 				FROM dbo.View_SalesBillDetails v1
 				JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID
 				WHERE v1.ShopeID = @StoreID AND v1.InvoiceDate between @FromDate AND @ToDate 
 				--AND v2.Rate>0
-				GROUP BY v1.Name
+				GROUP BY v1.Name,v1.Discount,v1.Tax
 			 ) AS tb
 
 		IF @ReportType='Mini'
@@ -59,7 +61,8 @@ BEGIN
 	BEGIN
 	
 		--reportQuery
-		SELECT  v2.ColorName AS Color  , SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate
+		SELECT  v2.ColorName AS Color  , SUM((CASE WHEN v2.Rate<0 THEN -v2.QTY WHEN v2.Rate>0 THEN v2.QTY END)) AS QTY
+		, SUM(v2.QTY * v2.Rate) AS Rate
 		FROM dbo.View_SalesBillDetails v1 
 		JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID 
 		WHERE v1.ShopeID = @StoreID 
@@ -71,13 +74,14 @@ BEGIN
 		--TotalQTY_Rate
 		SELECT SUM(QTY) AS TotalQTY,SUM(Rate) AS TotalRate,SUM(Discount) AS TotalDiscount
 		,(SUM(Rate)-SUM(Discount))+ SUM(TAX) AS GrandTotal
-		FROM (SELECT v2.ColorName AS Color, SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate
-				,SUM(v1.Discount) Discount,SUM(v1.Tax) AS TAX
+		FROM (SELECT SUM((CASE WHEN v2.Rate<0 THEN -v2.QTY WHEN v2.Rate>0 THEN v2.QTY END)) AS QTY
+				, SUM(v2.QTY * v2.Rate) AS Rate
+				,v1.Discount,v1.Tax AS TAX
 				FROM  dbo.View_SalesBillDetails v1
 				JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID 
                 WHERE v1.ShopeID = @StoreID AND v1.InvoiceDate between @FromDate AND @ToDate 
 				--AND v2.Rate>0 
-				GROUP BY v2.ColorName
+				GROUP BY v1.Discount,v1.SalesMan,v1.Tax
 			  ) AS tb
 
 
@@ -94,7 +98,8 @@ BEGIN
 	BEGIN
 	
 		--reportQuery
-		SELECT  v2.ProductName AS ItemName, SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate
+		SELECT  v2.ProductName AS ItemName, SUM((CASE WHEN v2.Rate<0 THEN -v2.QTY WHEN v2.Rate>0 THEN v2.QTY END)) AS QTY
+		, SUM(v2.QTY * v2.Rate) AS Rate
 		FROM dbo.View_SalesBillDetails v1 
 		JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID 
 		WHERE v1.ShopeID = @StoreID 
@@ -107,13 +112,14 @@ BEGIN
 
 		SELECT SUM(QTY) AS TotalQTY,SUM(Rate) AS TotalRate,SUM(Discount) AS TotalDiscount
 		,(SUM(Rate)-SUM(Discount))+ SUM(TAX) AS GrandTotal 
-		FROM (SELECT v2.ProductName AS ItemName, SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate
-				,SUM(v1.Discount) Discount,SUM(v1.Tax) AS TAX
+		FROM (SELECT SUM((CASE WHEN v2.Rate<0 THEN -v2.QTY WHEN v2.Rate>0 THEN v2.QTY END)) AS QTY
+				, SUM(v2.QTY * v2.Rate) AS Rate
+				,v1.Discount,v1.Tax AS TAX
 				FROM dbo.View_SalesBillDetails v1
 				JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID 
                 WHERE v1.ShopeID = @StoreID AND v1.InvoiceDate between @FromDate AND @ToDate 
 				--AND v2.Rate>0 
-				GROUP BY v2.ProductName
+				GROUP BY v1.Discount,v1.Discount,v1.Tax
 			  ) AS tb
 
 		IF @ReportType='Mini'
@@ -129,7 +135,8 @@ BEGIN
 	BEGIN
 	
 		--reportQuery
-		SELECT v1.InvoiceNumber AS InvoiceNo, SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate
+		SELECT v1.InvoiceNumber AS InvoiceNo, SUM((CASE WHEN v2.Rate<0 THEN -v2.QTY WHEN v2.Rate>0 THEN v2.QTY END)) AS QTY
+		, SUM(v2.QTY * v2.Rate) AS Rate
 		FROM dbo.View_SalesBillDetails v1 
 		JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID 
 		WHERE v1.ShopeID = @StoreID 
@@ -141,13 +148,14 @@ BEGIN
 		--TotalQTY_Rate
 		SELECT SUM(QTY) AS TotalQTY,SUM(Rate) AS TotalRate,SUM(Discount) AS TotalDiscount
 		,(SUM(Rate)-SUM(Discount))+ SUM(TAX) AS GrandTotal 
-		FROM (SELECT v1.InvoiceNumber AS InvoiceNo, SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate
-				,SUM(v1.Discount) Discount,SUM(v1.Tax) AS TAX
+		FROM (SELECT v1.InvoiceNumber AS InvoiceNo, SUM((CASE WHEN v2.Rate<0 THEN -v2.QTY WHEN v2.Rate>0 THEN v2.QTY END)) AS QTY
+				, SUM(v2.QTY * v2.Rate) AS Rate
+				,v1.Discount,v1.Tax AS TAX
 				FROM dbo.View_SalesBillDetails v1
 				JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID 
                 WHERE v1.ShopeID = @StoreID AND v1.InvoiceDate between @FromDate AND @ToDate 
 				--AND v2.Rate>0 
-				GROUP BY v1.InvoiceNumber
+				GROUP BY v1.InvoiceNumber,v1.Discount,v1.Tax
 			  ) AS tb
 
 		IF @ReportType='Mini'
@@ -164,7 +172,8 @@ BEGIN
 	
 		--reportQuery
 		SELECT (SELECT CategoryName FROM CategoryMaster WHERE CategoryID=v2.CategoryID) AS Category
-		,SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate
+		,SUM((CASE WHEN v2.Rate<0 THEN -v2.QTY WHEN v2.Rate>0 THEN v2.QTY END)) AS QTY
+		, SUM(v2.QTY * v2.Rate) AS Rate
 		FROM dbo.View_SalesBillDetails v1 
 		JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID 
 		WHERE v1.ShopeID = @StoreID AND v1.InvoiceDate between @FromDate AND @ToDate
@@ -176,13 +185,14 @@ BEGIN
 		SELECT SUM(QTY) AS TotalQTY,SUM(Rate) AS TotalRate,SUM(Discount) AS TotalDiscount
 		,(SUM(Rate)-SUM(Discount))+ SUM(TAX) AS GrandTotal 
 		FROM (SELECT (SELECT CategoryName FROM CategoryMaster WHERE CategoryID=v2.CategoryID) AS Category
-				,SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate
-				,SUM(v1.Discount) Discount,SUM(v1.Tax) AS TAX
+				,SUM((CASE WHEN v2.Rate<0 THEN -v2.QTY WHEN v2.Rate>0 THEN v2.QTY END)) AS QTY
+				, SUM(v2.QTY * v2.Rate) AS Rate
+				,v1.Discount,v1.Tax AS TAX
 				FROM dbo.View_SalesBillDetails v1 
 				JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID 
 				WHERE v1.ShopeID = @StoreID AND v1.InvoiceDate between @FromDate AND @ToDate
 				--AND v2.Rate>0 
-				GROUP BY v2.CategoryID
+				GROUP BY v2.CategoryID,v1.Discount,v1.Tax
 			  ) AS tb
 
 		IF @ReportType='Mini'
@@ -198,7 +208,8 @@ BEGIN
 	BEGIN
 	
 		--reportQuery
-		SELECT v2.ModelNo AS StyleNo, SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate
+		SELECT v2.ModelNo AS StyleNo, SUM((CASE WHEN v2.Rate<0 THEN -v2.QTY WHEN v2.Rate>0 THEN v2.QTY END)) AS QTY
+		, SUM(v2.QTY * v2.Rate) AS Rate
 		FROM dbo.View_SalesBillDetails v1 
 		JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID 
 		WHERE v1.ShopeID = @StoreID 
@@ -210,14 +221,15 @@ BEGIN
 		--TotalQTY_Rate
 		SELECT SUM(QTY) AS TotalQTY,SUM(Rate) AS TotalRate,SUM(Discount) AS TotalDiscount
 		,(SUM(Rate)-SUM(Discount))+ SUM(TAX) AS GrandTotal 
-		FROM (SELECT v2.ModelNo  AS StyleNo, SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate
-				,SUM(v1.Discount) Discount,SUM(v1.Tax) AS TAX
+		FROM (SELECT SUM((CASE WHEN v2.Rate<0 THEN -v2.QTY WHEN v2.Rate>0 THEN v2.QTY END)) AS QTY
+				, SUM(v2.QTY * v2.Rate) AS Rate
+				,v1.Discount,v1.Tax AS TAX
 				FROM dbo.View_SalesBillDetails v1 
 				JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID 
 				WHERE v1.ShopeID = @StoreID 
 				AND v1.InvoiceDate between @FromDate AND @ToDate 
 				--AND v2.Rate>0 
-				GROUP BY v2.ModelNo
+				GROUP BY v1.Discount,v1.Tax
 			  ) AS tb
 
 		IF @ReportType='Mini'

@@ -24,7 +24,7 @@ BEGIN
 		,s1.SizeID, s1.Size,p2.BarcodeNo,p2.SubProductID
 		FROM dbo.ProductMaster p1 
 		JOIN dbo.ProductStockColorSizeMaster p2 ON p1.ProductID = p2.ProductID 
-		JOIN ColorMaster c1 ON p2.colorID=c1.ColorID 
+		JOIN ColorMaster c1 ON p2.ColorID=c1.ColorID 
 		JOIN SizeMaster s1 ON p2.SizeID=s1.SizeID
 		JOIN tblProductWiseModelNo pwm ON p2.SubProductID=pwm.SubProductID
 		WHERE  p2.BarcodeNo =@BarCode;
@@ -36,7 +36,7 @@ BEGIN
 		,s1.SizeID, s1.Size,p2.BarcodeNo,p2.SubProductID
 		FROM dbo.ProductMaster p1
 		JOIN dbo.ProductStockColorSizeMaster p2 ON p1.ProductID = p2.ProductID AND p2.StoreID = @StoreID
-		JOIN ColorMaster c1 ON p2.colorID=c1.ColorID 
+		JOIN ColorMaster c1 ON p2.ColorID=c1.ColorID 
 		JOIN SizeMaster s1 ON p2.SizeID=s1.SizeID
 		JOIN tblProductWiseModelNo pwm on p2.SubProductID=pwm.SubProductID
 		WHERE p2.StoreID = @StoreID 

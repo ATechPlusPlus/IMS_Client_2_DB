@@ -38,7 +38,7 @@ BEGIN
 		SELECT SUM(QTY) AS TotalQTY, SUM(Rate) AS TotalRate,SUM(Discount) AS TotalDiscount
 		,(SUM(Rate)-SUM(Discount))+ SUM(TAX) AS GrandTotal
 		FROM (SELECT v1.Name AS SalesMan , SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate
-				,SUM(v1.Discount) Discount,SUM(v1.TAX) AS TAX
+				,SUM(v1.Discount) Discount,SUM(v1.Tax) AS TAX
 				FROM dbo.View_SalesBillDetails v1
 				JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID
 				WHERE v1.ShopeID = @StoreID AND v1.InvoiceDate between @FromDate AND @ToDate 
@@ -72,7 +72,7 @@ BEGIN
 		SELECT SUM(QTY) AS TotalQTY,SUM(Rate) AS TotalRate,SUM(Discount) AS TotalDiscount
 		,(SUM(Rate)-SUM(Discount))+ SUM(TAX) AS GrandTotal
 		FROM (SELECT v2.ColorName AS Color, SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate
-				,SUM(v1.Discount) Discount,SUM(v1.TAX) AS TAX
+				,SUM(v1.Discount) Discount,SUM(v1.Tax) AS TAX
 				FROM  dbo.View_SalesBillDetails v1
 				JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID 
                 WHERE v1.ShopeID = @StoreID AND v1.InvoiceDate between @FromDate AND @ToDate 
@@ -108,7 +108,7 @@ BEGIN
 		SELECT SUM(QTY) AS TotalQTY,SUM(Rate) AS TotalRate,SUM(Discount) AS TotalDiscount
 		,(SUM(Rate)-SUM(Discount))+ SUM(TAX) AS GrandTotal 
 		FROM (SELECT v2.ProductName AS ItemName, SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate
-				,SUM(v1.Discount) Discount,SUM(v1.TAX) AS TAX
+				,SUM(v1.Discount) Discount,SUM(v1.Tax) AS TAX
 				FROM dbo.View_SalesBillDetails v1
 				JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID 
                 WHERE v1.ShopeID = @StoreID AND v1.InvoiceDate between @FromDate AND @ToDate 
@@ -142,7 +142,7 @@ BEGIN
 		SELECT SUM(QTY) AS TotalQTY,SUM(Rate) AS TotalRate,SUM(Discount) AS TotalDiscount
 		,(SUM(Rate)-SUM(Discount))+ SUM(TAX) AS GrandTotal 
 		FROM (SELECT v1.InvoiceNumber AS InvoiceNo, SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate
-				,SUM(v1.Discount) Discount,SUM(v1.TAX) AS TAX
+				,SUM(v1.Discount) Discount,SUM(v1.Tax) AS TAX
 				FROM dbo.View_SalesBillDetails v1
 				JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID 
                 WHERE v1.ShopeID = @StoreID AND v1.InvoiceDate between @FromDate AND @ToDate 
@@ -177,7 +177,7 @@ BEGIN
 		,(SUM(Rate)-SUM(Discount))+ SUM(TAX) AS GrandTotal 
 		FROM (SELECT (SELECT CategoryName FROM CategoryMaster WHERE CategoryID=v2.CategoryID) AS Category
 				,SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate
-				,SUM(v1.Discount) Discount,SUM(v1.TAX) AS TAX
+				,SUM(v1.Discount) Discount,SUM(v1.Tax) AS TAX
 				FROM dbo.View_SalesBillDetails v1 
 				JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID 
 				WHERE v1.ShopeID = @StoreID AND v1.InvoiceDate between @FromDate AND @ToDate
@@ -211,7 +211,7 @@ BEGIN
 		SELECT SUM(QTY) AS TotalQTY,SUM(Rate) AS TotalRate,SUM(Discount) AS TotalDiscount
 		,(SUM(Rate)-SUM(Discount))+ SUM(TAX) AS GrandTotal 
 		FROM (SELECT v2.ModelNo  AS StyleNo, SUM(v2.QTY) AS QTY, SUM(v2.QTY * v2.Rate) AS Rate
-				,SUM(v1.Discount) Discount,SUM(v1.TAX) AS TAX
+				,SUM(v1.Discount) Discount,SUM(v1.Tax) AS TAX
 				FROM dbo.View_SalesBillDetails v1 
 				JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID 
 				WHERE v1.ShopeID = @StoreID 

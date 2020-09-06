@@ -112,5 +112,7 @@ INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID
 GO
 INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (50, N'Quick BarCode Print', N'frmQuickBarCodePrint', 4)
 GO
+INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (51, N'Discount Login', N'frmDiscountLogin', 3)
+GO
 SET IDENTITY_INSERT [dbo].[tblFormRightDetails] OFF
 GO

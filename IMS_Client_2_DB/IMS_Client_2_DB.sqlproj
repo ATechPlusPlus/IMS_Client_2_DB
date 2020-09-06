@@ -148,6 +148,7 @@
     <Build Include="Stores Procedures\SPR_Get_PurchaseInvoice_Barcode_Generated_Test.sql" />
     <Build Include="Stores Procedures\SPR_Update_EndUser_Price.sql" />
     <Build Include="Stores Procedures\SPR_GetDashBoard_MiniSales_Report.sql" />
+    <Build Include="Stores Procedures\SPR_CheckDiscountPass_VoucherNo.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IMS_Client_2_DB.publish.xml" />

@@ -1,10 +1,10 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <13th JULY 2020>
--- Update date: <25th JULY 2020>
+-- Update date: <07th SEPT 2020>
 -- Description:	<Description,,>
 -- =============================================
---EXEC SPR_Get_CashClosing_Details 1,1,0
+--EXEC SPR_Get_CashClosing_Details 1015,2,0
 CREATE PROCEDURE [dbo].[SPR_Get_CashClosing_Details]
 @MasterCashClosingID INT=0
 ,@StoreID INT=0
@@ -77,6 +77,7 @@ BEGIN
 		SELECT CreditClosingID, MasterCashClosingID, [Type], [Count], Value 
 		FROM [dbo].[tblCreditClosing] WITH(NOLOCK)
 		WHERE MasterCashClosingID=@MasterCashClosingID
+		AND [Type]!='Cash'
 
 		IF @CashStatus = 0
 		BEGIN

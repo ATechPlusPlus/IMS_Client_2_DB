@@ -149,6 +149,8 @@
     <Build Include="Stores Procedures\SPR_Update_EndUser_Price.sql" />
     <Build Include="Stores Procedures\SPR_GetDashBoard_MiniSales_Report.sql" />
     <Build Include="Stores Procedures\SPR_CheckDiscountPass_VoucherNo.sql" />
+    <Build Include="Tables\tblScanInventoryDetails.sql" />
+    <Build Include="Tables\tblScanInventoryItemDetails.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IMS_Client_2_DB.publish.xml" />

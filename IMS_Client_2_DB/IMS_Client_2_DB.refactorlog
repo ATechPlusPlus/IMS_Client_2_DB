@@ -315,4 +315,25 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="SuProductID" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="bea695cf-a9d6-4392-8565-d281b78ace3e" ChangeDateTime="10/06/2020 16:59:05">
+    <Property Name="ElementName" Value="[dbo].[tblScanInventoryDetails].[FromStore]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[tblScanInventoryDetails]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="StoreID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="3a385103-3e42-45b9-9758-1692becf229d" ChangeDateTime="10/06/2020 16:59:31">
+    <Property Name="ElementName" Value="[dbo].[tblScanInventoryDetails].[BillStatus]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[tblScanInventoryDetails]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CompareStatus" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="7f5d26af-4fa0-40e9-a6fe-9e61f6fe49e7" ChangeDateTime="10/06/2020 17:27:37">
+    <Property Name="ElementName" Value="[dbo].[tblScanInventoryDetails].[ScanID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[tblScanInventoryDetails]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="MasterScanID" />
+  </Operation>
 </Operations>

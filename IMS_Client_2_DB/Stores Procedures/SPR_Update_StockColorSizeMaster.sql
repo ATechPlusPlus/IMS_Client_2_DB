@@ -4,16 +4,17 @@
 -- Update date: <>
 -- Description:	<Description,,>
 -- =============================================
---EXEC SPR_Update_StockColorSizeMaster '1'
+--EXEC SPR_Update_StockColorSizeMaster '1',2,1,0,0
 CREATE PROCEDURE [dbo].[SPR_Update_StockColorSizeMaster]
 @MasterScanID INT=0
 ,@StoreID INT=0
 ,@CreatedBy INT=0
+,@Flag INT OUTPUT
 ,@Msg VARCHAR(MAX) OUTPUT
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
-	BEGIN TRY
+BEGIN TRY
 	DECLARE @PARAMERES VARCHAR(MAX)=''
 	SET @PARAMERES=CONCAT(@MasterScanID,',',@StoreID,',',@CreatedBy)
 
@@ -57,7 +58,7 @@ BEGIN
 	INNER JOIN StoreMaster stm ON std.StoreID=stm.StoreID
 	WHERE sti.MasterScanID = @MasterScanID
 	
-	SET @Msg='Inventory Updated Successfully.' -- Means Data saved successfully
+	SELECT @Flag=1,@Msg='Inventory Updated Successfully.' -- Means Data saved successfully
 
 	COMMIT
 
@@ -86,7 +87,7 @@ BEGIN
 	,ERROR_PROCEDURE()
 	,@PARAMERES
 	
-	SET @Msg=ERROR_MESSAGE() -- Exception occured
+	SELECT @Flag=0,@Msg=ERROR_MESSAGE() -- Exception occured
 
 	END CATCH
 END

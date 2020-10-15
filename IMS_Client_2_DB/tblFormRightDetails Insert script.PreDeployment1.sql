@@ -12,8 +12,8 @@
 TRUNCATE TABLE tblFormRightDetails
 
 SET IDENTITY_INSERT [dbo].[tblFormRightDetails] ON 
-
 GO
+
 INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (1, N'Master', NULL, 0)
 GO
 INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (2, N'Purchase', NULL, 0)
@@ -28,31 +28,33 @@ INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID
 GO
 INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (7, N'Setting', NULL, 0)
 GO
-INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (8, N'Brand Master', N'Brand_Master', 1)
+INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (8, N'Inventory', NULL, 0)
 GO
-INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (9, N'Category Master', N'Category_Master', 1)
+INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (9, N'Brand Master', N'Brand_Master', 1)
 GO
-INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (10, N'Color Master', N'Color_Master', 1)
+INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (10, N'Category Master', N'Category_Master', 1)
 GO
-INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (11, N'Customer Master', N'Customer_Master', 1)
+INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (11, N'Color Master', N'Color_Master', 1)
 GO
-INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (12, N'Country Master', N'Country_Master', 1)
+INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (12, N'Customer Master', N'Customer_Master', 1)
 GO
-INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (13, N'Item Master', N'Product_Master', 1)
+INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (13, N'Country Master', N'Country_Master', 1)
 GO
-INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (14, N'Employee Details', N'Employee_Details', 1)
+INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (14, N'Item Master', N'Product_Master', 1)
 GO
-INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (15, N'Size Master', N'Size_Master', 1)
+INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (15, N'Employee Details', N'Employee_Details', 1)
 GO
-INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (16, N'Size Type_Master', N'Size_Type_Master', 1)
+INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (16, N'Size Master', N'Size_Master', 1)
 GO
-INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (17, N'Store Master', N'Store_Master', 1)
+INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (17, N'Size Type_Master', N'Size_Type_Master', 1)
 GO
-INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (18, N'Supplier Details', N'Supplier_Details', 1)
+INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (18, N'Store Master', N'Store_Master', 1)
 GO
-INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (19, N'Material Details', N'Material_Details', 5)
+INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (19, N'Supplier Details', N'Supplier_Details', 1)
 GO
-INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (20, N'Currency Value Settings', N'Currency_Value_Settings', 7)
+INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (20, N'Material Details', N'Material_Details', 5)
+GO
+INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (21, N'Currency Value Settings', N'Currency_Value_Settings', 7)
 GO
 INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (22, N'Other Settings', N'frmOtherSetting', 7)
 GO
@@ -114,5 +116,12 @@ INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID
 GO
 INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (51, N'Discount Login', N'frmDiscountLogin', 3)
 GO
+INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (52, N'Scan Inventory', N'frmScanInventory', 8)
+GO
+INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (53, N'Scanned Inventory List', N'frmScanInventoryList', 8)
+GO
+INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (54, N'Scanned Inventory Compare', N'frmScanInventoryCompare', 8)
+GO
+
 SET IDENTITY_INSERT [dbo].[tblFormRightDetails] OFF
 GO

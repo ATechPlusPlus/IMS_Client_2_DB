@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <14th OCT 2020>
--- Update date: <>
+-- Update date: <15th OCT 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC SPR_Get_ScanInventoryItemDetails '0'

@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <15th OCT 2020>
--- Update date: <>
+-- Update date: <17th OCT 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC SPR_Update_StockColorSizeMaster '1',2,1,0,0
@@ -24,7 +24,7 @@ BEGIN TRY
 	
 	--Updating Scanned child Table
 	UPDATE sti
-	SET sti.SystemQTY = sti.BillQTY
+	SET sti.SystemQTY = psm.QTY
 	,sti.UpdatedBy=@CreatedBy,sti.UpdatedOn=GETDATE()
 	FROM tblScanInventoryItemDetails sti
 	INNER JOIN tblScanInventoryDetails std ON sti.MasterScanID=std.MasterScanID

@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <14th OCT 2020>
--- Update date: <15th OCT 2020>
+-- Update date: <17th OCT 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC SPR_Get_ScanInventoryList '0'
@@ -22,7 +22,7 @@ BEGIN
 	
 	SELECT std.MasterScanID,sm.StoreName,std.ScanDate [Scanned Date],std.StoreID
 	,(CASE std.CompareStatus WHEN 1 THEN 'Done' WHEN 0 THEN 'Pending' END) CompareStatus
-	,emd.Name [Scanned By], emd.Name [Compared By]
+	,emd.Name [Scanned By], emd1.Name [Compared By]
 	FROM tblScanInventoryDetails std
 	INNER JOIN StoreMaster sm ON std.StoreID=sm.StoreID
 	INNER JOIN EmployeeDetails emd ON std.CreatedBy=emd.EmpID

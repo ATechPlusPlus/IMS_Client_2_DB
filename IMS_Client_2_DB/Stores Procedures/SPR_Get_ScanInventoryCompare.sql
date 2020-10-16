@@ -1,10 +1,10 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <15th OCT 2020>
--- Update date: <>
+-- Update date: <17th OCT 2020>
 -- Description:	<Description,,>
 -- =============================================
---EXEC SPR_Get_ScanInventoryCompare '1'
+--EXEC SPR_Get_ScanInventoryCompare 5
 CREATE PROCEDURE [dbo].[SPR_Get_ScanInventoryCompare]
 @MasterScanID INT=0
 
@@ -17,8 +17,11 @@ BEGIN
 
 	SET NOCOUNT ON;
 	
-	SELECT bm.BrandName [Brand],sti.ProductID, ps.ProductName [Item],pwm.ModelNo [Model No],sti.Barcode,sti.SizeID,sm.Size, sti.ColorID
-	, col.ColorName [Color],sti.BillQTY [Inventory QTY],psm.QTY [System QTY],(sti.BillQTY-psm.QTY) [Diff QTY]
+	SELECT bm.BrandName [Brand],sti.ProductID, ps.ProductName [Item],pwm.ModelNo [Model No],sti.Barcode
+	,sti.SizeID,sm.Size, sti.ColorID
+	, col.ColorName [Color],sti.BillQTY [Inventory QTY],IIF(sti.SystemQTY=0,psm.QTY,sti.SystemQTY) [System QTY]
+	,(sti.BillQTY-IIF(sti.SystemQTY=0,psm.QTY,sti.SystemQTY)) [Diff QTY]
+	, pwm.EndUser [Rate], ( (sti.BillQTY-IIF(sti.SystemQTY=0,psm.QTY,sti.SystemQTY)) * pwm.EndUser) [Diff Rate]
 	, psm.SubProductID,psm.StoreID,stm.StoreName
 	FROM tblScanInventoryItemDetails sti
 	INNER JOIN tblScanInventoryDetails std ON sti.MasterScanID=std.MasterScanID

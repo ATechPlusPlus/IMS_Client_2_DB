@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[tblScanInventoryItemDetails]
 (
 [AutoID] [int] IDENTITY(1,1) NOT NULL,
-	[ScanInventoryID] [int] NOT NULL,
+	[MasterScanID] [int] NOT NULL,
 	[ProductID] [int] NOT NULL,
 	[SubProductID] [int] NOT NULL,
 	[Barcode] [nvarchar](50) NOT NULL,

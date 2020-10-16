@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <14th OCT 2020>
--- Update date: <15th OCT 2020>
+-- Update date: <17th OCT 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC SPR_Get_ScanInventoryItemDetails '0'
@@ -17,17 +17,15 @@ BEGIN
 
 	SET NOCOUNT ON;
 	
-	SELECT sti.ProductID, ps.ProductName, sti.BillQTY,sti.Rate,sti.Total,sti.Barcode,sti.SizeID,sm.Size, sti.ColorID
+	SELECT sti.MasterScanID,sti.ProductID, ps.ProductName, sti.BillQTY,sti.Rate,sti.Total
+	,sti.Barcode,sti.SizeID,sm.Size, sti.ColorID
 	, col.ColorName,sti.SubProductID
-	--,psm.QTY as StockQTY, psm.SubProductID,psm.StoreID
 	FROM tblScanInventoryItemDetails sti
 	INNER JOIN tblScanInventoryDetails std ON sti.MasterScanID=std.MasterScanID
 	INNER JOIN ProductMaster ps ON sti.ProductID = ps.ProductID
 	INNER JOIN ColorMaster col ON sti.ColorID = col.ColorID
 	INNER JOIN SizeMaster sm ON sti.SizeID = sm.SizeID
-	--INNER JOIN ProductStockColorSizeMaster psm ON sti.Barcode = psm.BarcodeNo
 	WHERE std.StoreID=@StoreID AND std.CompareStatus=0
-	--psm.StoreID = 2 AND psm.BarcodeNo = sti.Barcode AND sti.MasterScanID = 1
 	
 	END TRY
 

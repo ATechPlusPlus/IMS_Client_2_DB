@@ -17,12 +17,14 @@ BEGIN
 
 	SET NOCOUNT ON;
 	
-	SELECT bm.BrandName [Brand],sti.ProductID, ps.ProductName [Item],pwm.ModelNo [Model No],sti.Barcode
+	SELECT bm.BrandName [Brand],sti.ProductID, ps.ProductName [Item],pwm.ModelNo [Style No],sti.Barcode
 	,sti.SizeID,sm.Size, sti.ColorID
 	, col.ColorName [Color],sti.BillQTY [Inventory QTY],IIF(sti.SystemQTY=0,psm.QTY,sti.SystemQTY) [System QTY]
 	,(sti.BillQTY-IIF(sti.SystemQTY=0,psm.QTY,sti.SystemQTY)) [Diff QTY]
 	, pwm.EndUser [Rate], ( (sti.BillQTY-IIF(sti.SystemQTY=0,psm.QTY,sti.SystemQTY)) * pwm.EndUser) [Diff Rate]
-	, psm.SubProductID,psm.StoreID,stm.StoreName
+	, psm.SubProductID,psm.StoreID,stm.StoreName,(sti.BillQTY * pwm.EndUser) [Inventory Rate]
+	, (IIF(sti.SystemQTY=0,psm.QTY,sti.SystemQTY) * pwm.EndUser) [System Rate]
+	--, 1 [Default]
 	FROM tblScanInventoryItemDetails sti
 	INNER JOIN tblScanInventoryDetails std ON sti.MasterScanID=std.MasterScanID
 	INNER JOIN ProductMaster ps ON sti.ProductID = ps.ProductID

@@ -21,8 +21,9 @@ BEGIN
 	SET NOCOUNT ON;
 	
 	SELECT std.MasterScanID,sm.StoreName,std.ScanDate [Scanned Date],std.StoreID
-	,(CASE std.CompareStatus WHEN 1 THEN 'Done' WHEN 0 THEN 'Pending' END) CompareStatus
-	,emd.Name [Scanned By], emd1.Name [Compared By]
+	,(CASE std.CompareStatus WHEN 1 THEN 'Done' WHEN 0 THEN 'Pending' END) [Compare Status]
+	,emd.Name [Scanned By], emd1.Name [Compared By],CONVERT(DATE,std.UpdatedOn) [Compared Date]
+	,std.CompareStatus
 	FROM tblScanInventoryDetails std
 	INNER JOIN StoreMaster sm ON std.StoreID=sm.StoreID
 	INNER JOIN EmployeeDetails emd ON std.CreatedBy=emd.EmpID

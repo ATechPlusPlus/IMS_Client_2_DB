@@ -7,11 +7,10 @@
 	[Barcode] [nvarchar](50) NOT NULL,
 	[Rate] [decimal](18, 3) NOT NULL,
 	[BillQTY] [int] NOT NULL,
-	[EnterQTY] [int] NOT NULL DEFAULT 0,
 	[ColorID] [int] NOT NULL,
 	[SizeID] [int] NOT NULL,
 	[Total] [decimal](18, 3) NULL,
-	 [SystemQTY] INT NULL, 
+	 [SystemQTY] INT NULL DEFAULT 0, 
 	
 	[CreatedOn] [datetime] NOT NULL CONSTRAINT [DF_tblScanInventoryItemDetails_CreatedOn]  DEFAULT (getdate()),
 	[CreatedBy] [int] NOT NULL CONSTRAINT [DF_tblScanInventoryItemDetails_CreatedBy]  DEFAULT ((0)),

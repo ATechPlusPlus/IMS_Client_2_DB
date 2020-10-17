@@ -24,7 +24,7 @@ BEGIN
 	SELECT UserID,UserName,IsAdmin,@VoucherCount [VoucherCount]
 	FROM dbo.UserManagement WITH(NOLOCK) 
 	WHERE [Password]=@Pass
-	AND ISNULL(IsBlock,0)=0
+	AND ISNULL(ActiveStatus,0)=1
 
 	END TRY
 

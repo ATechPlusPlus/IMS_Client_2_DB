@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <15th OCT 2020>
--- Update date: <17th OCT 2020>
+-- Update date: <19th OCT 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC SPR_Get_ScanInventoryCompare 5
@@ -35,7 +35,8 @@ BEGIN
 	INNER JOIN BrandMaster bm ON pwm.BrandID=bm.BrandID
 	INNER JOIN StoreMaster stm ON std.StoreID=stm.StoreID
 	WHERE sti.MasterScanID = @MasterScanID
-	
+	ORDER BY (sti.BillQTY-IIF(sti.SystemQTY=0,psm.QTY,sti.SystemQTY))
+
 	END TRY
 
 	BEGIN CATCH

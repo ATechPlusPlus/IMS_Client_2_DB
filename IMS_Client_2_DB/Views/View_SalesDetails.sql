@@ -9,5 +9,5 @@
      INNER JOIN dbo.ColorMaster AS c1 ON c1.ColorID = s1.ColorID 
      INNER JOIN dbo.ProductStockColorSizeMaster AS ps ON s1.SubProductID = ps.SubProductID AND s1.ProductID = ps.ProductID 
      AND s1.ColorID = ps.ColorID AND s1.SizeID = ps.SizeID 
-     AND ps.StoreID=(SELECT shopeid FROM SalesInvoiceDetails WHERE Id=s1.InvoiceID)
+     AND ps.StoreID=(SELECT ShopeID FROM SalesInvoiceDetails WHERE Id=s1.InvoiceID)
      INNER JOIN dbo.tblProductWiseModelNo AS pwm ON s1.SubProductID = pwm.SubProductID

@@ -28,7 +28,7 @@ BEGIN
 	,'Violet' [CellColor],pwm.ModelNo [StyleNo]
 	, p1.ProductID,p2.SubProductID, p1.ProductName [Item],c1.ColorName [Color]
     ,s1.Size,0 [Total]
-	,p2.colorID,p2.SizeID
+	,p2.ColorID,p2.SizeID
 	--,'' BillDate,'' BillNo,'' TotalQTY
 	FROM dbo.ProductMaster p1
     --INNER JOIN ProductStockMaster p2 ON p1.ProductID=p2.ProductID AND p2.StoreID = @StoreID AND p2.BarcodeNo IS NOT NULL

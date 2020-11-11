@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <25th JULY 2020>
--- Update date: <19th AUGUST 2020>
+-- Update date: <11th NOV 2020>
 -- Description:	<>
 -- =============================================
 --EXEC SPR_Get_Material_NewDetails 0,0,0,'0',0
@@ -22,11 +22,14 @@ BEGIN
 		DECLARE @PARAMERES NVARCHAR(MAX)=''
 		DECLARE @query1 NVARCHAR(MAX)=''
 		DECLARE @query2 NVARCHAR(MAX)=''
+		DECLARE @queryEndUser NVARCHAR(MAX)=''
 		
 		DECLARE @SumOfQTY NVARCHAR(MAX)=''
+		DECLARE @SumOfQTYEndUser NVARCHAR(MAX)=''
 		DECLARE @TotalStoreQuery1 NVARCHAR(MAX)=''
 		DECLARE @WHERE VARCHAR(MAX)=''
 		
+		DECLARE @Comma NVARCHAR(MAX)=','
 		DECLARE @StoreID INT=0
 		DECLARE @StoreName NVARCHAR(MAX)=''
 
@@ -47,12 +50,18 @@ BEGIN
 				BEGIN
 
 				SET @query1 += 'ISNULL(MAX(CASE sm.StoreID WHEN '+CAST(@StoreID AS VARCHAR)+
-				' THEN ps.QTY END),0) '+QUOTENAME(@StoreName)+',';
+				' THEN ps.QTY END),0) '+QUOTENAME(@StoreName)+@Comma;
 
-				--SET @query1 += 'ISNULL(MAX(CASE WHEN sm.StoreName = '''+@StoreName+
-				--''' THEN ps.QTY END),0) '+QUOTENAME(@StoreName)+',';
+				SET @queryEndUser+='ISNULL(MAX(CASE sm.StoreID WHEN '+CAST(@StoreID AS VARCHAR)+
+				' THEN ps.QTY * pwm.EndUser END),0) '+QUOTENAME(CONCAT(@StoreName,' Rate'))+@Comma
 				
-				SET @SumOfQTY +='SUM(pt.'+QUOTENAME(@StoreName)+') '+QUOTENAME(@StoreName)+','
+				SET @SumOfQTY +='SUM(pt.'+QUOTENAME(@StoreName)+') '+QUOTENAME(@StoreName)+@Comma
+
+				SET @SumOfQTYEndUser+='SUM(pt.'+QUOTENAME(CONCAT(@StoreName,' Rate'))+') '+QUOTENAME(CONCAT(@StoreName,' Rate'))+@Comma
+
+				IF @@FETCH_STATUS <> -1 BEGIN
+				SET @Comma=''
+				END
 
 				FETCH NEXT FROM cursor_Store INTO @StoreID,@StoreName
 
@@ -61,6 +70,9 @@ BEGIN
 			CLOSE cursor_Store;
 			DEALLOCATE cursor_Store;
 			
+			SET @query1+=',ISNULL(SUM(ps.QTY),0) AS Total,'+@queryEndUser+',ISNULL(SUM(ps.QTY * pwm.EndUser),0) AS [TotalRate]'
+			SET @SumOfQTY+=',SUM(pt.Total) [Total],'+@SumOfQTYEndUser+',SUM(pt.TotalRate) [TotalRate]'
+
 			SET @WHERE='WHERE ps.ProductID=IIF('+CAST(@ProductID AS VARCHAR)+'=0,ps.ProductID,'+CAST(@ProductID AS VARCHAR)+')
 			AND ISNULL(ps.BarcodeNo,0)=IIF('+CAST(@BarcodeNo AS VARCHAR)+'=0,ISNULL(ps.BarcodeNo,0),'+CAST(@BarcodeNo AS VARCHAR)+')
 			AND ps.ColorID=IIF('+CAST(@ColorID AS VARCHAR)+'=0,ps.ColorID,'+CAST(@ColorID AS VARCHAR)+')
@@ -73,7 +85,6 @@ BEGIN
 			,cm.ColorName[Color],sz.Size,pwm.ModelNo [Style No],pm.ProductID,pm.ProductName [Item Name]
 			,CAST(pwm.EndUser AS VARCHAR)[EndUser],pwm.Photo,
 			'+@query1+'
-			[Remove],ISNULL(SUM(ps.QTY),0) AS Total 
 			FROM ProductStockColorSizeMaster ps
 			INNER JOIN ProductMaster pm ON ps.ProductID=pm.ProductID
 			INNER JOIN CategoryMaster cat ON pm.CategoryID=cat.CategoryID
@@ -83,15 +94,15 @@ BEGIN
 			INNER JOIN tblProductWiseModelNo pwm ON ps.SubProductID=pwm.SubProductID AND ps.ProductID=pwm.ProductID
 			'+@WHERE+'
 			'
-			SET @query2=REPLACE(@query2,',
-			[Remove]','')
+			--SET @query2=REPLACE(@query2,',
+			--[Remove]','')
 
 			--print @query2
 
 			SET @TotalStoreQuery1='UNION 
 			SELECT CAST(''Total'' AS VARCHAR) [BarcodeNo],'''' SubProductID,'''' [Color],'''' [Size],
-			'''' [Style No],'''' [ProductID],'''' [Item Name],'''' [EndUser],'''' Photo,'+@SumOfQTY+'SUM(pt.Total) [Total]
-			FROM (SELECT '+@query1+'ISNULL(SUM(ps.QTY),0) AS Total 
+			'''' [Style No],'''' [ProductID],'''' [Item Name],'''' [EndUser],'''' Photo,'+@SumOfQTY+'
+			FROM (SELECT '+@query1+' 
 			FROM ProductStockColorSizeMaster ps
 			INNER JOIN ProductMaster pm ON ps.ProductID=pm.ProductID
 			INNER JOIN CategoryMaster cat ON pm.CategoryID=cat.CategoryID

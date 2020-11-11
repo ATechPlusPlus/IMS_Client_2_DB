@@ -1,10 +1,10 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <25th JULY 2020>
--- Update date: <11th NOV 2020>
+-- Update date: <12th NOV 2020>
 -- Description:	<>
 -- =============================================
---EXEC SPR_Get_Material_NewDetails 0,0,0,'0',0
+--EXEC SPR_Get_Material_NewDetails 0,0,0,'0',0,1
 CREATE PROCEDURE [dbo].[SPR_Get_Material_NewDetails]
 @BarcodeNo		BIGINT=0
 ,@ProductID		INT=0
@@ -12,6 +12,7 @@ CREATE PROCEDURE [dbo].[SPR_Get_Material_NewDetails]
 --,@SubProductID  INT=0
 ,@ModelNo		NVARCHAR(MAX)
 ,@CategoryID    INT=0
+,@IsAdmin		INT=0
 AS
 BEGIN
 
@@ -33,7 +34,7 @@ BEGIN
 		DECLARE @StoreID INT=0
 		DECLARE @StoreName NVARCHAR(MAX)=''
 
-		SET @PARAMERES=CONCAT(@BarcodeNo,',',@ProductID,',',@ColorID,',',@ModelNo,',',@CategoryID)
+		SET @PARAMERES=CONCAT(@BarcodeNo,',',@ProductID,',',@ColorID,',',@ModelNo,',',@CategoryID,',',@IsAdmin)
 		--BEGIN TRANSACTION
 
 			DECLARE cursor_Store CURSOR
@@ -70,8 +71,17 @@ BEGIN
 			CLOSE cursor_Store;
 			DEALLOCATE cursor_Store;
 			
-			SET @query1+=',ISNULL(SUM(ps.QTY),0) AS Total,'+@queryEndUser+',ISNULL(SUM(ps.QTY * pwm.EndUser),0) AS [TotalRate]'
-			SET @SumOfQTY+=',SUM(pt.Total) [Total],'+@SumOfQTYEndUser+',SUM(pt.TotalRate) [TotalRate]'
+			IF @IsAdmin=1 
+			BEGIN
+				SET @query1+=',ISNULL(SUM(ps.QTY),0) AS Total,'+@queryEndUser+',ISNULL(SUM(ps.QTY * pwm.EndUser),0) AS [TotalRate]'
+				SET @SumOfQTY+=',SUM(pt.Total) [Total],'+@SumOfQTYEndUser+',SUM(pt.TotalRate) [TotalRate]'
+			END
+
+			ELSE
+			BEGIN
+				SET @query1+=',ISNULL(SUM(ps.QTY),0) AS Total'
+				SET @SumOfQTY+=',SUM(pt.Total) [Total]'
+			END
 
 			SET @WHERE='WHERE ps.ProductID=IIF('+CAST(@ProductID AS VARCHAR)+'=0,ps.ProductID,'+CAST(@ProductID AS VARCHAR)+')
 			AND ISNULL(ps.BarcodeNo,0)=IIF('+CAST(@BarcodeNo AS VARCHAR)+'=0,ISNULL(ps.BarcodeNo,0),'+CAST(@BarcodeNo AS VARCHAR)+')

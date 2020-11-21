@@ -1,10 +1,10 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <09th AUGUST 2020>
--- Update date: <26th AUGUST 2020>
+-- Update date: <21th NOV 2020>
 -- Description:	<Saved PIVOT delivery purchase bill details via ModelNo and Barcode is generated>
 -- =============================================
--- EXEC [dbo].[SPR_Get_PurchaseInvoice_Barcode_Generated] 28,1,'4238',2
+-- EXEC [dbo].[SPR_Get_PurchaseInvoice_Barcode_Generated] 2048,1,'00173',2
 CREATE PROCEDURE [dbo].[SPR_Get_PurchaseInvoice_Barcode_Generated]
 @PurchaseInvoiceID INT=0
 ,@StoreID INT=0
@@ -113,6 +113,7 @@ BEGIN
 	LEFT OUTER JOIN ProductStockMaster psm ON pwm.ProductID=psm.ProductID AND pwm.SubProductID=psm.SubProductID
 	WHERE pd1.StoreID='+CAST(@StoreID AS VARCHAR)+' AND ISNULL(psm.PurchaseInvoiceID,0)!='+CAST(@PurchaseInvoiceID AS VARCHAR)+'
 	AND pd1.PurchaseInvoiceID='+CAST(@PurchaseInvoiceID AS VARCHAR)+' AND pd2.DeliveryPurchaseID1='+CAST(@DeliveryPurchaseID as VARCHAR)+' GROUP BY pd1.PurchaseInvoiceID,pd1.ProductID,pd1.SubProductID,clr.ColorID,pwm.ModelNo,pwm.EndUser,pd1.StoreID,pd3.Total
+
 )a 
 	UNPIVOT
 	(
@@ -151,7 +152,7 @@ BEGIN
 
 	--PRINT 'Data saved in ProductStockMaster'
 
-	OPEN ColorSize_CURSOR 
+	OPEN ColorSize_CURSOR
 
 	FETCH NEXT FROM ColorSize_CURSOR INTO @ProductID, @SubProductID, @StoreID, @ColorID, @SizeID , @QTY
 	WHILE @@FETCH_STATUS <> -1
@@ -170,7 +171,7 @@ BEGIN
 		AND ColorID=@ColorID 
 		--AND StoreID=@StoreID 
 		AND SizeID=@SizeID-- AND BarcodeNo IS NOT NULL
-
+		ORDER BY CreatedOn
 		--SELECT @BarcodeNo [BarcodeNo],@ProductID [ProductID],@SubProductID [SubProductID]
 		--,@ColorID [ColorID],@SizeID [SizeID],@StoreID [StoreID]
 

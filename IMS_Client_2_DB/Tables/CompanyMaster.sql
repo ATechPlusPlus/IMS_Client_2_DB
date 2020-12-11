@@ -5,6 +5,7 @@ CREATE TABLE [dbo].[CompanyMaster](
 	[Address] [nvarchar](max) NULL,
 	[MobileNo] [varchar](13) NULL,
 	[EmailID] [varchar](50) NULL,
+	[IsDefault] [bit] NULL CONSTRAINT [DF_CompanyMaster_IsDefault]  DEFAULT ((0)),
 	[CreatedBy] [int] NOT NULL CONSTRAINT [DF_CompanyMaster_CreatedBy]  DEFAULT ((0)),
 	[CreatedOn] [datetime] NOT NULL CONSTRAINT [DF_CompanyMaster_CreatedOn]  DEFAULT (getdate()),
 	[UpdatedBy] [int] NULL,

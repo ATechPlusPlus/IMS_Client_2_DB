@@ -156,6 +156,10 @@
     <Build Include="Stores Procedures\SPR_Get_ScanInventoryItemDetails.sql" />
     <Build Include="Stores Procedures\SPR_Get_ScanInventoryCompare.sql" />
     <Build Include="Stores Procedures\SPR_GenerateInventoryReport.sql" />
+    <Build Include="Stores Procedures\SPR_Insert_Company.sql" />
+    <Build Include="Stores Procedures\SPR_Update_Company.sql" />
+    <Build Include="Stores Procedures\SPR_Delete_Company.sql" />
+    <Build Include="Stores Procedures\SPR_Get_Company.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IMS_Client_2_DB.publish.xml" />

@@ -122,6 +122,8 @@ INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID
 GO
 INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (54, N'Scanned Inventory Compare', N'frmScanInventoryCompare', 8)
 GO
+INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (55, N'Company Master', N'frmCompanyMaster', 1)
+GO
 
 SET IDENTITY_INSERT [dbo].[tblFormRightDetails] OFF
 GO

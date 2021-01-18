@@ -7,6 +7,7 @@
 	[DOB] [date] NULL,
 	[Address] [nvarchar](max) NULL,
 	[Photo] [varbinary](max) NULL,
+	[MonthlySalary] [decimal](18, 3) NULL CONSTRAINT [DF_EmployeeDetails_MonthlySalary]  DEFAULT ((0)),
 	[ActiveStatus] [bit] DEFAULT 1,
 	[CreatedBy] [int] NOT NULL CONSTRAINT [DF_EmployeeDetails_CreatedBy]  DEFAULT ((0)),
 	[CreatedOn] [datetime] NOT NULL CONSTRAINT [DF_EmployeeDetails_CreatedOn]  DEFAULT (getdate()),

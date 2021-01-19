@@ -4,8 +4,8 @@
 -- Update date: <>
 -- Description:	<Description,,>
 -- =============================================
---EXEC SPR_Get_EmployeeWiseSales_Report 0,NULL,NULL,1000
-CREATE PROCEDURE SPR_Get_EmployeeWiseSales_Report
+--EXEC SPR_Get_EmployeeWiseSales_Report 0,null,NULL,1000
+CREATE PROCEDURE [dbo].[SPR_Get_EmployeeWiseSales_Report]
 @EmpID INT=0
 ,@FromDate DATE=NULL
 ,@ToDate DATE=NULL
@@ -20,7 +20,8 @@ BEGIN
 	DECLARE @PARAMERES VARCHAR(MAX)=''
 	SET @PARAMERES=CONCAT(@EmpID,',',@FromDate,',',@ToDate,',',@Admintraviteexp)
 
-	DECLARE @Commision DECIMAL(18,3)=2
+	DECLARE @Commision DECIMAL(18,3)=0
+	SET @Commision=(SELECT TOP 1 Commision FROM DefaultStoreSetting WITH(NOLOCK) WHERE ISNULL(Commision,0)!=0)
 
 	SELECT t.SalesMan,t.QTY,t.TotalSales,t.LocalCost,(t.TotalSales - t.LocalCost)[Gross Profit],t.MonthlySalary
 ,CAST( (@Admintraviteexp/30) AS DECIMAL(18,3)) [Admintravite Exp]
@@ -66,4 +67,3 @@ BEGIN
 	
 	END CATCH
 END
-GO

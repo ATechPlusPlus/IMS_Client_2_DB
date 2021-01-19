@@ -162,6 +162,7 @@
     <Build Include="Stores Procedures\SPR_Get_Company.sql" />
     <Build Include="Stores Procedures\SPR_Update_LocalCost.sql" />
     <Build Include="Stores Procedures\SPR_Get_EmployeeWiseSales_Report.sql" />
+    <Build Include="tblFormRightDetails Insert script.PreDeployment1.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IMS_Client_2_DB.publish.xml" />
@@ -203,6 +204,6 @@
     <Build Include="Sequances\Barcode_Sequance.sql" />
   </ItemGroup>
   <ItemGroup>
-    <PreDeploy Include="tblFormRightDetails Insert script.PreDeployment1.sql" />
+    <PostDeploy Include="tblFormRightDetails Insert script.PostDeployment1.sql" />
   </ItemGroup>
 </Project>

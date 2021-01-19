@@ -11,6 +11,7 @@
 	CustMobileMandatory  bit NULL, 
     [ImagePath] NVARCHAR(50) NULL, 
     [Extension] NVARCHAR(50) NULL,
+	[Commision] DECIMAL(18,3) NULL DEFAULT 0,
     [CreatedBy] INT NOT NULL CONSTRAINT [DF_DefaultStoreSetting_CreatedBy]  DEFAULT ((0)),
     [CreatedOn] DATETIME NOT NULL CONSTRAINT [DF_DefaultStoreSetting_CreatedOn]  DEFAULT (getdate()), 
 	[UpdatedBy] [int] NULL,

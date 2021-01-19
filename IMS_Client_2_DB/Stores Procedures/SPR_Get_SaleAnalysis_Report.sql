@@ -19,8 +19,8 @@ BEGIN
 	DECLARE @PARAMERES VARCHAR(MAX)=''
 	SET @PARAMERES=CONCAT(@StoreID,',',@FromDate,',',@ToDate)
 
-	SELECT t.StoreName,t.QTY,t.TotalSales,t.LocalCost,(t.TotalSales - t.LocalCost)[Gross Profit]
-,CAST( ((t.TotalSales - t.LocalCost)/t.LocalCost) * 100 AS DECIMAL(18,3) ) [Net Profit Ratio]
+	SELECT t.StoreName,t.QTY,t.TotalSales,t.LocalCost,(t.TotalSales - t.LocalCost)[GrossProfit]
+,CAST( ((t.TotalSales - t.LocalCost)/t.LocalCost) * 100 AS DECIMAL(18,3) ) [NetProfitRatio]
 	FROM(
 		SELECT v1.StoreName ,SUM((CASE WHEN v2.Rate<0 THEN -v2.QTY WHEN v2.Rate>0 THEN v2.QTY END)) AS QTY
 		,SUM(v2.QTY * v2.Rate) AS TotalSales,SUM(v2.QTY * v2.LocalCost)LocalCost

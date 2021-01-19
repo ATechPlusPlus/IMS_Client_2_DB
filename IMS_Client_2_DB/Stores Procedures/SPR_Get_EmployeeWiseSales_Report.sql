@@ -23,10 +23,10 @@ BEGIN
 	DECLARE @Commision DECIMAL(18,3)=0
 	SET @Commision=(SELECT TOP 1 Commision FROM DefaultStoreSetting WITH(NOLOCK) WHERE ISNULL(Commision,0)!=0)
 
-	SELECT t.SalesMan,t.QTY,t.TotalSales,t.LocalCost,(t.TotalSales - t.LocalCost)[Gross Profit],t.MonthlySalary
-,CAST( (@Admintraviteexp/30) AS DECIMAL(18,3)) [Admintravite Exp]
+	SELECT t.SalesMan,t.QTY,t.TotalSales,t.LocalCost,(t.TotalSales - t.LocalCost)[GrossProfit],t.MonthlySalary
+,CAST( (@Admintraviteexp/30) AS DECIMAL(18,3)) [AdmintraviteExp]
 ,CAST( ((t.TotalSales - t.LocalCost) * @Commision * 0.01) - (@Admintraviteexp/30/5) AS decimal(18,3) ) [Commision]
-,( (t.TotalSales - t.LocalCost) - ( (t.TotalSales - t.LocalCost) * @Commision * 0.01) - (@Admintraviteexp/30/5) ) [Net Profit]
+,( (t.TotalSales - t.LocalCost) - ( (t.TotalSales - t.LocalCost) * @Commision * 0.01) - (@Admintraviteexp/30/5) ) [NetProfit]
 	FROM(
 		--SELECT t.SalesMan,SUM(t.QTY),SUM(t.TotalSales),SUM(t.LocalCost) FROM(
 		SELECT v1.Name AS SalesMan ,v1.MonthlySalary, SUM((CASE WHEN v2.Rate<0 THEN -v2.QTY WHEN v2.Rate>0 THEN v2.QTY END)) AS QTY

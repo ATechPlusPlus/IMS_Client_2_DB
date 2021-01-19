@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <15th OCT 2020>
--- Update date: <19th OCT 2020>
+-- Update date: <19th JAN 2020>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC SPR_Get_ScanInventoryCompare 5
@@ -24,6 +24,7 @@ BEGIN
 	, pwm.EndUser [Rate], ( (sti.BillQTY-IIF(sti.SystemQTY=0,psm.QTY,sti.SystemQTY)) * pwm.EndUser) [Diff Rate]
 	, psm.SubProductID,psm.StoreID,stm.StoreName,(sti.BillQTY * pwm.EndUser) [Inventory Rate]
 	, (IIF(sti.SystemQTY=0,psm.QTY,sti.SystemQTY) * pwm.EndUser) [System Rate]
+	, CONVERT(DATE,std.UpdatedOn) [Compared Date]
 	--, 1 [Default]
 	FROM tblScanInventoryItemDetails sti
 	INNER JOIN tblScanInventoryDetails std ON sti.MasterScanID=std.MasterScanID

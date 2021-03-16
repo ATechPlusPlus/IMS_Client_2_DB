@@ -28,7 +28,7 @@ BEGIN
 		SELECT v1.Name AS SalesMan , SUM((CASE WHEN v2.Rate<0 THEN -v2.QTY WHEN v2.Rate>0 THEN v2.QTY END)) AS QTY
 		, SUM(v2.QTY * v2.Rate) AS Rate 
 		FROM dbo.View_SalesBillDetails v1 
-		JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID
+		JOIN dbo.View_SalesDetails v2 ON v1.Id = v2.InvoiceID
 		WHERE v1.ShopeID = @StoreID
 		AND v1.InvoiceDate between @FromDate AND @ToDate 
 		--AND v2.Rate>0 

@@ -22,7 +22,7 @@ BEGIN
 	,SUM(t.QTY * t.Rate) AS TotalSales,SUM(t.QTY * t.LocalCost)LocalCost
 	,SUM(t.QTY) QTY
 	,SUM(t.Rate) Rate,SUM(t.LocalCost) [Local]
-	,( (SUM(t.QTY * t.Rate) - SUM(t.QTY * t.LocalCost))*0.01 ) [Profit %]
+	,( (SUM(t.QTY * t.Rate) - SUM(t.QTY * t.LocalCost))*0.01 ) [Profit]
 	FROM(
 		--SELECT t.SalesMan,SUM(t.QTY),SUM(t.TotalSales),SUM(t.LocalCost) FROM(
 		SELECT v2.ModelNo,v2.SubProductID,v2.ProductName,v2.ProductID,cm.CategoryName

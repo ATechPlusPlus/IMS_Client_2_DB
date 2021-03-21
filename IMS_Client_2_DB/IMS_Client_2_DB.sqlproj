@@ -165,6 +165,8 @@
     <Build Include="Stores Procedures\SPR_Get_SaleAnalysis_Report.sql" />
     <Build Include="tblFormRightDetails Insert script.PreDeployment1.sql" />
     <Build Include="Stores Procedures\SPR_Get_Sales_Department_Report.sql" />
+    <Build Include="Stores Procedures\SPR_Get_ItemCard_Material_Details.sql" />
+    <Build Include="Stores Procedures\SPR_Get_ItemCard_Details.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IMS_Client_2_DB.publish.xml" />

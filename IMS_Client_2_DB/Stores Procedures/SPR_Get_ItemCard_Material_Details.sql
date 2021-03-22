@@ -1,13 +1,13 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <21st MAR 2021>
--- Update date: <>
+-- Update date: <22nd MAR 2021>
 -- Description:	<>
 -- =============================================
---EXEC SPR_Get_ItemCard_Material_Details 0,'CRO-B2'
+--EXEC SPR_Get_ItemCard_Material_Details 0,'B-1'
 CREATE PROCEDURE [dbo].[SPR_Get_ItemCard_Material_Details]
 @BarCode	BIGINT=0
-,@ModelNo	NVARCHAR(MAX)
+,@ModelNo	NVARCHAR(MAX)='0'
 --,@ProductID INT=0
 
 AS
@@ -75,8 +75,8 @@ BEGIN
 
 			SET @WHERE='WHERE ISNULL(ps.BarcodeNo,0)=IIF('+CAST(@BarCode AS VARCHAR)+'=0,ISNULL(ps.BarcodeNo,0),'
 			+CAST(@BarCode AS VARCHAR)+')
-			AND pwm.ModelNo LIKE IIF('''+CAST(@ModelNo AS NVARCHAR)+'''=''0'',pwm.ModelNo+''%'','''+CAST(@ModelNo AS NVARCHAR)+'%'')
-			--AND pwm.ModelNo=IIF('''+CAST(@ModelNo AS NVARCHAR)+'''=''0'',pwm.ModelNo,'''+CAST(@ModelNo AS NVARCHAR)+''')
+			--AND pwm.ModelNo LIKE IIF('''+CAST(@ModelNo AS NVARCHAR)+'''=''0'',pwm.ModelNo+''%'','''+CAST(@ModelNo AS NVARCHAR)+'%'')
+			AND pwm.ModelNo=IIF('''+CAST(@ModelNo AS NVARCHAR)+'''=''0'',pwm.ModelNo,'''+CAST(@ModelNo AS NVARCHAR)+''')
 			GROUP BY ps.BarcodeNo,cm.ColorName,sz.Size,pm.ProductName,pm.ProductID,pwm.EndUser,pwm.Photo,ps.SubProductID,pwm.ModelNo'
 
 			SET @query2='SELECT ps.SubProductID

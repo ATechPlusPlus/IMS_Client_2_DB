@@ -1,19 +1,20 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <15th OCT 2020>
--- Update date: <19th JAN 2020>
+-- Update date: <30th APr 2021>
 -- Description:	<Description,,>
 -- =============================================
---EXEC SPR_Get_ScanInventoryCompare 5
+--EXEC SPR_Get_ScanInventoryCompare 5,1000
 CREATE PROCEDURE [dbo].[SPR_Get_ScanInventoryCompare]
 @MasterScanID INT=0
+,@BarCode AS BIGINT=0
 
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	BEGIN TRY
 	DECLARE @PARAMERES VARCHAR(MAX)=''
-	SET @PARAMERES=@MasterScanID
+	SET @PARAMERES=CONCAT(@MasterScanID,',',@BarCode)
 
 	SET NOCOUNT ON;
 	
@@ -36,6 +37,7 @@ BEGIN
 	INNER JOIN BrandMaster bm ON pwm.BrandID=bm.BrandID
 	INNER JOIN StoreMaster stm ON std.StoreID=stm.StoreID
 	WHERE sti.MasterScanID = @MasterScanID
+	AND sti.Barcode=IIF(@BarCode=0,sti.Barcode,@BarCode)
 	ORDER BY (sti.BillQTY-IIF(sti.SystemQTY=0,psm.QTY,sti.SystemQTY))
 
 	END TRY

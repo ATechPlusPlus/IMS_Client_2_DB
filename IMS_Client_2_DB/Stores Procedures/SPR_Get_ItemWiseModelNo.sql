@@ -1,10 +1,10 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <04th AUGUST 2020>
--- Update date: <10th SEPT 2020>
+-- Update date: <30th APR 2021>
 -- Description:	<>
 -- =============================================
---EXEC SPR_Get_ItemWiseModelNo 0,'0',0
+--EXEC SPR_Get_ItemWiseModelNo 0,'0',0,0
 CREATE PROCEDURE [dbo].[SPR_Get_ItemWiseModelNo]
 @ProductID INT=0
 ,@ModelNo NVARCHAR(MAX)='0'
@@ -20,7 +20,7 @@ BEGIN
 	SET NOCOUNT ON;
 
 	SELECT md.SubProductID,md.ProductID, pm.ProductName [ItemName], md.ModelNo [StyleNo]
-	,bm.BrandName, sm.StoreName,md.BrandID,md.StoreID,md.Photo,md.EndUser
+	,bm.BrandName, sm.StoreName,md.BrandID,md.StoreID,md.Photo,md.LocalCost,md.EndUser
 	FROM [dbo].[tblProductWiseModelNo] md 
 	INNER JOIN ProductMaster pm ON md.ProductID = pm.ProductID 
 	INNER JOIN BrandMaster bm ON md.BrandID = bm.BrandID 

@@ -1,11 +1,11 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <19th JAN 2021>
--- Update date: <>
+-- Update date: <01st MAY 2021>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC SPR_Update_LocalCost '0',0
-CREATE PROCEDURE SPR_Update_LocalCost
+CREATE PROCEDURE [dbo].[SPR_Update_LocalCost]
 @ModelNo NVARCHAR(MAX)='0'
 ,@CreatedBy INT=0
 AS
@@ -13,7 +13,9 @@ BEGIN
 
 	SET NOCOUNT ON;
 
-	IF EXISTS(SELECT 1 FROM tblProductWiseModelNo WITH(NOLOCK) WHERE ModelNo=IIF(@ModelNo='0',ModelNo,@ModelNo))
+	IF EXISTS(SELECT 1 FROM tblProductWiseModelNo WITH(NOLOCK) WHERE ModelNo=IIF(@ModelNo='0',ModelNo,@ModelNo) 
+	AND ISNULL(LocalCost,0)=0)
+
 	BEGIN
 
 	BEGIN TRY
@@ -47,7 +49,9 @@ BEGIN
 
 		UPDATE tblProductWiseModelNo 
 		SET LocalCost=@LocalCost,UpdatedBy=@CreatedBy,
-		UpdatedOn=GETDATE() WHERE SubProductID=@curSubProductID
+		UpdatedOn=GETDATE() 
+		WHERE SubProductID=@curSubProductID
+		AND ISNULL(LocalCost,0)=0
 
 		FETCH NEXT FROM LocalCost_CURSOR INTO @curSubProductID,@LocalCost
 		END
@@ -89,8 +93,7 @@ BEGIN
 	ELSE
 	BEGIN
 
-		SELECT 0 AS Flag,'Model No. is not found.' as Msg	-- Means Model No. details is not found
+		SELECT 0 AS Flag,'No Record/Model No. is not found.' as Msg	-- Means Model No. details is not found
 
 	END
 END
-GO

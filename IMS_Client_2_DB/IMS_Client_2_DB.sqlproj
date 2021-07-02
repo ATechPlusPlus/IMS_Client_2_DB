@@ -168,6 +168,7 @@
     <Build Include="Stores Procedures\SPR_Get_ItemCard_Material_Details.sql" />
     <Build Include="Stores Procedures\SPR_Get_ItemCard_Details.sql" />
     <Build Include="Stores Procedures\SPR_Update_LocalCost_By_SubProductID.sql" />
+    <Build Include="Stores Procedures\SPR_Get_Stock_LocalCost_Report.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IMS_Client_2_DB.publish.xml" />

@@ -17,11 +17,11 @@ BEGIN
 	SET NOCOUNT ON;
 	
 			SELECT CAST(ISNULL(ps.BarcodeNo,0) AS VARCHAR)BarcodeNo,ps.SubProductID
-			,cm.ColorName[Color],sz.Size,pwm.ModelNo [Style No],pm.ProductID,pm.ProductName [Item Name]
+			,cm.ColorName[Color],sz.Size,pwm.ModelNo [StyleNo],pm.ProductID,pm.ProductName [ItemName]
 			,pwm.Photo
 			,CAST(pwm.LocalCost AS VARCHAR) LocalCost
 			,ISNULL(MAX(CASE sm.StoreID WHEN @StoreID THEN ps.QTY END),0) [QTY]
-			,ISNULL(MAX(CASE sm.StoreID WHEN @StoreID THEN ps.QTY * pwm.LocalCost END),0) [Total LocalCost]
+			,ISNULL(MAX(CASE sm.StoreID WHEN @StoreID THEN ps.QTY * pwm.LocalCost END),0) [TotalLocalCost]
 			FROM ProductStockColorSizeMaster ps
 			INNER JOIN ProductMaster pm ON ps.ProductID=pm.ProductID
 			INNER JOIN CategoryMaster cat ON pm.CategoryID=cat.CategoryID
@@ -36,9 +36,9 @@ BEGIN
 			UNION
 
 			SELECT CAST('Total' AS VARCHAR) [BarcodeNo],'' SubProductID,'' [Color],'' [Size],
-			'' [Style No],'' [ProductID],'' [Item Name],'' [LocalCost],'' Photo,SUM(pt.[QTY]) [QTY],SUM(pt.[Total LocalCost]) [Total LocalCost]
+			'' [StyleNo],'' [ProductID],'' [ItemName],'' [LocalCost],'' Photo,SUM(pt.[QTY]) [QTY],SUM(pt.[TotalLocalCost]) [TotalLocalCost]
 			FROM (SELECT ISNULL(MAX(CASE sm.StoreID WHEN @StoreID THEN ps.QTY END),0) [QTY]
-			,ISNULL(MAX(CASE sm.StoreID WHEN @StoreID THEN ps.QTY * pwm.LocalCost END),0) [Total LocalCost]
+			,ISNULL(MAX(CASE sm.StoreID WHEN @StoreID THEN ps.QTY * pwm.LocalCost END),0) [TotalLocalCost]
 			FROM ProductStockColorSizeMaster ps
 			INNER JOIN ProductMaster pm ON ps.ProductID=pm.ProductID
 			INNER JOIN CategoryMaster cat ON pm.CategoryID=cat.CategoryID

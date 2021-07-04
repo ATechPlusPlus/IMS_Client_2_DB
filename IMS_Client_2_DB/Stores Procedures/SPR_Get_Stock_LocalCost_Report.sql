@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <02nd JULY 2021>
--- Update date: <>
+-- Update date: <04th JULY 2021>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC SPR_Get_Stock_LocalCost_Report 1
@@ -20,35 +20,40 @@ BEGIN
 			,cm.ColorName[Color],sz.Size,pwm.ModelNo [StyleNo],pm.ProductID,pm.ProductName [ItemName]
 			,pwm.Photo
 			,CAST(pwm.LocalCost AS VARCHAR) LocalCost
-			,ISNULL(MAX(CASE sm.StoreID WHEN @StoreID THEN ps.QTY END),0) [QTY]
-			,ISNULL(MAX(CASE sm.StoreID WHEN @StoreID THEN ps.QTY * pwm.LocalCost END),0) [TotalLocalCost]
+			--,ISNULL(MAX(CASE sm.StoreID WHEN @StoreID THEN ps.QTY END),0) [QTY]
+			--,ISNULL(MAX(CASE sm.StoreID WHEN @StoreID THEN ps.QTY * pwm.LocalCost END),0) [TotalLocalCost]
+			,ISNULL(ps.QTY,0) [QTY]
+			,ISNULL(ps.QTY * pwm.LocalCost,0) [TotalLocalCost]
 			FROM ProductStockColorSizeMaster ps
 			INNER JOIN ProductMaster pm ON ps.ProductID=pm.ProductID
 			INNER JOIN CategoryMaster cat ON pm.CategoryID=cat.CategoryID
-			INNER JOIN StoreMaster sm ON ps.StoreID=sm.StoreID
+			INNER JOIN StoreMaster sm ON ps.StoreID=sm.StoreID AND sm.StoreID=@StoreID
 			INNER JOIN ColorMaster cm ON ps.ColorID=cm.ColorID
 			INNER JOIN SizeMaster sz ON ps.SizeID=sz.SizeID
 			INNER JOIN tblProductWiseModelNo pwm ON ps.SubProductID=pwm.SubProductID AND ps.ProductID=pwm.ProductID
 			WHERE ps.StoreID=@StoreID
-			GROUP BY ps.BarcodeNo,cm.ColorName,sz.Size,pm.ProductName,pm.ProductID,pwm.LocalCost,pwm.Photo,ps.SubProductID
-			,pwm.ModelNo
+			--GROUP BY ps.BarcodeNo,cm.ColorName,sz.Size,pm.ProductName,pm.ProductID,pwm.LocalCost,pwm.Photo,ps.SubProductID
+			--,pwm.ModelNo
 			
 			UNION
 
 			SELECT CAST('Total' AS VARCHAR) [BarcodeNo],'' SubProductID,'' [Color],'' [Size],
 			'' [StyleNo],'' [ProductID],'' [ItemName],'' [LocalCost],'' Photo,SUM(pt.[QTY]) [QTY],SUM(pt.[TotalLocalCost]) [TotalLocalCost]
-			FROM (SELECT ISNULL(MAX(CASE sm.StoreID WHEN @StoreID THEN ps.QTY END),0) [QTY]
-			,ISNULL(MAX(CASE sm.StoreID WHEN @StoreID THEN ps.QTY * pwm.LocalCost END),0) [TotalLocalCost]
+			FROM (SELECT 
+			ISNULL(ps.QTY,0) [QTY]
+			,ISNULL(ps.QTY * pwm.LocalCost,0) [TotalLocalCost]
+			--ISNULL(MAX(CASE sm.StoreID WHEN @StoreID THEN ps.QTY END),0) [QTY]
+			--,ISNULL(MAX(CASE sm.StoreID WHEN @StoreID THEN ps.QTY * pwm.LocalCost END),0) [TotalLocalCost]
 			FROM ProductStockColorSizeMaster ps
 			INNER JOIN ProductMaster pm ON ps.ProductID=pm.ProductID
 			INNER JOIN CategoryMaster cat ON pm.CategoryID=cat.CategoryID
-			INNER JOIN StoreMaster sm ON ps.StoreID=sm.StoreID
+			INNER JOIN StoreMaster sm ON ps.StoreID=sm.StoreID AND sm.StoreID=@StoreID
 			INNER JOIN ColorMaster cm ON ps.ColorID=cm.ColorID
 			INNER JOIN SizeMaster sz ON ps.SizeID=sz.SizeID
 			INNER JOIN tblProductWiseModelNo pwm ON ps.SubProductID=pwm.SubProductID AND ps.ProductID=pwm.ProductID
 			WHERE ps.StoreID=@StoreID
-			GROUP BY ps.BarcodeNo,cm.ColorName,sz.Size,pm.ProductName,pm.ProductID,pwm.LocalCost,pwm.Photo,ps.SubProductID
-			,pwm.ModelNo
+			--GROUP BY ps.BarcodeNo,cm.ColorName,sz.Size,pm.ProductName,pm.ProductID,pwm.LocalCost,pwm.Photo,ps.SubProductID
+			--,pwm.ModelNo
 			)pt
 	
 	END TRY

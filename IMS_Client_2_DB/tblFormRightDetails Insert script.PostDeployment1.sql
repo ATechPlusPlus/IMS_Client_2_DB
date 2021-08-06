@@ -131,7 +131,8 @@ INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID
 GO
 INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID], [FormName_AR]) VALUES (58, N'Sales By Department', N'frmSalesByDepartment', 1, N'شركة تفاصيل')
 GO
-
+INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID], [FormName_AR]) VALUES (59, N'Stock Pricing Report', N'frmStockPricingReport', 1, N'شركة تفاصيل')
+GO
 --INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (1, N'Master', NULL, 0)
 --GO
 --INSERT [dbo].[tblFormRightDetails] ([FormID], [FormName], [Form_Name], [ParentID]) VALUES (2, N'Purchase', NULL, 0)

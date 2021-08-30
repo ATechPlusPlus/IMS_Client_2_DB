@@ -1,10 +1,11 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <05th AUGUST 2020>
+-- Update date: <30th AUGUST 2021>
 -- Description:	<>
 -- =============================================
 --EXEC SPR_Get_PurchaseInvoice '0','0'
-CREATE PROCEDURE SPR_Get_PurchaseInvoice
+CREATE PROCEDURE [dbo].[SPR_Get_PurchaseInvoice]
 @SupplierBillNo VARCHAR(MAX)='0'
 ,@ShipmentNo VARCHAR(MAX)='0'
 AS
@@ -24,6 +25,7 @@ BEGIN
 		, LocalValue,LocalExp, LocalBillValue,IsInvoiceDone
 		,(CASE IsInvoiceDone WHEN 1 THEN 'Posted' WHEN 0 THEN 'Not Posted' END) InvoiceStatus
 		FROM PurchaseInvoice WITH(NOLOCK)
+		ORDER BY PurchaseInvoiceID DESC
 	
 	END
 

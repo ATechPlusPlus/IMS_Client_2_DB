@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <16th JULY 2020>
--- Update date: <24th JULY 2020>
+-- Update date: <31st AUG 2021>
 -- Description:	<>
 -- =============================================
 --EXEC SPR_Get_StoreTransfer_List '2020-07-15','2020-07-20',-1
@@ -42,7 +42,7 @@ BEGIN
 	(
 		SELECT UserID,UserName FROM UserManagement WITH(NOLOCK)
 	) usr1 ON [str].CreatedBy=usr1.UserID
-	--ORDER BY stb.BillDate DESC
+	ORDER BY stb.BillDate DESC
 
 	END
 
@@ -68,7 +68,7 @@ BEGIN
 			(
 				SELECT UserID,UserName FROM UserManagement WITH(NOLOCK)
 			) usr1 ON [str].CreatedBy=usr1.UserID
-			--ORDER BY stb.BillDate DESC
+			ORDER BY stb.BillDate DESC
 
 		END
 
@@ -93,7 +93,7 @@ BEGIN
 				SELECT UserID,UserName FROM UserManagement WITH(NOLOCK)
 			) usr1 ON [str].CreatedBy=usr1.UserID
 			WHERE stb.BillDate BETWEEN @FromDate AND @ToDate
-			--ORDER BY stb.BillDate DESC
+			ORDER BY stb.BillDate DESC
 
 		END
 
@@ -118,7 +118,7 @@ BEGIN
 				SELECT UserID,UserName FROM UserManagement WITH(NOLOCK)
 			) usr1 ON [str].CreatedBy=usr1.UserID
 			WHERE ISNULL([str].StoreTransferID,0) = IIF(@BillStatus=1,stb.StoreTransferID,0)
-			--ORDER BY stb.BillDate DESC
+			ORDER BY stb.BillDate DESC
 
 		END
 	

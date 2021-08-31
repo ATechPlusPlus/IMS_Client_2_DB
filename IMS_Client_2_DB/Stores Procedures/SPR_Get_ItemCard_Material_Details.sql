@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <21st MAR 2021>
--- Update date: <22nd MAR 2021>
+-- Update date: <31st AUG 2021>
 -- Description:	<>
 -- =============================================
 --EXEC SPR_Get_ItemCard_Material_Details 0,'B-1'
@@ -27,7 +27,7 @@ BEGIN
 		DECLARE @TotalStoreQuery1 NVARCHAR(MAX)=''
 		DECLARE @WHERE VARCHAR(MAX)=''
 		
-		DECLARE @Comma NVARCHAR(MAX)=','
+		DECLARE @Comma NVARCHAR(MAX)=''
 		DECLARE @StoreID INT=0
 		DECLARE @StoreName NVARCHAR(MAX)=''
 
@@ -47,18 +47,18 @@ BEGIN
 				WHILE @@FETCH_STATUS <> -1
 				BEGIN
 
-				SET @query1 += 'ISNULL(MAX(CASE sm.StoreID WHEN '+CAST(@StoreID AS VARCHAR)+
-				' THEN ps.QTY END),0) '+QUOTENAME(@StoreName)+@Comma;
+				SET @query1 += @Comma+'ISNULL(MAX(CASE sm.StoreID WHEN '+CAST(@StoreID AS VARCHAR)+
+				' THEN ps.QTY END),0) '+QUOTENAME(@StoreName)
 
-				SET @queryEndUser+='ISNULL(MAX(CASE sm.StoreID WHEN '+CAST(@StoreID AS VARCHAR)+
-				' THEN ps.QTY * pwm.EndUser END),0) '+QUOTENAME(CONCAT(@StoreName,' Rate'))+@Comma
+				SET @queryEndUser+=@Comma+'ISNULL(MAX(CASE sm.StoreID WHEN '+CAST(@StoreID AS VARCHAR)+
+				' THEN ps.QTY * pwm.EndUser END),0) '+QUOTENAME(CONCAT(@StoreName,' Rate'))
 				
-				SET @SumOfQTY +='SUM(pt.'+QUOTENAME(@StoreName)+') '+QUOTENAME(@StoreName)+@Comma
+				SET @SumOfQTY +=@Comma+'SUM(pt.'+QUOTENAME(@StoreName)+') '+QUOTENAME(@StoreName)
 
-				SET @SumOfQTYEndUser+='SUM(pt.'+QUOTENAME(CONCAT(@StoreName,' Rate'))+') '+QUOTENAME(CONCAT(@StoreName,' Rate'))+@Comma
+				SET @SumOfQTYEndUser+=@Comma+'SUM(pt.'+QUOTENAME(CONCAT(@StoreName,' Rate'))+') '+QUOTENAME(CONCAT(@StoreName,' Rate'))
 
 				IF @@FETCH_STATUS <> -1 BEGIN
-				SET @Comma=''
+				SET @Comma=','
 				END
 
 				FETCH NEXT FROM cursor_Store INTO @StoreID,@StoreName

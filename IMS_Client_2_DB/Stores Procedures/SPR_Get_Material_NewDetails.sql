@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <25th JULY 2020>
--- Update date: <31st AUG 2021>
+-- Update date: <12th DEC 2021>
 -- Description:	<>
 -- =============================================
 --EXEC SPR_Get_Material_NewDetails 0,0,0,'0',0,1
@@ -122,7 +122,7 @@ BEGIN
 			INNER JOIN SizeMaster sz ON ps.SizeID=sz.SizeID
 			INNER JOIN tblProductWiseModelNo pwm ON ps.SubProductID=pwm.SubProductID AND ps.ProductID=pwm.ProductID
 			'+@WHERE+'
-			)pt'
+			)pt ORDER BY pwm.ModelNo'
 			
 			--PRINT @query2 + @TotalStoreQuery1
 			EXEC (@query2 + @TotalStoreQuery1)

@@ -1,10 +1,10 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <14th OCT 2020>
--- Update date: <17th OCT 2020>
+-- Update date: <19th JAN 2022>
 -- Description:	<Description,,>
 -- =============================================
---EXEC SPR_Get_ScanInventoryList '0'
+--EXEC SPR_Get_ScanInventoryList
 CREATE PROCEDURE [dbo].[SPR_Get_ScanInventoryList]
 @FromDate DATE=NULL
 ,@ToDate DATE=NULL
@@ -34,7 +34,7 @@ BEGIN
 	WHERE std.StoreID= IIF(@StoreID=-1,std.StoreID,@StoreID)
 	AND std.ScanDate BETWEEN ISNULL(@FromDate,std.ScanDate) AND ISNULL(@ToDate,std.ScanDate)
 	AND std.CompareStatus=IIF(@CompareStatus=-1,std.CompareStatus,@CompareStatus)
-	ORDER BY std.ScanDate
+	ORDER BY std.ScanDate DESC
 
 	END TRY
 

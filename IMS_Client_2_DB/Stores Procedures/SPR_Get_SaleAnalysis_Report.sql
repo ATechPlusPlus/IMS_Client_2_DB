@@ -26,7 +26,7 @@ BEGIN
 		,SUM(v2.QTY * v2.Rate) AS TotalSales,SUM(v2.QTY * v2.LocalCost)LocalCost
 		--,ROUND((SUM(p1.LocalBillValue)/SUM(p1.TotalQTY)),3) [LocalCost]
 		FROM dbo.View_SalesBillDetails v1 
-		JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID
+		JOIN dbo.View_SalesDetails v2 ON v1.Id = v2.InvoiceID
 		--WHERE v1.ShopeID = @StoreID
 		WHERE v1.InvoiceDate BETWEEN ISNULL(@FromDate,v1.InvoiceDate) AND ISNULL(@ToDate,v1.InvoiceDate)
 		AND v1.ShopeID=IIF(@StoreID=0,v1.ShopeID,@StoreID)

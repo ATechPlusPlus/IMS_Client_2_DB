@@ -42,7 +42,7 @@ BEGIN
 				, SUM(v2.QTY * v2.Rate) AS Rate
 				,v1.Discount,v1.Tax AS TAX
 				FROM dbo.View_SalesBillDetails v1
-				JOIN dbo.View_SalesDetails v2 ON v1.id = v2.InvoiceID
+				JOIN dbo.View_SalesDetails v2 ON v1.Id = v2.InvoiceID
 				WHERE v1.ShopeID = @StoreID AND v1.InvoiceDate between @FromDate AND @ToDate 
 				--AND v2.Rate>0
 				GROUP BY v1.Id,v1.Name,v1.Discount,v1.Tax

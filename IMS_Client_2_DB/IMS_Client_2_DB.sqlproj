@@ -176,9 +176,6 @@
     <Build Include="Views\View_ModeBrandDetails.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="IMS_Client_2_DB.publish.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <RefactorLog Include="IMS_Client_2_DB.refactorlog" />
   </ItemGroup>
   <ItemGroup>

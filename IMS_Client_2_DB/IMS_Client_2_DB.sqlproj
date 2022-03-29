@@ -63,6 +63,7 @@
     <Folder Include="Functions" />
     <Folder Include="Sequances" />
     <Folder Include="Triggers" />
+    <Folder Include="Table Types" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\BackupConfig.sql" />
@@ -170,6 +171,9 @@
     <Build Include="Stores Procedures\SPR_Update_LocalCost_By_SubProductID.sql" />
     <Build Include="Stores Procedures\SPR_Get_Stock_LocalCost_Report.sql" />
     <Build Include="Stores Procedures\SPR_Get_StockMove_Report.sql" />
+    <Build Include="Table Types\tblBulkUpdateType.sql" />
+    <Build Include="Stores Procedures\SPR_BulkPriceUpdate.sql" />
+    <Build Include="Views\View_ModeBrandDetails.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IMS_Client_2_DB.publish.xml" />

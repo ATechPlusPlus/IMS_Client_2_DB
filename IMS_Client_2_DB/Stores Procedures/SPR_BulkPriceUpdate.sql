@@ -1,29 +1,50 @@
-﻿
-
--- =============================================
+﻿-- =============================================
 -- Author:		<Mateen KHAN>
--- Create date: <24 March 2022>
+-- Create date: <24th MAR 2022>
+-- Update date: <29th MAR 2022>
 -- Description:	<>
 -- =============================================
-
-create PROCEDURE [dbo].[SPR_BulkPriceUpdate]
-
+-- DROP PROCEDURE [dbo].[SPR_BulkPriceUpdate]
+CREATE PROCEDURE [dbo].[SPR_BulkPriceUpdate]
 @ExcelTable as tblBulkUpdateType READONLY,
-@LoginBy as int
+@LoginBy AS INT,
+@Flag AS INT OUTPUT
 
 AS
 BEGIN
 
 	BEGIN TRY
+	DECLARE @PARAMERES VARCHAR(MAX)=''
+	SET @PARAMERES=@LoginBy
 
-			update ProductStockMaster
+	BEGIN TRANSACTION
 
-		 set ProductStockMaster.Rate=t3.SalePrice 
+		UPDATE pwm
+		SET pwm.EndUser=t3.SalePrice,pwm.UpdatedOn=GETDATE(),pwm.UpdatedBy=@LoginBy
+		FROM tblProductWiseModelNo AS pwm
+		INNER JOIN View_ModeBrandDetails AS t2 ON pwm.SubProductID=t2.SubProductID
+		INNER JOIN @ExcelTable AS t3 ON t2.BrandName=t3.Brand AND t2.ModelNo=t3.StyleNo
 
-		from ProductStockMaster as t1 join (select * from  View_ModeBrandDetails ) as t2
-		on t1.SubProductID=t2.SubProductID  join 
-		@ExcelTable as t3 on (t2.BrandName=t3.Brand AND t2.ModelNo=t3.StyleNo)
-END TRY
+		UPDATE psm
+		SET psm.Rate=t3.SalePrice,psm.UpdatedOn=GETDATE(),psm.UpdatedBy=@LoginBy
+		FROM ProductStockMaster AS psm
+		INNER JOIN View_ModeBrandDetails AS t2 ON psm.SubProductID=t2.SubProductID
+		INNER JOIN @ExcelTable AS t3 ON t2.BrandName=t3.Brand AND t2.ModelNo=t3.StyleNo
+
+		--UPDATE ProductStockMaster
+		-- SET ProductStockMaster.Rate=t3.SalePrice,ProductStockMaster.UpdatedOn=GETDATE(),ProductStockMaster.UpdatedBy=@LoginBy
+		--FROM ProductStockMaster AS t1 JOIN (SELECT * FROM  View_ModeBrandDetails ) AS t2
+		--ON t1.SubProductID=t2.SubProductID  JOIN 
+		--@ExcelTable AS t3 ON (t2.BrandName=t3.Brand AND t2.ModelNo=t3.StyleNo)
+
+		COMMIT
+		
+		SELECT @Flag=COUNT(1) FROM tblProductWiseModelNo AS pwm
+		INNER JOIN View_ModeBrandDetails AS t2 ON pwm.SubProductID=t2.SubProductID
+		INNER JOIN @ExcelTable AS t3 ON t2.BrandName=t3.Brand AND t2.ModelNo=t3.StyleNo
+
+	END TRY
+
 BEGIN CATCH
 	INSERT [dbo].[ERROR_Log]
 	(
@@ -42,8 +63,8 @@ BEGIN CATCH
 	,ERROR_LINE()
 	,ERROR_MESSAGE()
 	,ERROR_PROCEDURE()
-	,'inserted by [SPR_BulkPriceUpdate] '
+	,@PARAMERES
 	
-	END CATCH
+END CATCH
 	
 END

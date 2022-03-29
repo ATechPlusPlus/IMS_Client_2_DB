@@ -1,10 +1,10 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <29th FEB 2020>
--- Update date: <19th AUGUST 2020>
+-- Update date: <13th FEB 2022>
 -- Description:	<Description,,>
 -- =============================================
--- EXEC [dbo].[Get_PurchaseInvoice_Color_Size] '2470','cls-g700-711'
+-- EXEC [dbo].Get_PurchaseInvoice_Color_Size '2470','cls-g700-711'
 CREATE PROCEDURE [dbo].[Get_PurchaseInvoice_Color_Size]
 @SupplierBillNo VARCHAR(MAX) =''
 ,@ModelNo NVARCHAR(MAX) =''
@@ -33,7 +33,7 @@ BEGIN
 DECLARE cursor_Size CURSOR
 FOR
 --SELECT SizeID FROM SizeMaster WITH(NOLOCK) WHERE SizeTypeID=@SizeType_ID;-- for Size value
-SELECT Size FROM SizeMaster WITH(NOLOCK) WHERE SizeTypeID=@SizeType_ID;-- for SizeID
+SELECT Size FROM SizeMaster WITH(NOLOCK) WHERE SizeTypeID=@SizeType_ID ORDER BY Size-- for SizeID
 
 OPEN cursor_Size;
 

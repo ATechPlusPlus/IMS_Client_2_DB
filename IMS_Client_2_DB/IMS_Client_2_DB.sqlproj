@@ -174,6 +174,7 @@
     <Build Include="Table Types\tblBulkUpdateType.sql" />
     <Build Include="Stores Procedures\SPR_BulkPriceUpdate.sql" />
     <Build Include="Views\View_ModeBrandDetails.sql" />
+    <Build Include="Stores Procedures\SPR_Get_Delivering_PurchaseInvoice_BillDetails_AfterPost.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="IMS_Client_2_DB.refactorlog" />

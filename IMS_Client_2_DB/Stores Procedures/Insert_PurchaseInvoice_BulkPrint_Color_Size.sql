@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <08th MARCH 2020>
--- Update date: <14st AUGUST 2020>
+-- Update date: <15th APRIL 2022>
 -- Description:	<When User is posting purchase invoice then Inserted into Productstock color size master table>
 -- =============================================
 -- EXEC [dbo].[Insert_PurchaseInvoice_BulkPrint_Color_Size] 2,3,10,0,'B201',5
@@ -113,6 +113,7 @@ BEGIN
 --	INNER JOIN tblProductWiseModelNo pwm ON pd1.ProductID=pwm.ProductID AND pd1.SubProductID=pwm.SubProductID--AND pwm.StoreID='+CAST(@StoreID AS VARCHAR)+'
 --	WHERE 
 --	pd1.PurchaseInvoiceID='+CAST(@PurchaseInvoiceID AS VARCHAR)+' AND pd2.DeliveryPurchaseID1='+CAST(@DeliveryPurchaseID as VARCHAR)+' GROUP BY pd1.PurchaseInvoiceID,pd1.ProductID,pd1.SubProductID,clr.ColorID,pwm.ModelNo,pwm.EndUser,pd1.StoreID,pd3.Total)a
+
  
 --	UNPIVOT
 --	(
@@ -188,6 +189,15 @@ BEGIN
 		)
 
 	END
+	-- Below table added for maintaining product stock log before/after posting
+	INSERT INTO dbo.tblProductStockLogData
+	(
+		sstatus, PurchaseInvoiceID, ProductID, SubProductID, StoreID, ColorID, SizeID, QTY, BarcodeNo, CreatedBy
+	)
+	VALUES
+	(
+		CONCAT(@TotalQTY,' QTY Added before Post'), @PurchaseInvoiceID, @ProductID, @SubProductID, @StoreID, @ColorID, @SizeID, @QTY, @BarcodeNo, @CreatedBy
+	)
 
 	SET @i+=1;
 	    FETCH NEXT FROM ColorSize_CURSOR INTO @ProductID, @SubProductID, @StoreID, @ColorID, @SizeID, @QTY, @BarcodeNo

@@ -120,6 +120,7 @@ BEGIN
 	WHERE pd1.StoreID='+CAST(@StoreID AS VARCHAR)+' --AND ISNULL(psm.PurchaseInvoiceID,0)!='+CAST(@PurchaseInvoiceID AS VARCHAR)+'
 	AND pd1.SubProductID='+CAST(@SubProductID AS VARCHAR)+'
 	AND pd1.PurchaseInvoiceID='+CAST(@PurchaseInvoiceID AS VARCHAR)+' AND pd2.DeliveryPurchaseID1='+CAST(@DeliveryPurchaseID as VARCHAR)+' GROUP BY pd1.PurchaseInvoiceID,pd1.ProductID,pd1.SubProductID,clr.ColorID,pwm.ModelNo,pwm.EndUser,pd1.StoreID,pd3.Total
+
 	)a 
 	UNPIVOT
 	(

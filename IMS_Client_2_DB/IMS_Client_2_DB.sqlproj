@@ -177,6 +177,7 @@
     <Build Include="Stores Procedures\SPR_Get_Delivering_PurchaseInvoice_BillDetails_AfterPost.sql" />
     <Build Include="Stores Procedures\spr_Update_PurchaseInvoice_BulkPrint_Color_Size.sql" />
     <Build Include="Table Types\tblPurchaseInvoice_Color_sizeType.sql" />
+    <Build Include="Tables\tblProductStockLogData.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="IMS_Client_2_DB.refactorlog" />

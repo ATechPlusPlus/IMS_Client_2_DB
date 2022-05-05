@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <03th APR 2022>
--- Update date: <17th APR 2022>
+-- Update date: <27th APR 2022>
 -- Description:	<re posting purchase invoice>
 -- =============================================
 -- EXEC [dbo].[spr_Update_PurchaseInvoice_BulkPrint_Color_Size] 2,3,10,0,'B201',3763,5
@@ -47,10 +47,11 @@ BEGIN
 		--DECLARE @Size	 VARCHAR(20) ='0'
 		
 		DECLARE @OldQTY		  INT =0
+		DECLARE @tempQTY	  INT =0
 
 		SET @PARAMERES=CONCAT(@PurchaseInvoiceID,',',@StoreID,',',@SupplierBillNo,',',@SubProductID,',',@CreatedBy)
 		
-		DELETE FROM ProductStockMaster WHERE PurchaseInvoiceID=@PurchaseInvoiceID AND QTY = 0
+		DELETE FROM ProductStockMaster WHERE PurchaseInvoiceID=@PurchaseInvoiceID AND QTY = 0 AND SubProductID!=@SubProductID
 
 		DECLARE ColorSize_CURSOR CURSOR 
 		FOR
@@ -58,7 +59,7 @@ BEGIN
 		SELECT ProductID, StoreID, ColorID, SizeID , QTY, BarcodeNo
 		FROM dbo.ProductStockMaster WITH(NOLOCK)
 		WHERE PurchaseInvoiceID=@PurchaseInvoiceID AND SubProductID=@SubProductID
-		AND QTY > 0
+		--AND QTY > 0
 		
 
 	OPEN ColorSize_CURSOR 
@@ -100,10 +101,18 @@ BEGIN
 		AND StoreID=@StoreID
 		AND SizeID=@SizeID
 
-		UPDATE ProductStockColorSizeMaster
+		SELECT @tempQTY=QTY FROM dbo.ProductStockColorSizeMaster WITH(NOLOCK)
+		WHERE 
+		SubProductID=@SubProductID
+		AND ProductID=@ProductID 
+		AND ColorID=@ColorID 
+		AND StoreID=@StoreID
+		AND SizeID=@SizeID
+
+		UPDATE dbo.ProductStockColorSizeMaster
 		SET 
 		--QTY = QTY + @QTY
-		QTY = ABS(QTY - (ABS(@OldQTY - @QTY)) )
+		QTY = IIF(@tempQTY>0, QTY - (ABS(@OldQTY - @QTY)) , ABS(QTY - (ABS(@OldQTY - @QTY))) )
 		,UpdatedBy = @CreatedBy
 		,UpdatedOn = GETDATE()
 		WHERE 

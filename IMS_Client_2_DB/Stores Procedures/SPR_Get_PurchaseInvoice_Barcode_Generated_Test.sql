@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <17th AUGUST 2020>
--- Update date: <21th NOV 2020>
+-- Update date: <08th MAY 2022>
 -- Description:	<Saved PIVOT delivery purchase bill details via ModelNo and Barcode is generated>
 -- =============================================
 -- EXEC [dbo].[SPR_Get_PurchaseInvoice_Barcode_Generated_Test] 20,276,1,'918A-D7',2
@@ -130,8 +130,7 @@ BEGIN
 	LEFT OUTER JOIN ProductStockMaster psm ON pwm.ProductID=psm.ProductID AND pwm.SubProductID=psm.SubProductID
 	WHERE pd1.StoreID='+CAST(@StoreID AS VARCHAR)+' --AND ISNULL(psm.PurchaseInvoiceID,0)!='+CAST(@PurchaseInvoiceID AS VARCHAR)+'
 	AND pd1.SubProductID='+CAST(@SubProductID AS VARCHAR)+'
-	AND pd1.PurchaseInvoiceID='+CAST(@PurchaseInvoiceID AS VARCHAR)+' AND pd2.DeliveryPurchaseID1='+CAST(@DeliveryPurchaseID as VARCHAR)+' GROUP BY pd1.PurchaseInvoiceID,pd1.ProductID,pd1.SubProductID,clr.ColorID,pwm.ModelNo,pwm.EndUser,pd1.StoreID,pd3.Tota
-l
+	AND pd1.PurchaseInvoiceID='+CAST(@PurchaseInvoiceID AS VARCHAR)+' AND pd2.DeliveryPurchaseID1='+CAST(@DeliveryPurchaseID as VARCHAR)+' GROUP BY pd1.PurchaseInvoiceID,pd1.ProductID,pd1.SubProductID,clr.ColorID,pwm.ModelNo,pwm.EndUser,pd1.StoreID,pd3.Total
 	)a 
 	UNPIVOT
 	(

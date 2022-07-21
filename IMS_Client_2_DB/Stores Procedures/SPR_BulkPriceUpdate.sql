@@ -1,14 +1,14 @@
 ﻿-- =============================================
 -- Author:		<Mateen KHAN>
 -- Create date: <24th MAR 2022>
--- Update date: <29th MAR 2022>
+-- Update date: <21st JULY 2022>
 -- Description:	<>
 -- =============================================
 -- DROP PROCEDURE [dbo].[SPR_BulkPriceUpdate]
 CREATE PROCEDURE [dbo].[SPR_BulkPriceUpdate]
 @ExcelTable as tblBulkUpdateType READONLY,
-@LoginBy AS INT,
-@Flag AS INT OUTPUT
+@LoginBy AS INT=0,
+@Flag AS INT=0 OUTPUT
 
 AS
 BEGIN
@@ -48,6 +48,24 @@ BEGIN
 
 		SET @Flag=1;
 		END
+
+		ELSE --IF @Flag=0
+		BEGIN
+
+		select t4.* from @ExcelTable t4
+		LEFT JOIN
+		(
+		SELECT pwm.ModelNo,t3.StyleNo,t3.Brand,pwm.BrandID,t2.BrandName 
+		FROM tblProductWiseModelNo AS pwm
+		left JOIN View_ModeBrandDetails AS t2 ON ISNULL(pwm.SubProductID,0)=ISNULL(t2.SubProductID,0)
+		left JOIN @ExcelTable AS t3 ON ISNULL(t2.BrandName,0)=ISNULL(t3.Brand,0) AND ISNULL(t2.ModelNo,0)=ISNULL(t3.StyleNo,0)
+		where t3.StyleNo is not null
+		) AS t5
+		ON t4.StyleNo=t5.StyleNo AND t4.Brand=t5.Brand
+		where t5.ModelNo is null
+
+		END
+		
 		COMMIT
 		
 	END TRY

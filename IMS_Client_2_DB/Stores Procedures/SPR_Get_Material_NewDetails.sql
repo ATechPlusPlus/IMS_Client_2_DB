@@ -1,10 +1,10 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <25th JULY 2020>
--- Update date: <12th DEC 2021>
+-- Update date: <31st MARCH 2024>
 -- Description:	<>
 -- =============================================
---EXEC SPR_Get_Material_NewDetails 0,0,0,'0',0,1
+--EXEC SPR_Get_Material_NewDetails 0,0,0,'0922-1',0,1
 CREATE PROCEDURE [dbo].[SPR_Get_Material_NewDetails]
 @BarcodeNo		BIGINT=0
 ,@ProductID		INT=0
@@ -83,11 +83,11 @@ BEGIN
 				SET @query1+=',ISNULL(SUM(ps.QTY),0) AS Total'
 				SET @SumOfQTY+=',SUM(pt.Total) [Total]'
 			END
-
+--AND pwm.ModelNo LIKE IIF('''+CAST(@ModelNo AS NVARCHAR)+'''=''0'',pwm.ModelNo+''%'','''+CAST(@ModelNo AS NVARCHAR)+'%'')
 			SET @WHERE='WHERE ps.ProductID=IIF('+CAST(@ProductID AS VARCHAR)+'=0,ps.ProductID,'+CAST(@ProductID AS VARCHAR)+')
 			AND ISNULL(ps.BarcodeNo,0)=IIF('+CAST(@BarcodeNo AS VARCHAR)+'=0,ISNULL(ps.BarcodeNo,0),'+CAST(@BarcodeNo AS VARCHAR)+')
 			AND ps.ColorID=IIF('+CAST(@ColorID AS VARCHAR)+'=0,ps.ColorID,'+CAST(@ColorID AS VARCHAR)+')
-			AND pwm.ModelNo LIKE IIF('''+CAST(@ModelNo AS NVARCHAR)+'''=''0'',pwm.ModelNo+''%'','''+CAST(@ModelNo AS NVARCHAR)+'%'')
+			AND pwm.ModelNo=IIF('''+CAST(@ModelNo AS NVARCHAR)+'''=''0'',pwm.ModelNo,'''+CAST(@ModelNo AS NVARCHAR)+''')
 			--AND pwm.ModelNo=IIF('''+CAST(@ModelNo AS NVARCHAR)+'''=''0'',pwm.ModelNo,'''+CAST(@ModelNo AS NVARCHAR)+''')
 			AND cat.CategoryID=IIF('+CAST(@CategoryID AS VARCHAR)+'=0,cat.CategoryID,'+CAST(@CategoryID AS VARCHAR)+')
 			GROUP BY ps.BarcodeNo,cm.ColorName,sz.Size,pm.ProductName,pm.ProductID,pwm.EndUser,pwm.Photo,ps.SubProductID,pwm.ModelNo'

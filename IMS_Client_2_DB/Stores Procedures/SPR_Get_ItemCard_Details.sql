@@ -1,7 +1,7 @@
 ﻿-- =============================================
 -- Author:		<AAMIR KHAN>
 -- Create date: <21th MARCH 2021>
--- Update date: <22nd MARCH 2021>
+-- Update date: <31st MARCH 2024>
 -- Description:	<Description,,>
 -- =============================================
 --EXEC SPR_Get_ItemCard_Details 1232,'0'
@@ -29,7 +29,7 @@ BEGIN
 		SELECT @InvoiceDate=CONVERT(DATE,MAX(si.InvoiceDate)) ,@SoldQTY=SUM(sd.QTY)
 		FROM SalesInvoiceDetails si
 		INNER JOIN View_SalesDetails sd ON si.Id=sd.InvoiceID
-		WHERE sd.BarcodeNo=@BarCode
+		WHERE sd.BarcodeNo=@BarCode AND si.OldInvoiceID=0
 
 			SELECT t.SubProductID,t.ProductID,t.[Item Name],t.[Style No],t.BrandName,SUM(t.QTY) QTY
 			,t.EndUser,t.LocalCost,@InvoiceDate InvoiceDate,ISNULL(@SoldQTY,0) SoldQTY
@@ -58,7 +58,7 @@ BEGIN
 			SELECT TOP 1 @InvoiceDate=CONVERT(DATE,MAX(si.InvoiceDate)) ,@SoldQTY=SUM(sd.QTY)
 			FROM SalesInvoiceDetails si
 			INNER JOIN View_SalesDetails sd ON si.Id=sd.InvoiceID
-			WHERE sd.ModelNo = ''+@ModelNo+''
+			WHERE  si.OldInvoiceID=0 AND sd.ModelNo = ''+@ModelNo+''
 			--WHERE sd.ModelNo LIKE ''+@ModelNo+'%'
 
 			SELECT TOP 1 t.SubProductID,t.ProductID,t.[Item Name],t.[Style No],t.BrandName,SUM(t.QTY) QTY
